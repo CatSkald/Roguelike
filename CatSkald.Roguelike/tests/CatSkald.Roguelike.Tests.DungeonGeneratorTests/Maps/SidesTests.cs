@@ -7,6 +7,8 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
     [TestFixture]
     public class SidesTests
     {
+        //TODO test Equals
+
         [Test]
         public void Constructor_HasCountSameAsAllDirections()
         {
