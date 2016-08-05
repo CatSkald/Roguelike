@@ -69,7 +69,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         public Cell PickRandomCell()
         {
-            var point = new Point(StaticRandom.Next(Width - 1), StaticRandom.Next(Height - 1));
+            var point = new Point(StaticRandom.Next(Width), StaticRandom.Next(Height));
             return this[point];
         }
         
