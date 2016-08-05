@@ -58,7 +58,7 @@
     <Compile Include="Directions\DirectionPicker.cs" />
     <Compile Include="Maps\Cell.cs" />
     <Compile Include="Maps\IMap.cs" />
-    <Compile Include="MapGenerator.cs" />
+    <Compile Include="MapBuilder.cs" />
     <Compile Include="Maps\Map.cs" />
     <Compile Include="MapParameters.cs" />
     <Compile Include="Maps\Sides.cs" />
