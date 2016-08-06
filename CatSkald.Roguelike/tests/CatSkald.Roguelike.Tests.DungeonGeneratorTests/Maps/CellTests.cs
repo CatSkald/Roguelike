@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Linq;
+using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
@@ -9,6 +11,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
     {
         ////TODO test Equals
 
+        #region Constructor
         [Test]
         public void Constructor_SidesAreNotNull()
         {
@@ -28,6 +31,39 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             Assert.That(cell.Location, Is.EqualTo(new Point(x, y)));
         }
+        #endregion
+
+        #region IsDeadEnd
+        [TestCase(Dir.N)]
+        [TestCase(Dir.E)]
+        [TestCase(Dir.S)]
+        [TestCase(Dir.W)]
+        public void IsDeadEnd_IsTrueIfAllSidesAreWallsExceptOne(Dir empty)
+        {
+            var cell = new Cell();
+            cell.Sides[empty] = Side.Empty;
+
+            Assert.That(cell.IsDeadEnd, Is.EqualTo(true));
+        }
+
+        [TestCase(0)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        public void IsDeadEnd_IsFalseIfNotOneSideIsEmpty(int countOfEmptySides)
+        {
+            var cell = new Cell();
+            foreach (var dir in cell.Sides.Keys.ToList())
+            {
+                cell.Sides[dir] = Side.Empty;
+                countOfEmptySides--;
+                if (countOfEmptySides == 0)
+                    break;
+            }
+
+            Assert.That(cell.IsDeadEnd, Is.EqualTo(false));
+        } 
+        #endregion
 
         [TestCase(true)]
         [TestCase(false)]
