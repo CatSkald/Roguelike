@@ -58,6 +58,7 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Commands\CorridorBuilderCommandTests.cs" />
     <Compile Include="Directions\DirectionPickerTests.cs" />
     <Compile Include="MapBuilderTests.cs" />
     <Compile Include="Maps\CellTests.cs" />

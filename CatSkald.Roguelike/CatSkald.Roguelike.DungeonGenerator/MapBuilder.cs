@@ -1,82 +1,41 @@
-﻿using System.Linq;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+﻿using System.Collections.Generic;
+using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 
 namespace CatSkald.Roguelike.DungeonGenerator
 {
     public class MapBuilder
     {
-        private readonly DirectionPicker _directionsPicker;
+        private readonly List<IMapBuilderCommand> _commands = 
+            new List<IMapBuilderCommand>();
+        private DungeonParameters _params;
 
-        public MapBuilder()
+        public MapBuilder(DungeonParameters parameters)
         {
-            _directionsPicker = new DirectionPicker();
+            SetParameters(parameters);
         }
 
-        public IMap Build(DungeonParameters parameters)
+        public void SetParameters(DungeonParameters parameters)
         {
-            _directionsPicker.TwistFactor = parameters.TwistFactor;
-            var map = new Map(parameters.Width, parameters.Height);
+            _params = parameters;
+            _commands.Clear();
+            // order matters
+            _commands.AddRange(new IMapBuilderCommand[] {
+                new CorridorBuilderCommand(parameters.TwistFactor),
+                new SparsifyCommand(parameters.SparseFactor)
+            });
+        }
 
-            BuildCorridors(map);
-            Sparsify(map);
+        public IMap Build()
+        {
+            var map = new Map(_params.Width, _params.Height);
+
+            foreach (var command in _commands)
+            {
+                command.Execute(map);
+            }
 
             return map;
-        }
-
-        public static void Sparsify(IMap map)
-        {
-            foreach (var cell in map)
-            {
-                if (cell.IsDeadEnd)
-                {
-                    var emptySide = cell.Sides.Single(s => s.Value == Side.Empty).Key;
-                    map.RemoveCorridor(cell, emptySide);
-                }
-            }
-        }
-
-        public void BuildCorridors(IMap map)
-        {
-            Cell nextCell;
-            var direction = Dir.Zero;
-
-            var currentCell = map.PickRandomCell();
-            map.Visit(currentCell);
-            bool success;
-            do
-            {
-                _directionsPicker.LastDirection = direction;
-                _directionsPicker.ResetDirections();
-                success = TryPickRandomUnvisitedAdjacentCell(
-                    map, currentCell, out nextCell, out direction);
-                if (success)
-                {
-                    map.CreateCorridor(currentCell, nextCell, direction);
-                    map.Visit(nextCell);
-                    currentCell = nextCell;
-                    nextCell = null;
-                }
-                else
-                {
-                    currentCell = map.PickNextRandomVisitedCell(currentCell);
-                }
-            }
-            while (!map.AllVisited);
-        }
-
-        private bool TryPickRandomUnvisitedAdjacentCell(
-            IMap map, Cell currentCell, out Cell nextCell, out Dir direction)
-        {
-            var success = false;
-            do
-            {
-                direction = _directionsPicker.NextDirection();
-                success = map.TryGetAdjacentUnvisitedCell(currentCell, direction, out nextCell);
-            }
-            while (_directionsPicker.HasDirections && !success);
-
-            return success;
         }
     }
 }
