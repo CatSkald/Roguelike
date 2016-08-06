@@ -6,9 +6,6 @@ using CatSkald.Roguelike.DungeonGenerator.Directions;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
-    [SuppressMessage("Microsoft.Usage", "CA2229:ImplementSerializationConstructors", 
-        Justification = "Serialization is not needed for now")]
-    [Serializable]
     public class Sides : Dictionary<Dir, Side>, IEquatable<Sides>
     {
         public Sides()
