@@ -5,12 +5,13 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.DungeonGenerator.Utils;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
     [DebuggerDisplay("[{Width},{Height}](AllVisited:{AllVisited})")]
-    public class Map : IMap
+    public sealed class Map : IMap
     {
         private readonly Cell[,] _map;
         private readonly List<Cell> _visitedCells;
@@ -33,35 +34,15 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         public int Size => Height * Width;
         public bool AllVisited => _visitedCells.Count == Size;
 
-        public Cell this[Cell cell]
-        {
-            get
-            {
-                return this[cell.Location];
-            }
-            set
-            {
-                this[cell.Location] = value;
-            }
-        }
-        public Cell this[Point p]
-        {
-            get
-            {
-                return this[p.X, p.Y];
-            }
-            set
-            {
-                this[p.X, p.Y] = value;
-            }
-        }
+        public Cell this[Cell cell] => this[cell.Location];
+        public Cell this[Point p] => this[p.X, p.Y];
         public Cell this[int width, int height]
         {
             get
             {
                 return _map[height, width];
             }
-            set
+            private set
             {
                 _map[height, width] = value;
             }
@@ -76,9 +57,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         public Cell PickNextRandomVisitedCell(Cell oldCell)
         {
             if (_visitedCells.Count <= 1)
-            {
                 throw new InvalidOperationException("No visited cells to choose.");
-            }
 
             if (_visitedCells.Count == 2)
             {
@@ -93,23 +72,23 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
                 next = _visitedCells[index];
                 if (next != oldCell)
                     break;
-            }
-            while (true);
+            } while (true);
 
             return next;
         }
 
         public bool HasAdjacentCell(Cell cell, Dir direction)
         {
-            ThrowIfOutsideMap(cell.Location);
+            ThrowD.IfOutsideMap(this, cell);
 
             var newPoint = DirHelper.MoveInDir(cell.Location, direction);
             return !IsOutsideMap(newPoint);
         }
 
-        public bool TryGetAdjacentUnvisitedCell(Cell cell, Dir direction, out Cell adjacentCell)
+        public bool TryGetAdjacentUnvisitedCell(
+            Cell cell, Dir direction, out Cell adjacentCell)
         {
-            ThrowIfOutsideMap(cell.Location);
+            ThrowD.IfOutsideMap(this, cell);
 
             var newPoint = DirHelper.MoveInDir(cell.Location, direction);
 
@@ -125,31 +104,30 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         public void CreateCorridor(Cell startCell, Cell endCell, Dir direction)
         {
-            ThrowIfOutsideMap(startCell.Location);
-            ThrowIfOutsideMap(endCell.Location);
-
-            ValidateIfCellsAreAdjacentInDirection(startCell, endCell, direction);
+            ThrowD.IfOutsideMap(this, startCell, nameof(startCell));
+            ThrowD.IfOutsideMap(this, endCell, nameof(endCell));
+            ThrowD.IfNotAdjacent(startCell, endCell, direction);
 
             startCell.Sides[direction] = Side.Empty;
             endCell.Sides[DirHelper.Opposite(direction)] = Side.Empty;
         }
 
-        public void RemoveCorridor(Cell cell, Dir direction)
+        public void RemoveCorridor(Cell startCell, Dir direction)
         {
-            ThrowIfNoCorridor(cell, direction);
+            ThrowD.IfNoCorridor(startCell, direction, nameof(startCell));
 
-            var endCell = this[DirHelper.MoveInDir(cell.Location, direction)];
+            var endCell = this[DirHelper.MoveInDir(startCell.Location, direction)];
             var endDirection = direction.Opposite();
 
-            ThrowIfNoCorridor(endCell, endDirection);
+            ThrowD.IfNoCorridor(endCell, endDirection, nameof(endCell));
 
-            cell.Sides[direction] = Side.Wall;
+            startCell.Sides[direction] = Side.Wall;
             endCell.Sides[endDirection] = Side.Wall;
         }
 
         public void Visit(Cell cell)
         {
-            ThrowIfOutsideMap(cell.Location);
+            ThrowD.IfOutsideMap(this, cell);
 
             cell.IsVisited = true;
             _visitedCells.Add(cell);
@@ -178,36 +156,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         #endregion
 
-        private static void ValidateIfCellsAreAdjacentInDirection(
-            Cell startCell, Cell endCell, Dir direction)
-        {
-            var endPoint = DirHelper.MoveInDir(startCell.Location, direction);
-            if (endPoint != endCell.Location)
-            {
-                throw new ArgumentException(
-                    $"Cells are not adjucent in '{direction}' direction:" +
-                    $" {startCell.Location}, {endCell.Location}");
-            }
-        }
-
         private bool IsOutsideMap(Point point)
         {
             return point.X < 0 || point.X >= Width || point.Y < 0 || point.Y >= Height;
-        }
-
-        private void ThrowIfOutsideMap(Point point)
-        {
-            if (IsOutsideMap(point))
-                throw new ArgumentOutOfRangeException(nameof(point), point, $"Point is outside the map.");
-        }
-
-        private void ThrowIfNoCorridor(Cell cell, Dir direction)
-        {
-            ThrowIfOutsideMap(cell.Location);
-
-            if (cell.Sides[direction] != Side.Empty)
-                throw new InvalidOperationException(
-                    "There is no corridor in direction: " + direction);
         }
     }
 }

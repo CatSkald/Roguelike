@@ -1,6 +1,6 @@
 ﻿namespace CatSkald.Roguelike.DungeonGenerator
 {
-    public class DungeonParameters
+    public sealed class DungeonParameters
     {
         public int Width { get; set; }
         public int Height { get; set; }

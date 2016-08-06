@@ -12,11 +12,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         {
             Sides = new Sides();
         }
-
         public Cell(int x, int y) : this(new Point(x, y))
         {
         }
-
         public Cell(Point location) : this()
         {
             Location = location;
