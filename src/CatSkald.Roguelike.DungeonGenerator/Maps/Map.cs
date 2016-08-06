@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
-using CatSkald.Stuff;
+using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {

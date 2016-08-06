@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{80083AF5-2AF4-49EF-A89F-3DE47A5D5084}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04F26693-3357-4FA7-88DC-D6CE828B0A90}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9BFB618E-B552-499D-BBCF-E3F3C443D15D}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.DungeonGenerator", "src\CatSkald.Roguelike.DungeonGenerator\CatSkald.Roguelike.DungeonGenerator.xproj", "{6BB73231-5CF1-4785-B75B-35FB03E85B9F}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Tools", "src\CatSkald.Tools\CatSkald.Tools.xproj", "{CF9372C1-7030-4148-9FBF-5FB58C52A58D}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.Host", "src\CatSkald.Roguelike.Host\CatSkald.Roguelike.Host.xproj", "{E4CC2526-B5F8-4694-A787-CFE481B094E3}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.Tests.DungeonGeneratorTests", "test\CatSkald.Roguelike.Tests.DungeonGeneratorTests\CatSkald.Roguelike.Tests.DungeonGeneratorTests.xproj", "{6F66FB54-69ED-4FAF-A428-1D70AEC28098}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BB73231-5CF1-4785-B75B-35FB03E85B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB73231-5CF1-4785-B75B-35FB03E85B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB73231-5CF1-4785-B75B-35FB03E85B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB73231-5CF1-4785-B75B-35FB03E85B9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF9372C1-7030-4148-9FBF-5FB58C52A58D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF9372C1-7030-4148-9FBF-5FB58C52A58D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF9372C1-7030-4148-9FBF-5FB58C52A58D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF9372C1-7030-4148-9FBF-5FB58C52A58D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4CC2526-B5F8-4694-A787-CFE481B094E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4CC2526-B5F8-4694-A787-CFE481B094E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4CC2526-B5F8-4694-A787-CFE481B094E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4CC2526-B5F8-4694-A787-CFE481B094E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F66FB54-69ED-4FAF-A428-1D70AEC28098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F66FB54-69ED-4FAF-A428-1D70AEC28098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F66FB54-69ED-4FAF-A428-1D70AEC28098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F66FB54-69ED-4FAF-A428-1D70AEC28098}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6BB73231-5CF1-4785-B75B-35FB03E85B9F} = {9BFB618E-B552-499D-BBCF-E3F3C443D15D}
+		{CF9372C1-7030-4148-9FBF-5FB58C52A58D} = {9BFB618E-B552-499D-BBCF-E3F3C443D15D}
+		{E4CC2526-B5F8-4694-A787-CFE481B094E3} = {9BFB618E-B552-499D-BBCF-E3F3C443D15D}
+		{6F66FB54-69ED-4FAF-A428-1D70AEC28098} = {80083AF5-2AF4-49EF-A89F-3DE47A5D5084}
+	EndGlobalSection
+EndGlobal

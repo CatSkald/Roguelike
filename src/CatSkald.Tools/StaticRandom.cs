@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CatSkald.Stuff
+namespace CatSkald.Tools
 {
     /// <summary>
     /// Thread safe singleton pseudo-random number generator

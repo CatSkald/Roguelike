@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
@@ -11,21 +10,31 @@ namespace CatSkald.Roguelike.Host
     {
         public static void Main()
         {
-            var width = int.Parse(ConfigurationManager.AppSettings["Map.Width"]);
-            var height = int.Parse(ConfigurationManager.AppSettings["Map.Height"]);
-            var twistFactor = int.Parse(
-                ConfigurationManager.AppSettings["Corridors.TwistFactor"]);
-
-            var parameters = new DungeonParameters
-            {
-                Width = width,
-                Height = height,
-                TwistFactor = twistFactor
-            };
+            var parameters = GatherParameters();
             var generator = new MapBuilder(parameters);
             var map = generator.Build();
 
-            Console.WriteLine(new string('#', width + 2));
+            DrawMap(map);
+
+            Console.ReadKey();
+            Console.ReadLine();
+        }
+
+        private static DungeonParameters GatherParameters()
+        {
+            return new DungeonParameters
+            {
+                Width = int.Parse(Configuration.Get("Map.Width")),
+                Height = int.Parse(Configuration.Get("Map.Height")),
+                TwistFactor = int.Parse(Configuration.Get("Corridors.TwistFactor"))
+            };
+        }
+
+        private static void DrawMap(IMap map)
+        {
+            var indentedWidth = map.Width + 2;
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.WriteLine(new string('#', indentedWidth));
             for (int y = 0; y < map.Height; y++)
             {
                 Console.Write("#");
@@ -118,10 +127,7 @@ namespace CatSkald.Roguelike.Host
                 Console.Write("#");
                 Console.WriteLine();
             }
-            Console.WriteLine(new string('#', width + 2));
-
-            Console.ReadKey();
-            Console.ReadLine();
+            Console.WriteLine(new string('#', indentedWidth));
         }
     }
 }
