@@ -52,5 +52,11 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
         {
             Assert.That(_builder.Build(_params), Is.Not.Null);
         }
+
+        [Test]
+        public void Build_MapHasNoDeadEnds()
+        {
+            Assert.That(_builder.Build(_params), Is.Not.Null);
+        }
     }
 }

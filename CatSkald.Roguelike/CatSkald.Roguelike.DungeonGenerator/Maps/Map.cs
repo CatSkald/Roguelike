@@ -134,6 +134,19 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             endCell.Sides[DirHelper.Opposite(direction)] = Side.Empty;
         }
 
+        public void RemoveCorridor(Cell cell, Dir direction)
+        {
+            ThrowIfNoCorridor(cell, direction);
+
+            var endCell = this[DirHelper.MoveInDir(cell.Location, direction)];
+            var endDirection = direction.Opposite();
+
+            ThrowIfNoCorridor(endCell, endDirection);
+
+            cell.Sides[direction] = Side.Wall;
+            endCell.Sides[endDirection] = Side.Wall;
+        }
+
         public void Visit(Cell cell)
         {
             ThrowIfOutsideMap(cell.Location);
@@ -186,6 +199,15 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         {
             if (IsOutsideMap(point))
                 throw new ArgumentOutOfRangeException(nameof(point), point, $"Point is outside the map.");
+        }
+
+        private void ThrowIfNoCorridor(Cell cell, Dir direction)
+        {
+            ThrowIfOutsideMap(cell.Location);
+
+            if (cell.Sides[direction] != Side.Empty)
+                throw new InvalidOperationException(
+                    "There is no corridor in direction: " + direction);
         }
     }
 }

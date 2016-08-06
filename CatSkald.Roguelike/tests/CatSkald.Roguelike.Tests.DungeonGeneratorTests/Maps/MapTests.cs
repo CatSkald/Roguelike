@@ -369,6 +369,8 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
         #endregion
 
+        ////TODO RemoveCorridor
+
         #region Constructor
 
         [TestCase(10, 10)]

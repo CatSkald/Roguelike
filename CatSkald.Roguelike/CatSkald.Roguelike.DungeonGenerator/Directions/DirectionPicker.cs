@@ -61,7 +61,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Directions
                     {
                         index = StaticRandom.Next(_directions.Count);
                         result = _directions[index];
-                    } while (changeDirection && result == LastDirection);
+                    }
+                    while (changeDirection && result == LastDirection);
                     _directions.RemoveAt(index);
                     LastDirection = result;
                 }

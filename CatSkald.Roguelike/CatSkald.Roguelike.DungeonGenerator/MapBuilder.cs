@@ -1,4 +1,5 @@
-﻿using CatSkald.Roguelike.DungeonGenerator.Directions;
+﻿using System.Linq;
+using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 
 namespace CatSkald.Roguelike.DungeonGenerator
@@ -18,11 +19,24 @@ namespace CatSkald.Roguelike.DungeonGenerator
             var map = new Map(parameters.Width, parameters.Height);
 
             BuildCorridors(map);
+            Sparsify(map);
 
             return map;
         }
 
-        private void BuildCorridors(IMap map)
+        public static void Sparsify(IMap map)
+        {
+            foreach (var cell in map)
+            {
+                if (cell.IsDeadEnd)
+                {
+                    var emptySide = cell.Sides.Single(s => s.Value == Side.Empty).Key;
+                    map.RemoveCorridor(cell, emptySide);
+                }
+            }
+        }
+
+        public void BuildCorridors(IMap map)
         {
             Cell nextCell;
             var direction = Dir.Zero;
