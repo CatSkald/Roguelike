@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
@@ -22,8 +23,10 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         }
 
         public Point Location { get; set; }
-        public bool IsVisited { get; set; }
         public Sides Sides { get; }
+        public bool IsVisited { get; set; }
+        public bool IsDeadEnd => 
+            Sides.Values.Count(it => it == Side.Empty) == 1;
 
         #region IEquatable
 

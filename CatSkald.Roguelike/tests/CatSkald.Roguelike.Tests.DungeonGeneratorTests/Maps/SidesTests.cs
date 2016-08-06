@@ -18,11 +18,19 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         }
 
         [Test]
-        public void Constructor_ContainsAllDirectionsAfterCreation()
+        public void Constructor_ContainsAllDirections()
         {
             var sides = new Sides();
 
             Assert.That(sides.Keys, Is.EquivalentTo(DirHelper.GetNonEmptyDirs()));
+        }
+
+        [Test]
+        public void Constructor_AllSidesAreWalls()
+        {
+            var sides = new Sides();
+
+            Assert.That(sides.Values, Has.All.EqualTo(Side.Wall));
         }
     }
 }
