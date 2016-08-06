@@ -7,29 +7,31 @@ namespace CatSkald.Roguelike.DungeonGenerator.Directions
 {
     public class DirectionPicker
     {
-        //This is needed for optional parameter in constructor
-        private const int twistFactorUpperBound = 100;
-
         public static readonly int TwistFactorMin = 0;
-        public static readonly int TwistFactorMax = twistFactorUpperBound;
+        public static readonly int TwistFactorMax = TwistFactorUpperBound;
 
+        // This is needed for optional parameter in constructor
+        private const int TwistFactorUpperBound = 100;
         private List<Dir> _directions;
-        private Dir _lastDirection;
 
-        public DirectionPicker(int twistFactor = twistFactorUpperBound)
+        public DirectionPicker(int twistFactor = TwistFactorUpperBound)
         {
             if (twistFactor < TwistFactorMin || twistFactor > TwistFactorMax)
                 throw new ArgumentOutOfRangeException(
                     $"twistFactor should be between {TwistFactorMin} and {TwistFactorMax}, but was: {twistFactor}");
 
             TwistFactor = twistFactor;
-            Reset();
+            ResetDirections();
         }
 
         public bool HasDirections => _directions.Count > 0;
         public int TwistFactor { get; set; }
-        public bool ChangeDirection => 
-            TwistFactor > StaticRandom.Next(TwistFactorMin, TwistFactorMax);
+        public Dir LastDirection { get; set; }
+
+        public bool ShouldChangeDirection()
+        {
+            return TwistFactor > StaticRandom.Next(TwistFactorMin, TwistFactorMax);
+        }
 
         public Dir NextDirection()
         {
@@ -44,28 +46,32 @@ namespace CatSkald.Roguelike.DungeonGenerator.Directions
             }
             else
             {
-                if (_lastDirection != Dir.Zero 
-                    && !ChangeDirection 
-                    && _directions.Contains(_lastDirection))
+                var changeDirection = ShouldChangeDirection();
+                if (LastDirection != Dir.Zero 
+                    && !changeDirection
+                    && _directions.Contains(LastDirection))
                 {
-                    result = _lastDirection;
+                    result = LastDirection;
                     _directions.Remove(result);
                 }
                 else
                 {
-                    var index = StaticRandom.Next(_directions.Count);
-                    result = _directions[index];
+                    int index;
+                    do
+                    {
+                        index = StaticRandom.Next(_directions.Count);
+                        result = _directions[index];
+                    } while (changeDirection && result == LastDirection);
                     _directions.RemoveAt(index);
-                    _lastDirection = result;
+                    LastDirection = result;
                 }
             }
 
             return result;
         }
 
-        public void Reset(Dir lastDirection = Dir.Zero)
+        public void ResetDirections()
         {
-            _lastDirection = lastDirection;
             _directions = DirHelper.GetNonEmptyDirs().ToList();
         }
     }
