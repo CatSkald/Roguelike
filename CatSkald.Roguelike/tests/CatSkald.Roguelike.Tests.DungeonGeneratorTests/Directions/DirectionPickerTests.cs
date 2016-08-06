@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
 using NUnit.Framework;
 
@@ -16,7 +17,43 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
             _picker = new DirectionPicker();
         }
 
-        //TODO test NextDirection
+        #region NextDirection
+
+        [Test]
+        public void NextDirection_ThrowsIfNoDirection()
+        {
+            var expectedDirs = DirHelper.GetNonEmptyDirs();
+            RetrieveDirections(_picker, expectedDirs.Count);
+
+            Assert.That(() => _picker.NextDirection(),
+                Throws.TypeOf<InvalidOperationException>());
+        }
+        
+        [TestCase(Dir.N)]
+        [TestCase(Dir.S)]
+        [TestCase(Dir.W)]
+        [TestCase(Dir.E)]
+        public void NextDirection_DoesNotChooseLastIfTwistFactor100(Dir lastDir)
+        {
+            _picker.TwistFactor = 100;
+            _picker.LastDirection = lastDir;
+
+            Assert.That(_picker.NextDirection(), Is.Not.EqualTo(lastDir));
+        }
+
+        [TestCase(Dir.N)]
+        [TestCase(Dir.S)]
+        [TestCase(Dir.W)]
+        [TestCase(Dir.E)]
+        public void NextDirection_ChoosesLastIfTwistFactor0(Dir lastDir)
+        {
+            _picker.TwistFactor = 0;
+            _picker.LastDirection = lastDir;
+
+            Assert.That(_picker.NextDirection(), Is.EqualTo(lastDir));
+        }
+
+        #endregion
 
         #region HasDirections
 
@@ -51,71 +88,127 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
                 counter--;
             }
 
-            _picker.Reset();
+            _picker.ResetDirections();
 
             Assert.That(_picker.HasDirections, Is.EqualTo(true));
         }
 
         #endregion
 
+        #region TwistFactor
+
+        [TestCase(42)]
+        [TestCase(10)]
+        public void TwistFactors_GetReturnsCorrectValue(int value)
+        {
+            _picker.TwistFactor = value;
+
+            Assert.That(_picker.TwistFactor, Is.EqualTo(value));
+        }
+
+        #endregion
+
+        #region Constructor
+
         [Test]
         public void Constructor_ContainsAllDirections()
         {
-            var counter = expectedCount;
+            var expectedDirs = DirHelper.GetNonEmptyDirs();
             var dirs = new List<Dir>();
-
-            while (counter > 0)
+            for (int i = 0; i < expectedDirs.Count; i++)
             {
                 dirs.Add(_picker.NextDirection());
-                counter--;
             }
 
-            Assert.That(dirs, Is.EquivalentTo(DirHelper.GetNonEmptyDirs()));
+            Assert.That(dirs, Is.EquivalentTo(expectedDirs));
         }
 
-        [TestCase(Dir.Zero)]
-        [TestCase(Dir.W)]
-        [TestCase(Dir.N)]
-        public void Reset_RestoresAllDirections_RegardlessOfDirectionPassed(Dir dir)
+        [TestCase(66)]
+        [TestCase(99)]
+        public void Constructor_SetsCorrectTwistFactor(int value)
         {
-            var counter = expectedCount;
+            _picker = new DirectionPicker(value);
 
-            while (counter > 0)
-            {
-                _picker.NextDirection();
-                counter--;
-            }
-
-            _picker.Reset(dir);
-
-            counter = expectedCount;
-            var dirs = new List<Dir>();
-
-            while (counter > 0)
-            {
-                dirs.Add(_picker.NextDirection());
-                counter--;
-            }
-
-            Assert.That(dirs, Is.EquivalentTo(DirHelper.GetNonEmptyDirs()));
+            Assert.That(_picker.TwistFactor, Is.EqualTo(value));
         }
 
-        #region ChangeDirection
-
-        [Test]
-        public void ChangeDirection_TrueForMaxTwistFactor()
+        [TestCase(-1)]
+        [TestCase(101)]
+        [TestCase(10000)]
+        public void Constructor_ThrowsCorrectErrorIfTwistFactorIsIncorrect(int value)
         {
-            _picker.TwistFactor = DirectionPicker.TwistFactorMax;
-            Assert.That(_picker.ChangeDirection, Is.EqualTo(false));
+            Assert.That(() => new DirectionPicker(value),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
         }
-
-        [Test]
-        public void ChangeDirection_FalseForMinTwistFactor()
-        {
-            _picker.TwistFactor = DirectionPicker.TwistFactorMin;
-            Assert.That(_picker.ChangeDirection, Is.EqualTo(false));
-        } 
 
         #endregion
+
+        #region ResetDirections
+
+        [Test]
+        public void ResetDirections_RestoresAllDirections()
+        {
+            var expectedDirs = DirHelper.GetNonEmptyDirs();
+            RetrieveDirections(_picker, expectedDirs.Count);
+
+            _picker.ResetDirections();
+
+            var dirs = new List<Dir>();
+            for (int i = 0; i < expectedDirs.Count; i++)
+            {
+                dirs.Add(_picker.NextDirection());
+            }
+
+            Assert.That(dirs, Is.EquivalentTo(expectedDirs));
+        }
+        
+        [TestCase(42)]
+        [TestCase(99)]
+        public void ResetDirections_DoesNotChangeTwistFactor(int value)
+        {
+            _picker.TwistFactor = value;
+            _picker.ResetDirections();
+
+            Assert.That(_picker.TwistFactor, Is.EqualTo(value));
+        }
+        
+        [TestCase(Dir.Zero)]
+        [TestCase(Dir.N)]
+        [TestCase(Dir.W)]
+        public void ResetDirections_DoesNotChangeLastDirection(Dir dir)
+        {
+            _picker.LastDirection = dir;
+            _picker.ResetDirections();
+
+            Assert.That(_picker.LastDirection, Is.EqualTo(dir));
+        }
+
+        #endregion
+
+        #region ShouldChangeDirection
+
+        [Test]
+        public void ShouldChangeDirection_TrueForMaxTwistFactor()
+        {
+            _picker.TwistFactor = DirectionPicker.TwistFactorMax;
+            Assert.That(_picker.ShouldChangeDirection(), Is.EqualTo(true));
+        }
+
+        [Test]
+        public void ShouldChangeDirection_FalseForMinTwistFactor()
+        {
+            _picker.TwistFactor = DirectionPicker.TwistFactorMin;
+            Assert.That(_picker.ShouldChangeDirection(), Is.EqualTo(false));
+        }
+
+        #endregion
+
+        private static void RetrieveDirections(DirectionPicker _picker, int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                _picker.NextDirection();
+            }
+        }
     }
 }
