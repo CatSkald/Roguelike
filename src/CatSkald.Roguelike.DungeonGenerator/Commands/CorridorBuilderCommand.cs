@@ -4,24 +4,25 @@ using CatSkald.Roguelike.DungeonGenerator.Maps;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public class CorridorBuilderCommand : BaseMapBuilderCommand
+    public sealed class CorridorBuilderCommand : IMapBuilderCommand
     {
         private DirectionPicker _directionsPicker;
 
         public CorridorBuilderCommand(int twistFactor)
         {
             if (twistFactor < 0 || twistFactor > 100)
+            {
                 throw new ArgumentOutOfRangeException(
-                    nameof(twistFactor) + 
-                    " should be between 0 and 100, but was: " + 
-                    twistFactor);
+                      nameof(twistFactor), twistFactor, "Should be between 0 and 100");
+            }
 
             _directionsPicker = new DirectionPicker(twistFactor);
         }
 
-        public override void Execute(IMap map)
+        public void Execute(IMap map)
         {
-            base.Execute(map);
+            if (map == null)
+                throw new ArgumentNullException(nameof(map));
 
             BuildCorridors(map);
         }

@@ -11,9 +11,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         int Size { get; }
         bool AllVisited { get; }
 
-        Cell this[Cell point] { get; set; }
-        Cell this[Point point] { get; set; }
-        Cell this[int width, int height] { get; set; }
+        Cell this[Cell point] { get; }
+        Cell this[Point point] { get; }
+        Cell this[int width, int height] { get; }
 
         bool HasAdjacentCell(Cell cell, Dir direction);
         bool TryGetAdjacentUnvisitedCell(Cell cell, Dir direction, out Cell adjacentCell);

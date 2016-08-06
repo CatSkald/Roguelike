@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
-    public class Sides : Dictionary<Dir, Side>, IEquatable<Sides>
+    public sealed class Sides : Dictionary<Dir, Side>, IEquatable<Sides>
     {
         public Sides()
         {

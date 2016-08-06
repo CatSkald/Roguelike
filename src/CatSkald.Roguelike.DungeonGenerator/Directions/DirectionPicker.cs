@@ -5,7 +5,7 @@ using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Directions
 {
-    public class DirectionPicker
+    public sealed class DirectionPicker
     {
         private const int TwistFactorMin = 0;
         private const int TwistFactorMax = 100;
@@ -15,8 +15,11 @@ namespace CatSkald.Roguelike.DungeonGenerator.Directions
         public DirectionPicker(int twistFactor)
         {
             if (twistFactor < TwistFactorMin || twistFactor > TwistFactorMax)
+            {
                 throw new ArgumentOutOfRangeException(
-                    $"twistFactor should be between {TwistFactorMin} and {TwistFactorMax}, but was: {twistFactor}");
+                      $"twistFactor should be between {TwistFactorMin} and {TwistFactorMax}, "
+                      + " but was: " + twistFactor);
+            }
 
             TwistFactor = twistFactor;
             ResetDirections();

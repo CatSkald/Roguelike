@@ -4,24 +4,25 @@ using CatSkald.Roguelike.DungeonGenerator.Maps;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public class SparsifyCommand : BaseMapBuilderCommand
+    public sealed class SparsifyCommand : IMapBuilderCommand
     {
         private int _sparseFactor;
 
         public SparsifyCommand(int sparseFactor)
         {
             if (sparseFactor < 0 || sparseFactor > 100)
+            {
                 throw new ArgumentOutOfRangeException(
-                    nameof(sparseFactor) + 
-                    " should be between 0 and 100, but was: " + 
-                    sparseFactor);
+                      nameof(sparseFactor), sparseFactor, "Should be between 0 and 100");
+            }
 
             _sparseFactor = sparseFactor;
         }
 
-        public override void Execute(IMap map)
+        public void Execute(IMap map)
         {
-            base.Execute(map);
+            if (map == null)
+                throw new ArgumentNullException(nameof(map));
 
             Sparsify(map);
         }

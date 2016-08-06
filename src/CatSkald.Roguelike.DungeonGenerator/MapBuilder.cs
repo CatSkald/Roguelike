@@ -4,7 +4,7 @@ using CatSkald.Roguelike.DungeonGenerator.Maps;
 
 namespace CatSkald.Roguelike.DungeonGenerator
 {
-    public class MapBuilder
+    public sealed class MapBuilder
     {
         private readonly List<IMapBuilderCommand> _commands = 
             new List<IMapBuilderCommand>();

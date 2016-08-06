@@ -6,7 +6,7 @@ using CatSkald.Roguelike.DungeonGenerator.Maps;
 
 namespace CatSkald.Roguelike.Host
 {
-    public class Program
+    public static class Program
     {
         public static void Main()
         {
