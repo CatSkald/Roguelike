@@ -60,7 +60,7 @@
     <Compile Include="Maps\IMap.cs" />
     <Compile Include="MapBuilder.cs" />
     <Compile Include="Maps\Map.cs" />
-    <Compile Include="MapParameters.cs" />
+    <Compile Include="DungeonParameters.cs" />
     <Compile Include="Maps\Sides.cs" />
     <Compile Include="Maps\Side.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

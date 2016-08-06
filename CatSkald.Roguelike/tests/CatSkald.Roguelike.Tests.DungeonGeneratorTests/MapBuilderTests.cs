@@ -8,13 +8,13 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
     public class MapBuilderTests
     {
         private MapBuilder _builder;
-        private MapParameters _params;
+        private DungeonParameters _params;
 
         [SetUp]
         public void SetUp()
         {
             _builder = new MapBuilder();
-            _params = new MapParameters
+            _params = new DungeonParameters
             {
                 Width = 10,
                 Height = 10
