@@ -12,8 +12,9 @@ namespace CatSkald.Roguelike.DungeonGenerator
             _directionsPicker = new DirectionPicker();
         }
 
-        public IMap Build(MapParameters parameters)
+        public IMap Build(DungeonParameters parameters)
         {
+            _directionsPicker.TwistFactor = parameters.TwistFactor;
             var map = new Map(parameters.Width, parameters.Height);
 
             BuildCorridors(map);

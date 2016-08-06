@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
@@ -10,18 +11,28 @@ namespace CatSkald.Roguelike.Host
     {
         public static void Main()
         {
+            var width = int.Parse(ConfigurationManager.AppSettings["Map.Width"]);
+            var height = int.Parse(ConfigurationManager.AppSettings["Map.Height"]);
+            var twistFactor = int.Parse(
+                ConfigurationManager.AppSettings["Corridors.TwistFactor"]);
+
             var generator = new MapBuilder();
-            var width = 30;
-            var height = 30;
-            var map = generator.Build(new MapParameters(width, height));
+
+            var parameters = new DungeonParameters
+            {
+                Width = width,
+                Height = height,
+                TwistFactor = twistFactor
+            };
+            var map = generator.Build(parameters);
 
             Console.WriteLine(new string('#', width + 2));
-            for (int i = 0; i < map.Width; i++)
+            for (int y = 0; y < map.Height; y++)
             {
                 Console.Write("#");
-                for (int j = 0; j < map.Height; j++)
+                for (int x = 0; x < map.Width; x++)
                 {
-                    var sides = map[j, i].Sides;
+                    var sides = map[x, y].Sides;
                     if (sides.Values.All(s => s == Side.Empty))
                     {
                         Console.Write("╬");
