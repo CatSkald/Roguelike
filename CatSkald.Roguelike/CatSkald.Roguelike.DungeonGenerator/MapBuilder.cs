@@ -24,13 +24,14 @@ namespace CatSkald.Roguelike.DungeonGenerator
         private void BuildCorridors(IMap map)
         {
             Cell nextCell;
-            Dir direction;
+            var direction = Dir.Zero;
 
             var currentCell = map.PickRandomCell();
             map.Visit(currentCell);
             bool success;
             do
             {
+                _directionsPicker.Reset(direction);
                 success = TryPickRandomUnvisitedAdjacentCell(
                     map, currentCell, out nextCell, out direction);
                 if (success)
@@ -51,11 +52,10 @@ namespace CatSkald.Roguelike.DungeonGenerator
         private bool TryPickRandomUnvisitedAdjacentCell(
             IMap map, Cell currentCell, out Cell nextCell, out Dir direction)
         {
-            _directionsPicker.Reset();
             var success = false;
             do
             {
-                direction = _directionsPicker.GetRandomDirection();
+                direction = _directionsPicker.NextDirection();
                 success = map.TryGetAdjacentUnvisitedCell(currentCell, direction, out nextCell);
             }
             while (_directionsPicker.HasDirections && !success);
