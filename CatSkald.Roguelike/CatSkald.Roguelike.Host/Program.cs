@@ -16,15 +16,14 @@ namespace CatSkald.Roguelike.Host
             var twistFactor = int.Parse(
                 ConfigurationManager.AppSettings["Corridors.TwistFactor"]);
 
-            var generator = new MapBuilder();
-
             var parameters = new DungeonParameters
             {
                 Width = width,
                 Height = height,
                 TwistFactor = twistFactor
             };
-            var map = generator.Build(parameters);
+            var generator = new MapBuilder(parameters);
+            var map = generator.Build();
 
             Console.WriteLine(new string('#', width + 2));
             for (int y = 0; y < map.Height; y++)

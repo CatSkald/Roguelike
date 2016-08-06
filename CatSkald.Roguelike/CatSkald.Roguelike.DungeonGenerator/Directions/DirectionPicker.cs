@@ -7,14 +7,12 @@ namespace CatSkald.Roguelike.DungeonGenerator.Directions
 {
     public class DirectionPicker
     {
-        public static readonly int TwistFactorMin = 0;
-        public static readonly int TwistFactorMax = TwistFactorUpperBound;
+        private const int TwistFactorMin = 0;
+        private const int TwistFactorMax = 100;
 
-        // This is needed for optional parameter in constructor
-        private const int TwistFactorUpperBound = 100;
         private List<Dir> _directions;
 
-        public DirectionPicker(int twistFactor = TwistFactorUpperBound)
+        public DirectionPicker(int twistFactor)
         {
             if (twistFactor < TwistFactorMin || twistFactor > TwistFactorMax)
                 throw new ArgumentOutOfRangeException(

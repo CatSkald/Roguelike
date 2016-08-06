@@ -13,18 +13,18 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
         [SetUp]
         public void SetUp()
         {
-            _builder = new MapBuilder();
             _params = new DungeonParameters
             {
                 Width = 10,
                 Height = 10
             };
+            _builder = new MapBuilder(_params);
         }
 
         [Test]
-        public void Build_ReturnsMapWithOneVisitedCell()
+        public void Build_ReturnsMapWithAllVisitedCell()
         {
-            var map = _builder.Build(_params);
+            var map = _builder.Build();
 
             Assert.That(map, Has.All.With.Property(nameof(Cell.IsVisited)).EqualTo(true));
         }
@@ -35,7 +35,8 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
         public void Build_ReturnsMapWithCorrectHeight(int h)
         {
             _params.Height = h;
-            Assert.That(_builder.Build(_params).Height, Is.EqualTo(h));
+            _builder.SetParameters(_params);
+            Assert.That(_builder.Build().Height, Is.EqualTo(h));
         }
 
         [TestCase(2)]
@@ -44,19 +45,15 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
         public void Build_ReturnsMapWithCorrectWidth(int w)
         {
             _params.Width = w;
-            Assert.That(_builder.Build(_params).Width, Is.EqualTo(w));
+            _builder.SetParameters(_params);
+            Assert.That(_builder.Build().Width, Is.EqualTo(w));
         }
 
         [Test]
         public void Build_ReturnsNotNull()
         {
-            Assert.That(_builder.Build(_params), Is.Not.Null);
-        }
-
-        [Test]
-        public void Build_MapHasNoDeadEnds()
-        {
-            Assert.That(_builder.Build(_params), Is.Not.Null);
+            _builder.SetParameters(_params);
+            Assert.That(_builder.Build(), Is.Not.Null);
         }
     }
 }

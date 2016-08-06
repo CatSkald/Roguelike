@@ -14,7 +14,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
         [SetUp]
         public void SetUp()
         {
-            _picker = new DirectionPicker();
+            _picker = new DirectionPicker(100);
         }
 
         #region NextDirection
@@ -188,16 +188,16 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
         #region ShouldChangeDirection
 
         [Test]
-        public void ShouldChangeDirection_TrueForMaxTwistFactor()
+        public void ShouldChangeDirection_TrueForTwistFactor100()
         {
-            _picker.TwistFactor = DirectionPicker.TwistFactorMax;
+            _picker.TwistFactor = 100;
             Assert.That(_picker.ShouldChangeDirection(), Is.EqualTo(true));
         }
 
         [Test]
-        public void ShouldChangeDirection_FalseForMinTwistFactor()
+        public void ShouldChangeDirection_FalseForTwistFactor0()
         {
-            _picker.TwistFactor = DirectionPicker.TwistFactorMin;
+            _picker.TwistFactor = 0;
             Assert.That(_picker.ShouldChangeDirection(), Is.EqualTo(false));
         }
 
