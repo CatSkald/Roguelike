@@ -31,7 +31,8 @@ namespace CatSkald.Roguelike.DungeonGenerator
             bool success;
             do
             {
-                _directionsPicker.Reset(direction);
+                _directionsPicker.LastDirection = direction;
+                _directionsPicker.ResetDirections();
                 success = TryPickRandomUnvisitedAdjacentCell(
                     map, currentCell, out nextCell, out direction);
                 if (success)
