@@ -21,6 +21,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         void Visit(Cell currentCell);
 
         void CreateCorridor(Cell currentCell, Cell nextCell, Dir direction);
+        void RemoveCorridor(Cell cell, Dir dir);
 
         Cell PickRandomCell();
         Cell PickNextRandomVisitedCell(Cell currentCell);

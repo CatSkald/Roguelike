@@ -1,0 +1,4 @@
+* Test SparsifyMap, BuildCorridors
+* Create DungeonGenerator to use MapBuilder methods
+* Use IoD
+* Move to Web (Nancy?)
