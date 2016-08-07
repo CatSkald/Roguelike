@@ -22,7 +22,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
         }
 
         [Test]
-        public void Build_ReturnsMapWithAllVisitedCell()
+        public void Build_ReturnsMapWithAllVisitedCells()
         {
             var map = _builder.Build();
 

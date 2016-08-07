@@ -50,7 +50,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         public Cell PickRandomCell()
         {
-            var point = new Point(StaticRandom.Next(Width), StaticRandom.Next(Height));
+            var point = new Point(
+                StaticRandom.Next(Width), 
+                StaticRandom.Next(Height));
             return this[point];
         }
         
@@ -158,7 +160,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         private bool IsOutsideMap(Point point)
         {
-            return point.X < 0 || point.X >= Width || point.Y < 0 || point.Y >= Height;
+            return point.X < 0 || point.X >= Width 
+                || point.Y < 0 || point.Y >= Height;
         }
     }
 }

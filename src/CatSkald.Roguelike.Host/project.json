@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "0.0.1-*",
   "buildOptions": {
     "emitEntryPoint": true,
     "copyToOutput": { "includeFiles": [ "AppSettings.json" ] },
@@ -11,7 +11,7 @@
   },
 
   "dependencies": {
-    "CatSkald.Roguelike.DungeonGenerator": "1.0.0-*",
+    "CatSkald.Roguelike.DungeonGenerator": "0.0.1-*",
     "Microsoft.Extensions.Configuration": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.NETCore.App": {

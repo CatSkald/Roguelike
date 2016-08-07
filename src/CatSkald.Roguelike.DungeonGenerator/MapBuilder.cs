@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator
 {
@@ -17,6 +18,8 @@ namespace CatSkald.Roguelike.DungeonGenerator
 
         public void SetParameters(DungeonParameters parameters)
         {
+            Throw.IfNull(parameters, nameof(parameters));
+
             _params = parameters;
             _commands.Clear();
             // order matters

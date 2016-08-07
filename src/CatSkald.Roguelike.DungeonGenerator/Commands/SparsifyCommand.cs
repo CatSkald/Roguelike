@@ -1,6 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
@@ -10,19 +10,14 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
         public SparsifyCommand(int sparseFactor)
         {
-            if (sparseFactor < 0 || sparseFactor > 100)
-            {
-                throw new ArgumentOutOfRangeException(
-                      nameof(sparseFactor), sparseFactor, "Should be between 0 and 100");
-            }
+            Throw.IfNotInRange(0, 100, sparseFactor, nameof(sparseFactor));
 
             _sparseFactor = sparseFactor;
         }
 
         public void Execute(IMap map)
         {
-            if (map == null)
-                throw new ArgumentNullException(nameof(map));
+            Throw.IfNull(map, nameof(map));
 
             Sparsify(map);
         }

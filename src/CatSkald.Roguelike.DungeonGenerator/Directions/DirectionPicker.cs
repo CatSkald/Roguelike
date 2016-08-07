@@ -14,12 +14,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Directions
 
         public DirectionPicker(int twistFactor)
         {
-            if (twistFactor < TwistFactorMin || twistFactor > TwistFactorMax)
-            {
-                throw new ArgumentOutOfRangeException(
-                      $"twistFactor should be between {TwistFactorMin} and {TwistFactorMax}, "
-                      + " but was: " + twistFactor);
-            }
+            Throw.IfNotInRange(TwistFactorMin, TwistFactorMax, twistFactor, 
+                nameof(twistFactor));
 
             TwistFactor = twistFactor;
             ResetDirections();

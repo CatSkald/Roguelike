@@ -1,6 +1,7 @@
 ﻿using System;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
@@ -10,19 +11,14 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
         public CorridorBuilderCommand(int twistFactor)
         {
-            if (twistFactor < 0 || twistFactor > 100)
-            {
-                throw new ArgumentOutOfRangeException(
-                      nameof(twistFactor), twistFactor, "Should be between 0 and 100");
-            }
+            Throw.IfNotInRange(0, 100, twistFactor, nameof(twistFactor));
 
             _directionsPicker = new DirectionPicker(twistFactor);
         }
 
         public void Execute(IMap map)
         {
-            if (map == null)
-                throw new ArgumentNullException(nameof(map));
+            Throw.IfNull(map, nameof(map));
 
             BuildCorridors(map);
         }
