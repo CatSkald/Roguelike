@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public sealed class SparsifyCommand : IMapBuilderCommand
+    public sealed class SparsifyCellsCommand : IMapBuilderCommand
     {
         private int _sparseFactor;
 
-        public SparsifyCommand(int sparseFactor)
+        public SparsifyCellsCommand(int sparseFactor)
         {
             Throw.IfNotInRange(0, 100, sparseFactor, nameof(sparseFactor));
 
