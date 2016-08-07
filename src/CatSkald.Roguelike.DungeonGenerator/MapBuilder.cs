@@ -19,6 +19,7 @@ namespace CatSkald.Roguelike.DungeonGenerator
         public void SetParameters(DungeonParameters parameters)
         {
             Throw.IfNull(parameters, nameof(parameters));
+            Throw.IfNull(parameters.RoomParameters, nameof(parameters.RoomParameters));
 
             _params = parameters;
             _commands.Clear();
