@@ -15,7 +15,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
                     cell.Sides[Dir.N] = y == 0 ? Side.Wall : Side.Empty;
                     cell.Sides[Dir.S] = y == Height - 1 ? Side.Wall : Side.Empty;
 
-                    this[y, x] = new Cell();
+                    this[x, y] = cell;
                 }
         }
     }
