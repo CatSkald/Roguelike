@@ -19,7 +19,7 @@ namespace CatSkald.Tools
         public static int Next(int max)
         {
             if (max <= 0)
-                throw new ArgumentOutOfRangeException($"max should be above zero: {max} <= 0");
+                throw new ArgumentOutOfRangeException($"max should be above zero, but was: {max}");
             if (max == 1)
                 return 0;
             lock (Lock)
@@ -37,7 +37,7 @@ namespace CatSkald.Tools
         {
             if (max <= min)
                 throw new ArgumentOutOfRangeException(
-                    $"max should be more than min: {max} <= {min}");
+                    $"max should be more than min, but was: {max} <= {min}");
             if (max - min == 1)
                 return min;
             lock (Lock)
@@ -56,7 +56,7 @@ namespace CatSkald.Tools
         {
             if (max <= min)
                 throw new ArgumentOutOfRangeException(
-                    $"max should be more than min: {max} <= {min}");
+                    $"max should be more than min, but was: {max} <= {min}");
             if (max - min == 1 && min == except)
             {
                 throw new ArgumentOutOfRangeException(

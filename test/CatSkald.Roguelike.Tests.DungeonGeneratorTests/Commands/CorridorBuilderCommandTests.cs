@@ -8,7 +8,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
     public class CorridorBuilderCommandTests
     {
         [Test]
-        public void MapHasAllCellsVisitedAfterExecution()
+        public void Execute_SetsAllCellsVisited()
         {
             var map = new Map(10, 5);
             var command = new CorridorBuilderCommand(100);

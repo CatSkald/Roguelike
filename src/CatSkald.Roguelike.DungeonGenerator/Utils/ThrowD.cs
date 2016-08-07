@@ -17,8 +17,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Utils
             if (point.X < 0 || point.X >= map.Width
                 || point.Y < 0 || point.Y >= map.Height)
             {
-                throw new ArgumentOutOfRangeException(
-                    name, point, name + " is outside the map.");
+                throw new ArgumentOutOfRangeException(name, point, 
+                    name + " is outside the map. Map bounds: " + map.Bounds);
             }
         }
         
@@ -33,10 +33,10 @@ namespace CatSkald.Roguelike.DungeonGenerator.Utils
         {
             Throw.IfNull(room, name);
 
-            if (map.Bounds.Contains(room.Bounds))
+            if (!map.Bounds.Contains(room.Bounds))
             {
-                throw new ArgumentOutOfRangeException(
-                    name, room, name + " is outside the map.");
+                throw new ArgumentOutOfRangeException(name, room.Bounds, 
+                    name + " is outside the map. Map bounds: " + map.Bounds);
             }
         }
 

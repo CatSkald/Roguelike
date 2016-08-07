@@ -1,5 +1,4 @@
 ﻿using CatSkald.Roguelike.DungeonGenerator;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
@@ -22,39 +21,58 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
             _builder = new MapBuilder(_params);
         }
 
-        [Test]
-        public void Build_ReturnsMapWithAllVisitedCells()
+        [TestCase(1)]
+        [TestCase(3)]
+        public void Build_ReturnsMapWithCorrectRoomCount(int count)
         {
+            _params.RoomParameters.MaxWidth = 5;
+            _params.RoomParameters.MaxHeight = 5;
+            _params.RoomParameters.Count = count;
+            _builder.SetParameters(_params);
+
             var map = _builder.Build();
 
-            Assert.That(map, Has.All.With.Property(nameof(Cell.IsVisited)).EqualTo(true));
+            Assert.That(map.Rooms, Has.Length.EqualTo(count));
         }
-
-        [TestCase(2)]
+        
+        [TestCase(1)]
         [TestCase(11)]
         [TestCase(144)]
         public void Build_ReturnsMapWithCorrectHeight(int h)
         {
             _params.Height = h;
             _builder.SetParameters(_params);
-            Assert.That(_builder.Build().Height, Is.EqualTo(h));
+
+            var map = _builder.Build();
+
+            Assert.That(map.Height, Is.EqualTo(h));
         }
 
-        [TestCase(2)]
+        [TestCase(1)]
         [TestCase(14)]
         [TestCase(144)]
         public void Build_ReturnsMapWithCorrectWidth(int w)
         {
             _params.Width = w;
             _builder.SetParameters(_params);
-            Assert.That(_builder.Build().Width, Is.EqualTo(w));
+
+            var map = _builder.Build();
+
+            Assert.That(map.Width, Is.EqualTo(w));
         }
 
         [Test]
-        public void Build_ReturnsNotNull()
+        public void SetParameters_ShouldThrow_IfParametersNull()
         {
-            _builder.SetParameters(_params);
-            Assert.That(_builder.Build(), Is.Not.Null);
+            Assert.That(() => _builder.SetParameters(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void SetParameters_ShouldThrow_IfRoomParametersNull()
+        {
+            Assert.That(
+                () => _builder.SetParameters(new DungeonParameters { RoomParameters = null }),
+                Throws.ArgumentNullException);
         }
     }
 }
