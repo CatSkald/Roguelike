@@ -1,5 +1,5 @@
 # CatSkald.Roguelike
-Old-style roguelike console game written in C#
+Old-style roguelike console game
 
 ####Useful resources that inspired and helped a lot
 * [Hunt and Kill Algorithm](http://weblog.jamisbuck.org/2011/1/24/maze-generation-hunt-and-kill-algorithm) by Jamis Buck
