@@ -30,6 +30,13 @@ namespace CatSkald.Roguelike.DungeonGenerator.Directions
             return TwistFactor > StaticRandom.Next(TwistFactorMin, TwistFactorMax);
         }
 
+        public Dir NextDirectionExcept(Dir direction)
+        {
+            _directions.Remove(direction);
+
+            return NextDirection();
+        }
+
         public Dir NextDirection()
         {
             if (!HasDirections)

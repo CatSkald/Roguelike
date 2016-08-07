@@ -59,7 +59,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             do
             {
                 direction = _directionsPicker.NextDirection();
-                success = map.TryGetAdjacentUnvisitedCell(currentCell, direction, out nextCell);
+                success = map.TryGetAdjacentCell(currentCell, direction, out nextCell)
+                    && !nextCell.IsVisited;
             }
             while (_directionsPicker.HasDirections && !success);
 

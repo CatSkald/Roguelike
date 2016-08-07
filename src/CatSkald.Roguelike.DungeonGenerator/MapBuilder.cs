@@ -25,7 +25,8 @@ namespace CatSkald.Roguelike.DungeonGenerator
             // order matters
             _commands.AddRange(new IMapBuilderCommand[] {
                 new CorridorBuilderCommand(parameters.TwistFactor),
-                new SparsifyCommand(parameters.SparseFactor)
+                new SparsifyCellsCommand(parameters.CellSparseFactor),
+                new SparsifyDeadEndsCommand(parameters.DeadEndSparseFactor)
             });
         }
 

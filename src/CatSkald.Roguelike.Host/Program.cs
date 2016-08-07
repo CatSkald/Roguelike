@@ -3,6 +3,7 @@ using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using Microsoft.Extensions.Configuration;
 
 namespace CatSkald.Roguelike.Host
 {
@@ -22,12 +23,19 @@ namespace CatSkald.Roguelike.Host
 
         private static DungeonParameters GatherParameters()
         {
+            var builder = new ConfigurationBuilder()
+                    .AddJsonFile("AppSettings.json")
+                    .AddEnvironmentVariables();
+
+            var configuration = builder.Build();
+
             return new DungeonParameters
             {
-                Width = Configuration.Get<int>("Map:Width"),
-                Height = Configuration.Get<int>("Map:Height"),
-                SparseFactor = Configuration.Get<int>("Map:SparseFactor"),
-                TwistFactor = Configuration.Get<int>("Map:TwistFactor")
+                Width = configuration.GetValue<int>("Map:Width"),
+                Height = configuration.GetValue<int>("Map:Height"),
+                CellSparseFactor = configuration.GetValue<int>("Map:CellSparseFactor"),
+                DeadEndSparseFactor = configuration.GetValue<int>("Map:DeadEndSparseFactor"),
+                TwistFactor = configuration.GetValue<int>("Map:TwistFactor")
             };
         }
 

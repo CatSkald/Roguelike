@@ -87,14 +87,14 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             return !IsOutsideMap(newPoint);
         }
 
-        public bool TryGetAdjacentUnvisitedCell(
+        public bool TryGetAdjacentCell(
             Cell cell, Dir direction, out Cell adjacentCell)
         {
             ThrowD.IfOutsideMap(this, cell);
 
             var newPoint = DirHelper.MoveInDir(cell.Location, direction);
 
-            if (IsOutsideMap(newPoint) || this[newPoint].IsVisited)
+            if (IsOutsideMap(newPoint))
             {
                 adjacentCell = null;
                 return false;
@@ -103,7 +103,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             adjacentCell = this[newPoint];
             return true;
         }
-
+        
         public void CreateCorridor(Cell startCell, Cell endCell, Dir direction)
         {
             ThrowD.IfOutsideMap(this, startCell, nameof(startCell));

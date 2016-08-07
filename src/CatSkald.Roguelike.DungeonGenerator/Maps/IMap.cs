@@ -16,7 +16,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         Cell this[int width, int height] { get; }
 
         bool HasAdjacentCell(Cell cell, Dir direction);
-        bool TryGetAdjacentUnvisitedCell(Cell cell, Dir direction, out Cell adjacentCell);
+        bool TryGetAdjacentCell(Cell cell, Dir direction, out Cell adjacentCell);
 
         void Visit(Cell currentCell);
 
