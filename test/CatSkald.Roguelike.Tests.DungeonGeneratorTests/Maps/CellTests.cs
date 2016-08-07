@@ -10,6 +10,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
     public class CellTests
     {
         ////TODO test Equals
+        ////TODO test IsWall
 
         #region Constructor
         [Test]

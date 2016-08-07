@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Tools;
 
@@ -22,14 +25,27 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             Sparsify(map);
         }
 
-        private static void Sparsify(IMap map)
+        private void Sparsify(IMap map)
         {
-            foreach (var cell in map)
+            var expectedNumberOfRemovedCells = 
+                (int)Math.Ceiling(map.Size * (_sparseFactor / 100m)) - 1;
+
+            var removedCellsCount = 0;
+            var nonRemovedCells = map.Where(c => !c.IsWall).ToList();
+            while (removedCellsCount < expectedNumberOfRemovedCells)
             {
-                if (cell.IsDeadEnd)
+                foreach (var cell in nonRemovedCells.Where(c => c.IsDeadEnd).ToList())
                 {
-                    var emptySide = cell.Sides.Single(s => s.Value == Side.Empty).Key;
+                    if (!cell.IsDeadEnd)
+                        continue;
+
+                    var emptySide = cell.Sides
+                        .Single(s => s.Value == Side.Empty)
+                        .Key;
+
                     map.RemoveCorridor(cell, emptySide);
+                    nonRemovedCells.Remove(cell);
+                    removedCellsCount++;
                 }
             }
         }

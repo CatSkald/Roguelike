@@ -24,9 +24,10 @@ namespace CatSkald.Roguelike.Host
         {
             return new DungeonParameters
             {
-                Width = int.Parse(Configuration.Get("Map.Width")),
-                Height = int.Parse(Configuration.Get("Map.Height")),
-                TwistFactor = int.Parse(Configuration.Get("Corridors.TwistFactor"))
+                Width = Configuration.Get<int>("Map:Width"),
+                Height = Configuration.Get<int>("Map:Height"),
+                SparseFactor = Configuration.Get<int>("Map:SparseFactor"),
+                TwistFactor = Configuration.Get<int>("Map:TwistFactor")
             };
         }
 
