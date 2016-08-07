@@ -40,5 +40,41 @@ namespace CatSkald.Tools
                     name, value, $"Should be in range {min} <= {name} <= {max}.");
             }
         }
+
+        /// <summary>
+        /// Validates that <paramref name="value"/> is greater than or equal to the specified <paramref name="min"/>.
+        /// </summary>
+        /// <typeparam name="T">Type of <paramref name="value"/>. Must be IComparable.</typeparam>
+        /// <param name="min">The inclusive minimum value.</param>
+        /// <param name="value">The value to check.</param>
+        /// <param name="name">The name of object which is validated.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than <paramref name="min"/>.</exception>
+        public static void IfLess<T>(T min, T value, string name)
+            where T : IComparable<T>
+        {
+            if (value.CompareTo(min) < 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    name, value, $"{name} sould be equal to or greater than {min}.");
+            }
+        }
+
+        /// <summary>
+        /// Validates that <paramref name="value"/> is less than or equal to the specified <paramref name="max"/>.
+        /// </summary>
+        /// <typeparam name="T">Type of <paramref name="value"/>. Must be IComparable.</typeparam>
+        /// <param name="max">The inclusive maximum value.</param>
+        /// <param name="value">The value to check.</param>
+        /// <param name="name">The name of object which is validated.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is greater than <paramref name="max"/>.</exception>
+        public static void IfGreater<T>(T max, T value, string name)
+            where T : IComparable<T>
+        {
+            if (value.CompareTo(max) > 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    name, value, $"{name} sould be less than or equal to {max}.");
+            }
+        }
     }
 }

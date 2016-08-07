@@ -16,7 +16,8 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
             _params = new DungeonParameters
             {
                 Width = 10,
-                Height = 10
+                Height = 10,
+                RoomParameters = new RoomParameters()
             };
             _builder = new MapBuilder(_params);
         }

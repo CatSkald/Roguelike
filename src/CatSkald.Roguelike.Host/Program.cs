@@ -35,7 +35,15 @@ namespace CatSkald.Roguelike.Host
                 Height = configuration.GetValue<int>("Map:Height"),
                 CellSparseFactor = configuration.GetValue<int>("Map:CellSparseFactor"),
                 DeadEndSparseFactor = configuration.GetValue<int>("Map:DeadEndSparseFactor"),
-                TwistFactor = configuration.GetValue<int>("Map:TwistFactor")
+                TwistFactor = configuration.GetValue<int>("Map:TwistFactor"),
+                RoomParameters = new RoomParameters
+                {
+                    Count = configuration.GetValue<int>("Map:Room:Count"),
+                    MinWidth = configuration.GetValue<int>("Map:Room:MinWidth"),
+                    MaxWidth = configuration.GetValue<int>("Map:Room:MaxWidth"),
+                    MinHeight = configuration.GetValue<int>("Map:Room:MinHeight"),
+                    MaxHeight = configuration.GetValue<int>("Map:Room:MaxHeight")
+                }
             };
         }
 
