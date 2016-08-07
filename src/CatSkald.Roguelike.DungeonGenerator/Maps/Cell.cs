@@ -41,6 +41,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         {
             var result = IsVisited.GetHashCode();
             result = (result * 397) ^ Location.GetHashCode();
+            result = (result * 397) ^ Sides.GetHashCode();
             return result;
         }
 
