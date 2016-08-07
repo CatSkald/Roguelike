@@ -13,14 +13,15 @@ namespace CatSkald.Roguelike.Host
         static Configuration()
         {
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("AppSettings.json");
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables();
 
             Root = builder.Build();
         }
 
-        public static string Get(string key)
+        public static T Get<T>(string key)
         {
-            return Root[key];
+            return Root.GetValue<T>(key);
         }
     }
 }
