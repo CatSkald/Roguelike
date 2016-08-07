@@ -11,15 +11,12 @@ using CatSkald.Tools;
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
     [DebuggerDisplay("[{Width},{Height}](AllVisited:{AllVisited})")]
-    public sealed class Map : IMap
+    public sealed class Map : CellContainer, IMap
     {
-        private readonly Cell[,] _map;
         private readonly List<Cell> _visitedCells;
 
-        public Map(int width, int height)
+        public Map(int width, int height) : base(width, height)
         {
-            _map = new Cell[height, width];
-
             for (int x = 0; x < width; x++)
                 for (int y = 0; y < height; y++)
                 {
@@ -29,24 +26,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             _visitedCells = new List<Cell>(Size);
         }
 
-        public int Width => _map.GetUpperBound(1) + 1;
-        public int Height => _map.GetUpperBound(0) + 1;
-        public int Size => Height * Width;
         public bool AllVisited => _visitedCells.Count == Size;
-
-        public Cell this[Cell cell] => this[cell.Location];
-        public Cell this[Point p] => this[p.X, p.Y];
-        public Cell this[int width, int height]
-        {
-            get
-            {
-                return _map[height, width];
-            }
-            private set
-            {
-                _map[height, width] = value;
-            }
-        }
+        public Room[] Rooms { get; private set; }
 
         public Cell PickRandomCell()
         {
@@ -125,6 +106,17 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
             startCell.Sides[direction] = Side.Wall;
             endCell.Sides[endDirection] = Side.Wall;
+        }
+        
+        public void SetRooms(Room[] rooms)
+        {
+            Throw.IfNull(rooms, nameof(rooms));
+            foreach (var room in rooms)
+            {
+                ThrowD.IfOutsideMap(this, room);
+            }
+
+            Rooms = rooms;
         }
 
         public void Visit(Cell cell)

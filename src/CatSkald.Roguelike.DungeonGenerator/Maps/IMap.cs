@@ -9,7 +9,10 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         int Width { get; }
         int Height { get; }
         int Size { get; }
+        Rectangle Bounds { get; }
+
         bool AllVisited { get; }
+        Room[] Rooms { get; }
 
         Cell this[Cell point] { get; }
         Cell this[Point point] { get; }
@@ -22,6 +25,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         void CreateCorridor(Cell currentCell, Cell nextCell, Dir direction);
         void RemoveCorridor(Cell cell, Dir dir);
+
+        void SetRooms(Room[] rooms);
 
         Cell PickRandomCell();
         Cell PickNextRandomVisitedCell(Cell currentCell);
