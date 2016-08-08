@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
-    [DebuggerDisplay("{Location}(IsVisited:{IsVisited})")]
+    [DebuggerDisplay("{Location}(IsVisited:{IsVisited}, IsWall:{IsWall})")]
     public sealed class Cell : IEquatable<Cell>
     {
         public Cell()
@@ -29,7 +29,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             Sides.Values.Count(it => it == Side.Empty) == 1;
 
         #region IEquatable
-
         public bool Equals(Cell other)
         {
             return Location == other.Location
@@ -51,7 +50,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
                 return false;
             return this.Equals((Cell)obj);
         }
-
         #endregion
     }
 }

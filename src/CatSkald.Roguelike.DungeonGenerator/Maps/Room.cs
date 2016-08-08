@@ -1,7 +1,9 @@
-﻿using CatSkald.Roguelike.DungeonGenerator.Directions;
+﻿using System.Diagnostics;
+using CatSkald.Roguelike.DungeonGenerator.Directions;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
+    [DebuggerDisplay("[{Width},{Height}]")]
     public sealed class Room : CellContainer
     {
         public Room(int width, int height) : base(width, height)
