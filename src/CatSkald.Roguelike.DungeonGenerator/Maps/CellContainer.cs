@@ -1,9 +1,11 @@
-﻿using System.Drawing;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
-    public abstract class CellContainer
+    public abstract class CellContainer : IEnumerable<Cell>
     {
         private readonly Cell[,] cells;
 
@@ -26,7 +28,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         public Rectangle Bounds { get; }
 
         public Cell this[Cell cell] => this[cell.Location];
-        public Cell this[Point p] => this[p.X, p.Y];
+        public Cell this[Point point] => this[point.X, point.Y];
         public Cell this[int width, int height]
         {
             get
@@ -38,5 +40,26 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
                 cells[height, width] = value;
             }
         }
+
+        #region IEnumerable
+        public IEnumerator<Cell> GetEnumerator()
+        {
+            return Traverse().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private IEnumerable<Cell> Traverse()
+        {
+            for (int x = 0; x < Width; x++)
+                for (int y = 0; y < Height; y++)
+                {
+                    yield return this[x, y];
+                }
+        }
+        #endregion
     }
 }
