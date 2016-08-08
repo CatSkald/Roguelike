@@ -10,63 +10,180 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
     [TestFixture]
     public class MapTests
     {
+        private Map _map;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _map = new Map(15, 10);
+        }
+
+        #region Constructor
+        [Test]
+        public void Constructor_CellsAreNotVisited_WhenMapCreated()
+        {
+            Assert.That(_map, Has.All.Property(nameof(Cell.IsVisited)).EqualTo(false));
+        }
+        #endregion
+
+        #region AllVisited
+        [Test]
+        public void AllVisited_FalseIfOnlyOneVisited()
+        {
+            _map.Visit(_map[3, 1]);
+
+            Assert.That(_map.AllVisited, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void AllVisited_FalseForNewMap()
+        {
+            Assert.That(_map.AllVisited, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void AllVisited_TrueIfAllVisited()
+        {
+            foreach (var cell in _map)
+            {
+                _map.Visit(cell);
+            }
+
+            Assert.That(_map.AllVisited, Is.EqualTo(true));
+        }
+
+        [TestCase(7)]
+        [TestCase(15)]
+        public void AllVisited_FalseIfOnlyFewVisited(int numberOfVisited)
+        {
+            // Visit some cells in the middle of the map
+            foreach (var cell in _map.Skip(5).Take(numberOfVisited))
+            {
+                _map.Visit(cell);
+            }
+
+            Assert.That(_map.AllVisited, Is.EqualTo(false));
+        }
+
+        [Test]
+        public void AllVisited_FalseIfOneNotVisited()
+        {
+            foreach (var cell in _map.Skip(1))
+            {
+                _map.Visit(cell);
+            }
+
+            Assert.That(_map.AllVisited, Is.EqualTo(false));
+        }
+        #endregion
+
+        [Test]
+        public void PickRandomCell_ReturnsCellFromMap()
+        {
+            var cell = _map.PickRandomCell();
+
+            Assert.That(_map[cell.Location], Is.SameAs(cell));
+        }
+
+        #region PickNextRandomVisitedCell
+        [Test]
+        public void PickNextRandomVisitedCell_ThrowIfOnlyOneCellVisited()
+        {
+            var visitedCell = _map[0, 1];
+
+            _map.Visit(visitedCell);
+
+            Assert.That(() => _map.PickNextRandomVisitedCell(visitedCell),
+                Throws.InvalidOperationException);
+        }
+
+        [Test]
+        public void PickNextRandomVisitedCell_PicksCorrectVisitedCell_IfOnlyTwoCellsVisited()
+        {
+            var firstVisitedCell = _map[0, 1];
+            var secondVisitedCell = _map[1, 3];
+
+            _map.Visit(firstVisitedCell);
+            _map.Visit(secondVisitedCell);
+
+            var cell = _map.PickNextRandomVisitedCell(firstVisitedCell);
+
+            Assert.That(cell, Is.SameAs(secondVisitedCell));
+        }
+
+        [Test]
+        public void PickNextRandomVisitedCell_PicksCell_ThatWasVisitedAndNotEqualToOld()
+        {
+            var visitedCell = _map[0, 1];
+
+            _map.Visit(visitedCell);
+            _map.Visit(_map[2, 5]);
+            _map.Visit(_map[7, 5]);
+            _map.Visit(_map[3, 3]);
+
+            var cell = _map.PickNextRandomVisitedCell(visitedCell);
+
+            Assert.That(cell, Is.Not.EqualTo(visitedCell)
+                .And.With.Property(nameof(Cell.IsVisited)).EqualTo(true));
+        } 
+        #endregion
+
         #region HasAdjacentCell
 
         [TestCase(1, 1)]
         [TestCase(2, 3)]
         [TestCase(5, 2)]
-        public void HasAdjacentCell_AlwaysReturnsTrueForCellInTheMiddle(int w, int h)
+        public void HasAdjacentCell_AlwaysReturnsTrue_ForCellInTheMiddle(int x, int y)
         {
-            var map = new Map(10, 10);
-            var p = new Cell(w, h);
-            Assert.That(map.HasAdjacentCell(p, Dir.W));
-            Assert.That(map.HasAdjacentCell(p, Dir.S));
-            Assert.That(map.HasAdjacentCell(p, Dir.E));
-            Assert.That(map.HasAdjacentCell(p, Dir.N));
+            var cell = _map[x, y];
+
+            Assert.That(_map.HasAdjacentCell(cell, Dir.W));
+            Assert.That(_map.HasAdjacentCell(cell, Dir.S));
+            Assert.That(_map.HasAdjacentCell(cell, Dir.E));
+            Assert.That(_map.HasAdjacentCell(cell, Dir.N));
         }
 
         [Test]
-        public void HasAdjacentCell_ReturnsCorrectForTopLeftCell()
+        public void HasAdjacentCell_ReturnsCorrect_ForTopLeftCell()
         {
-            var map = new Map(10, 10);
-            var p = new Cell();
-            Assert.That(!map.HasAdjacentCell(p, Dir.W));
-            Assert.That(map.HasAdjacentCell(p, Dir.S));
-            Assert.That(map.HasAdjacentCell(p, Dir.E));
-            Assert.That(!map.HasAdjacentCell(p, Dir.N));
+            var cell = _map[0, 0];
+
+            Assert.That(!_map.HasAdjacentCell(cell, Dir.W));
+            Assert.That(_map.HasAdjacentCell(cell, Dir.S));
+            Assert.That(_map.HasAdjacentCell(cell, Dir.E));
+            Assert.That(!_map.HasAdjacentCell(cell, Dir.N));
         }
 
         [Test]
-        public void HasAdjacentCell_ReturnsCorrectForTopRightCell()
+        public void HasAdjacentCell_ReturnsCorrect_ForTopRightCell()
         {
-            var map = new Map(10, 10);
-            var p = new Cell(0, 9);
-            Assert.That(!map.HasAdjacentCell(p, Dir.W));
-            Assert.That(!map.HasAdjacentCell(p, Dir.S));
-            Assert.That(map.HasAdjacentCell(p, Dir.E));
-            Assert.That(map.HasAdjacentCell(p, Dir.N));
+            var cell = _map[0, _map.Height - 1];
+            Assert.That(!_map.HasAdjacentCell(cell, Dir.W));
+            Assert.That(!_map.HasAdjacentCell(cell, Dir.S));
+            Assert.That(_map.HasAdjacentCell(cell, Dir.E));
+            Assert.That(_map.HasAdjacentCell(cell, Dir.N));
         }
 
         [Test]
-        public void HasAdjacentCell_ReturnsCorrectForBottomLeftCell()
+        public void HasAdjacentCell_ReturnsCorrect_ForBottomLeftCell()
         {
-            var map = new Map(10, 10);
-            var p = new Cell(9, 0);
-            Assert.That(map.HasAdjacentCell(p, Dir.W));
-            Assert.That(map.HasAdjacentCell(p, Dir.S));
-            Assert.That(!map.HasAdjacentCell(p, Dir.E));
-            Assert.That(!map.HasAdjacentCell(p, Dir.N));
+            var cell = _map[_map.Width - 1, 0];
+
+            Assert.That(_map.HasAdjacentCell(cell, Dir.W));
+            Assert.That(_map.HasAdjacentCell(cell, Dir.S));
+            Assert.That(!_map.HasAdjacentCell(cell, Dir.E));
+            Assert.That(!_map.HasAdjacentCell(cell, Dir.N));
         }
 
         [Test]
-        public void HasAdjacentCell_ReturnsCorrectForBottoRightCell()
+        public void HasAdjacentCell_ReturnsCorrect_ForBottoRightCell()
         {
-            var map = new Map(10, 10);
-            var p = new Cell(9, 9);
-            Assert.That(map.HasAdjacentCell(p, Dir.W));
-            Assert.That(!map.HasAdjacentCell(p, Dir.S));
-            Assert.That(!map.HasAdjacentCell(p, Dir.E));
-            Assert.That(map.HasAdjacentCell(p, Dir.N));
+            var cell = _map[_map.Width - 1, _map.Height - 1];
+
+            Assert.That(_map.HasAdjacentCell(cell, Dir.W));
+            Assert.That(!_map.HasAdjacentCell(cell, Dir.S));
+            Assert.That(!_map.HasAdjacentCell(cell, Dir.E));
+            Assert.That(_map.HasAdjacentCell(cell, Dir.N));
         }
 
         [TestCase(0, 4, Dir.W)]
@@ -77,186 +194,82 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(8, 0, Dir.N)]
         [TestCase(2, 9, Dir.S)]
         [TestCase(1, 9, Dir.S)]
-        public void HasAdjacentCell_ReturnsCorrectForNonCornerBorderCells(int w, int h, Dir dir)
+        public void HasAdjacentCell_ReturnsCorrect_ForNonCornerBorderCells(
+            int x, int y, Dir dir)
         {
             var map = new Map(10, 10);
-            var p = new Cell(w, h);
+            var cell = map[x, y];
             var dirs = DirHelper.GetNonEmptyDirs();
-            Assert.That(!map.HasAdjacentCell(p, dir));
-            Assert.That(dirs.Where(d => d != dir).Select(d => map.HasAdjacentCell(p, d)),
+
+            Assert.That(!map.HasAdjacentCell(cell, dir));
+            Assert.That(dirs.Where(d => d != dir)
+                .Select(d => map.HasAdjacentCell(cell, d)),
                 Has.All.EqualTo(true));
         }
 
         [TestCase(0)]
-        [TestCase(55)]
+        [TestCase(-5)]
         [TestCase(11)]
-        public void HasAdjacentCell_ThrowsForInvalidDirection(int dir)
+        public void HasAdjacentCell_Throws_IfDirectionIsInvalid(int dir)
         {
-            var map = new Map(10, 10);
-            var p = new Cell(4, 5);
-            Assert.That(() => map.HasAdjacentCell(p, (Dir)dir), Throws.ArgumentException);
+            Assert.That(() => _map.HasAdjacentCell(_map[3, 4], (Dir)dir), 
+                Throws.ArgumentException);
         }
 
         #endregion
 
-        [Test]
-        public void Visit_SetIsVisitedTrue()
+        #region TryGetAdjacentCell
+        [TestCase(0, 0, Dir.N)]
+        [TestCase(0, 0, Dir.W)]
+        [TestCase(14, 9, Dir.E)]
+        [TestCase(14, 9, Dir.S)]
+        public void TryGetAdjacentCell_ReturnsFalse_IfNoAdjacentCell(int x, int y, Dir dir)
         {
-            var map = new Map(3, 3);
-            var cell = new Cell();
+            Cell adjacent;
 
-            map.Visit(cell);
+            var result = _map.TryGetAdjacentCell(_map[x, y], dir, out adjacent);
 
-            Assert.That(cell.IsVisited, Is.EqualTo(true));
+            Assert.That(result, Is.EqualTo(false));
+            Assert.That(adjacent, Is.Null);
         }
 
-        #region Indexers
-
-        [TestCase(10, 10)]
-        [TestCase(1, 2)]
-        [TestCase(4, 4)]
-        [TestCase(100, 25)]
-        public void MapIndexerSetsAndGetsSameValue(int w, int h)
+        [TestCase(0, 0, Dir.S, 0, 1)]
+        [TestCase(5, 5, Dir.N, 5, 4)]
+        [TestCase(14, 9, Dir.W, 13, 9)]
+        [TestCase(1, 1, Dir.E, 2, 1)]
+        public void TryGetAdjacentCell_ReturnsTrue_IfAdjacentCellExists(
+            int x, int y, Dir dir, int expectedX, int expectedY)
         {
-            var map = new Map(200, 200);
+            var map = new Map(1, 1);
+            Cell adjacent;
 
-            map[w, h].IsVisited = true;
+            var result = _map.TryGetAdjacentCell(_map[x, y], dir, out adjacent);
 
-            Assert.That(map[w, h].IsVisited, Is.EqualTo(true));
-            Assert.That(map.Count(it => !it.IsVisited), Is.EqualTo(map.Size - 1));
+            Assert.That(result, Is.EqualTo(true));
+            Assert.That(adjacent, Is.SameAs(_map[expectedX, expectedY]));
         }
-
-        [TestCase(10, 10)]
-        [TestCase(1, 2)]
-        [TestCase(4, 4)]
-        [TestCase(100, 25)]
-        public void MapPointIndexerSetsAndGetsSameValue(int w, int h)
-        {
-            var map = new Map(200, 200);
-
-            var p = new Cell(w, h);
-            map[p].IsVisited = true;
-
-            Assert.That(map[p].IsVisited, Is.EqualTo(true));
-            Assert.That(map.Count(it => !it.IsVisited), Is.EqualTo(map.Size - 1));
-        }
-
-        [TestCase(0, 2, 3)]
-        [TestCase(1, 1, 5)]
-        [TestCase(2, 1, 8)]
-        public void MapIndexerSetsCorrectValue(int w, int h, int count)
-        {
-            var map = new Map(3, 3);
-
-            map[w, h].IsVisited = true;
-
-            Assert.That(map.Take(count).Last().IsVisited, Is.EqualTo(true));
-            Assert.That(map.Count(it => !it.IsVisited), Is.EqualTo(map.Size - 1));
-        }
-
-        [TestCase(0, 2, 3)]
-        [TestCase(1, 1, 5)]
-        [TestCase(2, 1, 8)]
-        public void MapPointIndexerSetsCorrectValue(int x, int y, int count)
-        {
-            var map = new Map(3, 3);
-
-            var p = new Cell(x, y);
-            map[p].IsVisited = true;
-
-            Assert.That(map.Take(count).Last().IsVisited, Is.EqualTo(true));
-            Assert.That(map.Count(it => !it.IsVisited), Is.EqualTo(map.Size - 1));
-        }
-
-        #endregion
-
-        #region Properties
-
-        [Test]
-        public void AllVisited_FalseIfOnlyOneVisited()
-        {
-            var map = new Map(5, 5);
-
-            map.Visit(map[3, 1]);
-
-            Assert.That(map.AllVisited, Is.EqualTo(false));
-        }
-        
-        [Test]
-        public void AllVisited_FalseForNewMap()
-        {
-            var map = new Map(5, 5);
-
-            Assert.That(map.AllVisited, Is.EqualTo(false));
-        }
-
-        [TestCase(10, 10)]
-        [TestCase(1, 2)]
-        [TestCase(4, 4)]
-        [TestCase(30, 7)]
-        public void AllVisited_TrueIfAllVisited(int w, int h)
-        {
-            var map = new Map(w, h);
-
-            foreach (var cell in map)
-            {
-                map.Visit(cell);
-            }
-
-            Assert.That(map.AllVisited, Is.EqualTo(true));
-        }
-
-        [TestCase(7)]
-        [TestCase(15)]
-        public void AllVisited_FalseIfOnlyFewVisited(int numberOfVisited)
-        {
-            var map = new Map(5, 5);
-
-            // Visit some cells in the middle of the map
-            foreach (var cell in map.Skip(5).Take(numberOfVisited))
-            {
-                map.Visit(cell);
-            }
-
-            Assert.That(map.AllVisited, Is.EqualTo(false));
-        }
-        
-        [Test]
-        public void AllVisited_FalseIfOneNotVisited()
-        {
-            var map = new Map(5, 5);
-
-            foreach (var cell in map.Skip(1))
-            {
-                map.Visit(cell);
-            }
-
-            Assert.That(map.AllVisited, Is.EqualTo(false));
-        }
-
         #endregion
 
         #region CreateCorridor
-
         [TestCase(0, 0, 0, 1, Dir.S, Dir.N)]
         [TestCase(1, 1, 1, 0, Dir.N, Dir.S)]
         [TestCase(0, 0, 1, 0, Dir.E, Dir.W)]
         [TestCase(1, 1, 0, 1, Dir.W, Dir.E)]
         public void CreateCorridor_CorridorCreatedCorrectly(
-            int x1, int y1, int x2, int y2, Dir corridorDirection, Dir d2)
+            int x1, int y1, int x2, int y2, Dir corridorDir, Dir oppositeDir)
         {
             var map = new Map(5, 5);
-            var startCell = new Cell(x1, y1);
-            var endCell = new Cell(x2, y2);
+            var startCell = map[x1, y1];
+            var endCell = map[x2, y2];
 
-            map.CreateCorridor(startCell, endCell, corridorDirection);
+            map.CreateCorridor(startCell, endCell, corridorDir);
 
-            Assert.That(startCell.Sides[corridorDirection], Is.EqualTo(Side.Empty));
-            Assert.That(startCell.Sides.Where(s => s.Key != corridorDirection),
+            Assert.That(startCell.Sides[corridorDir], Is.EqualTo(Side.Empty));
+            Assert.That(startCell.Sides.Where(s => s.Key != corridorDir),
                 Has.All.With.Property("Value").EqualTo(Side.Wall));
 
-            Assert.That(endCell.Sides[d2], Is.EqualTo(Side.Empty));
-            Assert.That(endCell.Sides.Where(s => s.Key != d2),
+            Assert.That(endCell.Sides[oppositeDir], Is.EqualTo(Side.Empty));
+            Assert.That(endCell.Sides.Where(s => s.Key != oppositeDir),
                 Has.All.With.Property("Value").EqualTo(Side.Wall));
         }
 
@@ -272,73 +285,123 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         {
             var map = new Map(5, 5);
 
-            var startCell = new Cell(x1, y1);
-            var endCell = new Cell(x2, y2);
+            var startCell = map[x1, y1];
+            var endCell = map[x2, y2];
 
             Assert.That(() => map.CreateCorridor(startCell, endCell, corridorDirection),
                 Throws.ArgumentException);
         }
+        #endregion
 
-        [TestCase(0, 0, 0, -1, Dir.N)]
-        [TestCase(0, 0, -1, 0, Dir.E)]
-        [TestCase(0, -1, 0, 0, Dir.S)]
-        [TestCase(-1, 0, 0, 0, Dir.W)]
-        public void CreateCorridor_ThrowsForCellsOutsideMap(
-            int x1, int y1, int x2, int y2, Dir corridorDirection)
+        #region RemoveCorridor
+        [TestCase(0, 0, 0, 1, Dir.S, Dir.N)]
+        [TestCase(1, 1, 1, 0, Dir.N, Dir.S)]
+        [TestCase(0, 0, 1, 0, Dir.E, Dir.W)]
+        [TestCase(1, 1, 0, 1, Dir.W, Dir.E)]
+        public void RemoveCorridor_CorridorRemovedCorrectly(
+            int x1, int y1, int x2, int y2, Dir corridorDir, Dir oppositeDir)
         {
             var map = new Map(5, 5);
+            var startCell = map[x1, y1];
+            var endCell = map[x2, y2];
+            foreach (var dir in DirHelper.GetNonEmptyDirs())
+            {
+                startCell.Sides[dir] = Side.Empty;
+                endCell.Sides[dir] = Side.Empty;
+            }
 
-            var startCell = new Cell(x1, y1);
-            var endCell = new Cell(x2, y2);
+            map.RemoveCorridor(startCell, corridorDir);
 
-            Assert.That(() => map.CreateCorridor(startCell, endCell, corridorDirection),
-                Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(startCell.Sides[corridorDir], Is.EqualTo(Side.Wall));
+            Assert.That(startCell.Sides.Where(s => s.Key != corridorDir),
+                Has.All.With.Property("Value").EqualTo(Side.Empty));
+
+            Assert.That(endCell.Sides[oppositeDir], Is.EqualTo(Side.Wall));
+            Assert.That(endCell.Sides.Where(s => s.Key != oppositeDir),
+                Has.All.With.Property("Value").EqualTo(Side.Empty));
         }
 
-        #endregion
-
-        ////TODO RemoveCorridor
-
-        #region Constructor
-
-        [TestCase(10, 10)]
-        [TestCase(1, 2)]
-        public void Constructor_MapIsEmptyWhenCreated(int w, int h)
+        [TestCase(0, 0, 0, 1, Dir.S)]
+        [TestCase(1, 1, 1, 0, Dir.N)]
+        [TestCase(0, 0, 1, 0, Dir.E)]
+        [TestCase(1, 1, 0, 1, Dir.W)]
+        public void RemoveCorridor_Throws_IfStartCellHasNoCorridor(
+            int x1, int y1, int x2, int y2, Dir corridorDir)
         {
-            var map = new Map(w, h);
+            var map = new Map(5, 5);
+            var startCell = map[x1, y1];
+            var endCell = map[x2, y2];
+            foreach (var dir in DirHelper.GetNonEmptyDirs())
+            {
+                startCell.Sides[dir] = Side.Empty;
+                endCell.Sides[dir] = Side.Wall;
+            }
 
-            Assert.That(map, Has.All.Property(nameof(Cell.IsVisited)).EqualTo(false));
+            Assert.That(() => map.RemoveCorridor(startCell, corridorDir),
+                Throws.InvalidOperationException);
         }
 
+        [TestCase(0, 0, 0, 1, Dir.S)]
+        [TestCase(1, 1, 1, 0, Dir.N)]
+        [TestCase(0, 0, 1, 0, Dir.E)]
+        [TestCase(1, 1, 0, 1, Dir.W)]
+        public void RemoveCorridor_Throws_IfEndCellHasNoCorridor(
+            int x1, int y1, int x2, int y2, Dir corridorDir)
+        {
+            var map = new Map(5, 5);
+            var startCell = map[x1, y1];
+            var endCell = map[x2, y2];
+            foreach (var dir in DirHelper.GetNonEmptyDirs())
+            {
+                startCell.Sides[dir] = Side.Wall;
+                endCell.Sides[dir] = Side.Empty;
+            }
+
+            Assert.That(() => map.RemoveCorridor(startCell, corridorDir),
+                Throws.InvalidOperationException);
+        }
         #endregion
 
-        #region OutsideMapException
+        [Test]
+        public void Visit_SetsIsVisitedTrue()
+        {
+            var cell = _map[2, 5];
+
+            _map.Visit(cell);
+
+            Assert.That(cell.IsVisited, Is.EqualTo(true));
+        }
+
+        ////TODO SetRooms
 
         [TestCase(-2, 5)]
         [TestCase(2, -2)]
-        [TestCase(10, 3)]
+        [TestCase(25, 3)]
         [TestCase(1, 30)]
         [TestCase(-1, -30)]
         [TestCase(100, 300)]
-        public void MapActionsThrowCorrectExceptionWhenPointIsOutsideMap(int w, int h)
+        public void MapActionsThrowCorrectExceptionWhenPointIsOutsideMap(int x, int y)
         {
             var actions = new Dictionary<string, Action<IMap, Cell>>
             {
                 { "Visit", (m, c) => m.Visit(c) },
-                { "HasAdjacentCell", (m, c) => m.HasAdjacentCell(c, Dir.E) }
+                { "HasAdjacentCell", (m, c) => m.HasAdjacentCell(c, Dir.E) },
+                { "CreateCorridor_StartCell", (m, c) => m.CreateCorridor(c, _map[0, 0], Dir.E) },
+                { "CreateCorridor_EndCell", (m, c) => m.CreateCorridor(_map[0, 0], c, Dir.E) },
+                { "RemoveCorridor", (m, c) => m.RemoveCorridor(c, Dir.E) },
+                { "TryGetAdjacentCell", (m, c) => {
+                        Cell outCell;
+                        m.TryGetAdjacentCell(c, Dir.E, out outCell);
+                    }
+                }
             };
-
-            var map = new Map(5, 5);
-            var point = new Cell(w, h);
 
             foreach (var action in actions.Values)
             {
-                Assert.That(() => action(map, point),
+                Assert.That(() => action(_map, new Cell(x, y)),
                     Throws.TypeOf<ArgumentOutOfRangeException>(),
                     action + " should throw correct error if point is outside the map.");
             }
         }
-
-        #endregion
     }
 }

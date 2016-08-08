@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using CatSkald.Tools;
@@ -9,7 +10,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
     {
         private readonly Cell[,] cells;
 
-        protected CellContainer(int width, int height)
+        protected CellContainer(
+            int width, int height, Action<Cell> cellInitializer = null)
         {
             Throw.IfLess(0, width, nameof(width));
             Throw.IfLess(0, height, nameof(height));
@@ -20,6 +22,14 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             Bounds = new Rectangle(0, 0, width, height);
 
             cells = new Cell[height, width];
+
+            for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
+                {
+                    var cell = new Cell(x, y);
+                    cellInitializer?.Invoke(cell);
+                    this[x, y] = cell;
+                }
         }
 
         public int Width { get; }
