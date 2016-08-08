@@ -1,5 +1,4 @@
-﻿using System;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+﻿using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Tools;
 

@@ -16,12 +16,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         public Map(int width, int height) : base(width, height)
         {
-            for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                {
-                    this[x, y] = new Cell(x, y);
-                }
-
             _visitedCells = new List<Cell>(Size);
         }
 
@@ -96,6 +90,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         public void RemoveCorridor(Cell startCell, Dir direction)
         {
+            ThrowD.IfOutsideMap(this, startCell, nameof(startCell));
             ThrowD.IfNoCorridor(startCell, direction, nameof(startCell));
 
             var endCell = this[DirHelper.MoveInDir(startCell.Location, direction)];
@@ -107,6 +102,14 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             endCell.Sides[endDirection] = Side.Wall;
         }
         
+        public void Visit(Cell cell)
+        {
+            ThrowD.IfOutsideMap(this, cell);
+
+            cell.IsVisited = true;
+            _visitedCells.Add(cell);
+        }
+
         public void SetRooms(Room[] rooms)
         {
             Throw.IfNull(rooms, nameof(rooms));
@@ -116,14 +119,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             }
 
             Rooms = rooms;
-        }
-
-        public void Visit(Cell cell)
-        {
-            ThrowD.IfOutsideMap(this, cell);
-
-            cell.IsVisited = true;
-            _visitedCells.Add(cell);
         }
 
         private bool IsOutsideMap(Point point)
