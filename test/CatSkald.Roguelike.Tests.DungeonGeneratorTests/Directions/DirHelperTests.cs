@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
 {
     [TestFixture]
-    public class DirHelpersTests
+    public class DirHelperTests
     {
         [Test]
         public void GetAllNotEmptyDirs_ReturnsCorrectDirs()
