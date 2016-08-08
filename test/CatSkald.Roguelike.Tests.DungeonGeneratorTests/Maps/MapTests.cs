@@ -172,39 +172,6 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
         #region Properties
 
-        [TestCase(10, 10)]
-        [TestCase(1, 2)]
-        [TestCase(4, 4)]
-        [TestCase(100, 25)]
-        public void Width_ReturnsCorrectValue(int w, int h)
-        {
-            var map = new Map(w, h);
-
-            Assert.That(map.Width, Is.EqualTo(w));
-        }
-
-        [TestCase(10, 10)]
-        [TestCase(1, 2)]
-        [TestCase(4, 4)]
-        [TestCase(100, 25)]
-        public void Height_ReturnsCorrectValue(int w, int h)
-        {
-            var map = new Map(w, h);
-
-            Assert.That(map.Height, Is.EqualTo(h));
-        }
-
-        [TestCase(10, 10)]
-        [TestCase(1, 2)]
-        [TestCase(4, 4)]
-        [TestCase(100, 25)]
-        public void Size_IsCorrect(int w, int h)
-        {
-            var map = new Map(w, h);
-
-            Assert.That(map.Size, Is.EqualTo(w * h));
-        }
-
         [Test]
         public void AllVisited_FalseIfOnlyOneVisited()
         {
@@ -265,45 +232,6 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             }
 
             Assert.That(map.AllVisited, Is.EqualTo(false));
-        }
-
-        #endregion
-
-        #region IEnumerable
-
-        [Test]
-        public void Enumerator_TraversesInCorrectOrder()
-        {
-            var map = new Map(3, 3);
-
-            var queue = new Queue<Cell>(map.Size);
-            queue.Enqueue(map[0, 0]);
-            queue.Enqueue(map[0, 1]);
-            queue.Enqueue(map[0, 2]);
-            queue.Enqueue(map[1, 0]);
-            queue.Enqueue(map[1, 1]);
-            queue.Enqueue(map[1, 2]);
-            queue.Enqueue(map[2, 0]);
-            queue.Enqueue(map[2, 1]);
-            queue.Enqueue(map[2, 2]);
-
-            Assert.That(map.Size, Is.EqualTo(queue.Count));
-
-            foreach (var item in map)
-            {
-                Assert.That(item, Is.SameAs(queue.Dequeue()));
-            }
-        }
-
-        [TestCase(10, 10)]
-        [TestCase(1, 2)]
-        [TestCase(4, 4)]
-        [TestCase(100, 25)]
-        public void ToList_IsCorrect(int w, int h)
-        {
-            var map = new Map(w, h);
-
-            Assert.That(map.ToList(), Has.Count.EqualTo(w * h));
         }
 
         #endregion

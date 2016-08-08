@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
@@ -16,25 +17,33 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             _sides = new Sides();
         }
 
-        #region Constructor
         [Test]
-        public void Constructor_HasCountSameAsAllDirections()
+        public void Constructor_HasCorrectCount()
         {
-            Assert.That(_sides.Values, Has.All.EqualTo(Side.Wall));
+            Assert.That(_sides.Count, Is.EqualTo(DirHelper.GetNonEmptyDirs().Count));
         }
 
         [Test]
-        public void Constructor_ContainsAllDirections()
+        public void Keys_ContainsAllDirections()
         {
             Assert.That(_sides.Keys, Is.EquivalentTo(DirHelper.GetNonEmptyDirs()));
         }
 
         [Test]
-        public void Constructor_AllSidesAreWalls()
+        public void Values_AllSidesAreWalls()
         {
             Assert.That(_sides.Values, Has.All.EqualTo(Side.Wall));
         }
-        #endregion
+
+        [Test]
+        public void IEnumerable_SidesHasCorrectItems()
+        {
+            IEnumerable<KeyValuePair<Dir, Side>> items = 
+                DirHelper.GetNonEmptyDirs()
+                    .ToDictionary(key => key, value => Side.Wall);
+
+            Assert.That(_sides, Is.EquivalentTo(items));
+        }
 
         #region IEquatable
         [Test]
