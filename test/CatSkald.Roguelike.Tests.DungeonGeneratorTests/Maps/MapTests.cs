@@ -18,13 +18,11 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             _map = new Map(15, 10);
         }
 
-        #region Constructor
         [Test]
         public void Constructor_CellsAreNotVisited_WhenMapCreated()
         {
             Assert.That(_map, Has.All.Property(nameof(Cell.IsVisited)).EqualTo(false));
         }
-        #endregion
 
         #region AllVisited
         [Test]
