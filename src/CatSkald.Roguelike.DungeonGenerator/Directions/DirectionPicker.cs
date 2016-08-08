@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Directions
 {
+    [DebuggerDisplay("HasDirs:{HasDirections},Last:{LastDirection},TwistDactor:{TwistFactor}")]
     public sealed class DirectionPicker
     {
         private const int TwistFactorMin = 0;

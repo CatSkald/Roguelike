@@ -32,7 +32,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         }
 
         #region IEquatable
-
         public bool Equals(Sides other)
         {
             return this.Count == other.Count
@@ -55,7 +54,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
                 return false;
             return this.Equals((Sides)obj);
         }
-
         #endregion
 
         #region IEnumerable
