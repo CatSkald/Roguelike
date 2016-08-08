@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -126,29 +125,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             cell.IsVisited = true;
             _visitedCells.Add(cell);
         }
-
-        #region IEnumerable
-
-        public IEnumerator<Cell> GetEnumerator()
-        {
-            return MapTraverse().GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        private IEnumerable<Cell> MapTraverse()
-        {
-            for (int x = 0; x < Width; x++)
-                for (int y = 0; y < Height; y++)
-                {
-                    yield return this[x, y];
-                }
-        }
-
-        #endregion
 
         private bool IsOutsideMap(Point point)
         {
