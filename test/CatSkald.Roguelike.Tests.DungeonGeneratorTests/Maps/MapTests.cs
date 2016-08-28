@@ -287,7 +287,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             var endCell = map[x2, y2];
 
             Assert.That(() => map.CreateCorridor(startCell, endCell, corridorDirection),
-                Throws.ArgumentException);
+                Throws.InvalidOperationException);
         }
         #endregion
 
