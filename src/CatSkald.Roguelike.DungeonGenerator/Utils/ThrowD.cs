@@ -59,7 +59,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Utils
             var endPoint = DirHelper.MoveInDir(startCell.Location, direction);
             if (endPoint != endCell.Location)
             {
-                throw new ArgumentException(
+                throw new InvalidOperationException(
                     $"{startCell.Location} and {endCell.Location} are not adjacent in direction '{direction}'.");
             }
         }
