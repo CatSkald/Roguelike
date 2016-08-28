@@ -30,7 +30,6 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Utils
         [TestCase(0, 23)]
         public void IfOutsideMap_Cell_ShouldThrow_IfOutsideMap(int x, int y)
         {
-
             var map = new Map(5, 5);
             var cell = new Cell(x, y);
 
