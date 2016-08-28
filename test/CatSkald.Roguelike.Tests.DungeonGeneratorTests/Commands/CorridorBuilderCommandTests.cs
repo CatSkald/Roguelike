@@ -8,6 +8,19 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
     [TestFixture]
     public class CorridorBuilderCommandTests
     {
+        [TestCase(0, 0)]
+        [TestCase(1, 2)]
+        public void Execute_ShouldThrow_IfMapContainsVisitedCell(int x, int y)
+        {
+            var map = new Map(2, 3);
+            map.Visit(map[x, y]);
+
+            var command = new CorridorBuilderCommand(100);
+
+            Assert.That(() => command.Execute(map),
+                Throws.InvalidOperationException);
+        }
+        
         [Test]
         public void Execute_ShouldThrow_IfMapNull()
         {
@@ -20,7 +33,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
 
         [TestCase(-5)]
         [TestCase(101)]
-        public void Execute_ShouldThrow_IfSparseFactorIsInvalid(int factor)
+        public void Execute_ShouldThrow_IfTwistFactorIsInvalid(int factor)
         {
             Assert.That(() => new CorridorBuilderCommand(factor),
                 Throws.InstanceOf<ArgumentOutOfRangeException>());
