@@ -77,7 +77,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [Test]
         public void IsWall_IsTrue_IfAllSidesAreWalls()
         {
-            Assert.That(_cell.IsWall, Is.EqualTo(true));
+            Assert.That(_cell.IsWall, Is.True);
         }
 
         [TestCase(1)]
@@ -94,7 +94,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                     break;
             }
 
-            Assert.That(_cell.IsWall, Is.EqualTo(false));
+            Assert.That(_cell.IsWall, Is.False);
         }
 
         [TestCase(Dir.N)]
@@ -105,7 +105,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         {
             _cell.Sides[empty] = Side.Empty;
 
-            Assert.That(_cell.IsDeadEnd, Is.EqualTo(true));
+            Assert.That(_cell.IsDeadEnd, Is.True);
         }
 
         [TestCase(0)]
@@ -122,7 +122,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 countOfEmptySides--;
             }
 
-            Assert.That(_cell.IsDeadEnd, Is.EqualTo(false));
+            Assert.That(_cell.IsDeadEnd, Is.False);
         }
         #endregion
 

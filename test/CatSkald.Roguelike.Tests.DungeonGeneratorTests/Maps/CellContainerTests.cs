@@ -44,7 +44,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 });
 
             Assert.That(_container, Has.All
-                .With.Property(nameof(Cell.IsVisited)).EqualTo(true)
+                .With.Property(nameof(Cell.IsVisited)).True
                 .And.Property(nameof(Cell.Sides)).EqualTo(expectedSides));
         }
 
