@@ -1,4 +1,6 @@
-﻿using CatSkald.Roguelike.DungeonGenerator.Directions;
+﻿using System;
+using System.Linq;
+using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Tools;
 
@@ -24,6 +26,12 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
         private void BuildCorridors(IMap map)
         {
+            if (map.Any(c => c.IsVisited))
+            {
+                throw new InvalidOperationException(
+                    "Map should not contain visited cells.");
+            }
+
             Cell nextCell;
             var direction = Dir.Zero;
 
