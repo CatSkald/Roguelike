@@ -60,7 +60,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
         [Test]
         public void HasDirections_TrueAfterCreation()
         {
-            Assert.That(_picker.HasDirections, Is.EqualTo(true));
+            Assert.That(_picker.HasDirections, Is.True);
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
                 counter--;
             }
 
-            Assert.That(_picker.HasDirections, Is.EqualTo(false));
+            Assert.That(_picker.HasDirections, Is.False);
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
 
             _picker.ResetDirections();
 
-            Assert.That(_picker.HasDirections, Is.EqualTo(true));
+            Assert.That(_picker.HasDirections, Is.True);
         }
 
         #endregion
@@ -191,14 +191,14 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
         public void ShouldChangeDirection_TrueForTwistFactor100()
         {
             _picker.TwistFactor = 100;
-            Assert.That(_picker.ShouldChangeDirection(), Is.EqualTo(true));
+            Assert.That(_picker.ShouldChangeDirection(), Is.True);
         }
 
         [Test]
         public void ShouldChangeDirection_FalseForTwistFactor0()
         {
             _picker.TwistFactor = 0;
-            Assert.That(_picker.ShouldChangeDirection(), Is.EqualTo(false));
+            Assert.That(_picker.ShouldChangeDirection(), Is.False);
         }
 
         #endregion

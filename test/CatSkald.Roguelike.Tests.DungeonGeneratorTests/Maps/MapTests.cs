@@ -21,7 +21,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [Test]
         public void Constructor_CellsAreNotVisited_WhenMapCreated()
         {
-            Assert.That(_map, Has.All.Property(nameof(Cell.IsVisited)).EqualTo(false));
+            Assert.That(_map, Has.All.Property(nameof(Cell.IsVisited)).False);
         }
 
         #region AllVisited
@@ -30,13 +30,13 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         {
             _map.Visit(_map[3, 1]);
 
-            Assert.That(_map.AllVisited, Is.EqualTo(false));
+            Assert.That(_map.AllVisited, Is.False);
         }
 
         [Test]
         public void AllVisited_FalseForNewMap()
         {
-            Assert.That(_map.AllVisited, Is.EqualTo(false));
+            Assert.That(_map.AllVisited, Is.False);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 _map.Visit(cell);
             }
 
-            Assert.That(_map.AllVisited, Is.EqualTo(true));
+            Assert.That(_map.AllVisited, Is.True);
         }
 
         [TestCase(7)]
@@ -60,7 +60,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 _map.Visit(cell);
             }
 
-            Assert.That(_map.AllVisited, Is.EqualTo(false));
+            Assert.That(_map.AllVisited, Is.False);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 _map.Visit(cell);
             }
 
-            Assert.That(_map.AllVisited, Is.EqualTo(false));
+            Assert.That(_map.AllVisited, Is.False);
         }
         #endregion
 
@@ -122,7 +122,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             var cell = _map.PickNextRandomVisitedCell(visitedCell);
 
             Assert.That(cell, Is.Not.EqualTo(visitedCell)
-                .And.With.Property(nameof(Cell.IsVisited)).EqualTo(true));
+                .And.With.Property(nameof(Cell.IsVisited)).True);
         } 
         #endregion
 
@@ -202,7 +202,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             Assert.That(!map.HasAdjacentCell(cell, dir));
             Assert.That(dirs.Where(d => d != dir)
                 .Select(d => map.HasAdjacentCell(cell, d)),
-                Has.All.EqualTo(true));
+                Has.All.True);
         }
 
         [TestCase(0)]
@@ -227,7 +227,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             var result = _map.TryGetAdjacentCell(_map[x, y], dir, out adjacent);
 
-            Assert.That(result, Is.EqualTo(false));
+            Assert.That(result, Is.False);
             Assert.That(adjacent, Is.Null);
         }
 
@@ -243,7 +243,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             var result = _map.TryGetAdjacentCell(_map[x, y], dir, out adjacent);
 
-            Assert.That(result, Is.EqualTo(true));
+            Assert.That(result, Is.True);
             Assert.That(adjacent, Is.SameAs(_map[expectedX, expectedY]));
         }
         #endregion
@@ -367,7 +367,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             _map.Visit(cell);
 
-            Assert.That(cell.IsVisited, Is.EqualTo(true));
+            Assert.That(cell.IsVisited, Is.True);
         }
 
         ////TODO SetRooms
