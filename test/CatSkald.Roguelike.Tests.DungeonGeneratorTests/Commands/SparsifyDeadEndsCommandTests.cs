@@ -52,5 +52,18 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
 
             Assert.That(deadEnds.TrueForAll(c => map[c].IsDeadEnd));
         }
+
+        [Test]
+        public void Execute_RemovesSomeDeadEnds_IfSparseFactor0()
+        {
+            var map = new Map(4, 3);
+            new CorridorBuilderCommand(50).Execute(map);
+            var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
+
+            var command = new SparsifyDeadEndsCommand(50);
+            command.Execute(map);
+
+            Assert.That(deadEnds.Any(c => !map[c].IsDeadEnd));
+        }
     }
 }
