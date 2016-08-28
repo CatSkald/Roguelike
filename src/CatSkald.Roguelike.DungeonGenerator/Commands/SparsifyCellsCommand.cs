@@ -29,10 +29,15 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                 (int)Math.Ceiling(map.Size * (_sparseFactor / 100m)) - 1;
 
             var removedCellsCount = 0;
-            var nonRemovedCells = map.Where(c => !c.IsWall).ToList();
+            var nonWalls = map.Where(c => !c.IsWall).ToList();
+            if (!nonWalls.Any())
+            {
+                throw new InvalidOperationException("All cells are walls.");
+            }
+
             while (removedCellsCount < expectedNumberOfRemovedCells)
             {
-                foreach (var cell in nonRemovedCells.Where(c => c.IsDeadEnd).ToList())
+                foreach (var cell in nonWalls.Where(c => c.IsDeadEnd).ToList())
                 {
                     if (!cell.IsDeadEnd)
                         continue;
@@ -42,7 +47,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                         .Key;
 
                     map.RemoveCorridor(cell, emptySide);
-                    nonRemovedCells.Remove(cell);
+                    nonWalls.Remove(cell);
                     removedCellsCount++;
                 }
             }
