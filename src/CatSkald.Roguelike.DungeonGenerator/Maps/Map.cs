@@ -115,6 +115,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             Throw.IfNull(rooms, nameof(rooms));
             foreach (var room in rooms)
             {
+                Throw.IfNull(room, nameof(room));
                 ThrowD.IfOutsideMap(this, room);
             }
 
