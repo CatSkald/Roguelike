@@ -30,6 +30,26 @@ namespace CatSkald.Tools
         /// Returns a non-negative random number within a specified range.
         /// </summary>
         /// <param name="min">The inclusive lower bound of the random number to be generated.</param>
+        /// <param name="max">The inclusive upper bound of the random number to be generated. Must be greater than <paramref name="min"/>.</param>
+        /// <returns>A number greater than or equal to <paramref name="min"/>, and less than or equal to <paramref name="max"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="max"/> is less than or equal to <paramref name="min"/>.</exception>
+        public static int NextInclusive(int min, int max)
+        {
+            if (max < min)
+                throw new ArgumentOutOfRangeException(
+                    $"max should be more than or equal to min, but was: {max} <= {min}");
+            if (min == max)
+                return min;
+            if (max - min == 1)
+                return min;
+            lock (Lock)
+                return Random.Next(min, max);
+        }
+
+        /// <summary>
+        /// Returns a non-negative random number within a specified range.
+        /// </summary>
+        /// <param name="min">The inclusive lower bound of the random number to be generated.</param>
         /// <param name="max">The exclusive upper bound of the random number to be generated. Must be greater than <paramref name="min"/>.</param>
         /// <returns>A number greater than or equal to <paramref name="min"/>, and less than <paramref name="max"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="max"/> is less than or equal to <paramref name="min"/>.</exception>
