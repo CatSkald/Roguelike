@@ -84,7 +84,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(2)]
         [TestCase(3)]
         [TestCase(4)]
-        public void IsWall_IsFalse_NotAllSidesAreWalls(int countOfEmptySides)
+        public void IsWall_IsFalse_IfNotAllSidesAreWalls(int countOfEmptySides)
         {
             foreach (var dir in _cell.Sides.Keys.ToList())
             {
@@ -95,6 +95,29 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             }
 
             Assert.That(_cell.IsWall, Is.False);
+        }
+        
+        [Test]
+        public void IsCorridor_IsFalse_IfAllSidesAreWalls()
+        {
+            Assert.That(_cell.IsCorridor, Is.False);
+        }
+
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        public void IsCorridor_IsTrue_IfSomeSidesAreEmpty(int countOfEmptySides)
+        {
+            foreach (var dir in _cell.Sides.Keys.ToList())
+            {
+                _cell.Sides[dir] = Side.Empty;
+                countOfEmptySides--;
+                if (countOfEmptySides == 0)
+                    break;
+            }
+
+            Assert.That(_cell.IsCorridor, Is.True);
         }
 
         [TestCase(Dir.N)]
@@ -202,7 +225,59 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             CustomAssert.IEquatableMembersWorkForDifferentObjects(_cell, other);
         }
+        #endregion
 
+        #region CopyFrom
+        [Test]
+        public void CopyFrom_WorksCorrect_ForDefaultCells()
+        {
+            var other = new Cell();
+
+            var cell = new Cell();
+            cell.CopyFrom(other);
+
+            Assert.That(cell, Is.EqualTo(other));
+        }
+        
+        [TestCase(true, 0, 4)]
+        [TestCase(false, 15, 24)]
+        [TestCase(true, 0, -1)]
+        public void CopyFrom_WorksCorrect_ForDefaultCells(
+            bool isVisited, int x, int y)
+        {
+            var other = new Cell
+            {
+                IsVisited = isVisited,
+                Location = new Point(x, y)
+            };
+
+            var cell = new Cell();
+            cell.CopyFrom(other);
+
+            Assert.That(cell, Has.Property(nameof(Cell.IsVisited))
+                .EqualTo(other.IsVisited)
+                .And.Property(nameof(Cell.Location))
+                .EqualTo(other.Location));
+        }
+
+        [TestCase(new[] { Dir.N })]
+        [TestCase(new[] { Dir.E, Dir.S })]
+        [TestCase(new[] { Dir.W, Dir.E, Dir.N })]
+        [TestCase(new[] { Dir.N, Dir.E, Dir.S, Dir.W })]
+        public void CopyFrom_SetCorrectSides(params Dir[] emptyDirs)
+        {
+            var other = new Cell();
+
+            foreach (var dir in emptyDirs)
+            {
+                other.Sides[dir] = Side.Empty;
+            }
+
+            var cell = new Cell();
+            cell.CopyFrom(other);
+
+            Assert.That(cell, Has.Property(nameof(Cell.Sides)).EquivalentTo(other.Sides));
+        } 
         #endregion
     }
 }
