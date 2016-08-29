@@ -117,16 +117,19 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         public void InsertRoom(Room room, Point position)
         {
-            Throw.IfNull(room, nameof(room));
+            ThrowD.IfOutsideMap(this, position);
+
+            room.Offset(position);
             ThrowD.IfOutsideMap(this, room);
 
             _rooms.Add(room);
+
             foreach (var cell in room)
             {
                 cell.Location = new Point(
                     cell.Location.X + position.X,
                     cell.Location.Y + position.Y);
-                this[cell.Location.X, cell.Location.Y] = cell;
+                this[cell.Location.X, cell.Location.Y].CopyFrom(cell);
                 //TODO sides for adjacent cells, doors etc.
             }
         }
