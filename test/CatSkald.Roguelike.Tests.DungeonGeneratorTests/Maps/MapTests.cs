@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
@@ -370,7 +371,69 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             Assert.That(cell.IsVisited, Is.True);
         }
 
-        ////TODO SetRooms
+        #region InsertRoom
+        [TestCase(-1, 0)]
+        [TestCase(100, 150)]
+        [TestCase(0, 99)]
+        public void InsertRoom_ThrowsIfPointOutsideMap(int x, int y)
+        {
+            Assert.That(() => _map.InsertRoom(new Room(4, 4), new Point(x, y)),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+        
+        [TestCase(0, 0, 10, 3)]
+        [TestCase(0, 0, 1, 15)]
+        [TestCase(4, 3, 5, 1)]
+        [TestCase(3, 3, 1, 3)]
+        public void InsertRoom_ThrowsIfRoomOutsideMap(int x, int y, int w, int h)
+        {
+            _map = new Map(5, 5);
+
+            Assert.That(() => _map.InsertRoom(new Room(w, h), new Point(x, y)),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        [Test]
+        public void InsertRoom_RoomAppearsInRooms()
+        {
+            _map.InsertRoom(new Room(4, 4), new Point(0, 0));
+
+            Assert.That(_map.Rooms, Has.Count.EqualTo(1));
+        }
+
+        [TestCase(1, 0)]
+        [TestCase(2, 2)]
+        [TestCase(3, 1)]
+        public void InsertRoom_OffsetIsAppliedToRoom(int x, int y)
+        {
+            _map.InsertRoom(new Room(2, 3), new Point(x, y));
+
+            Assert.That(_map.Rooms.Single(), 
+                Has.Property(nameof(Room.Bounds))
+                .EqualTo(new Rectangle(x, y, 2, 3)));
+        }
+
+        [TestCase(1, 0)]
+        [TestCase(5, 5)]
+        public void InsertRoom_MapCellsAreUpdated(int x, int y)
+        {
+            _map.InsertRoom(new Room(4, 3), new Point(x, y));
+
+            Assert.That(_map.Rooms.Single().All(cell => cell.Equals(_map[cell.Location])));
+        }
+
+        [TestCase(1, 4)]
+        [TestCase(5, 5)]
+        public void InsertRoom_RoomCellLocationsAreUpdated(int x, int y)
+        {
+            _map.InsertRoom(new Room(4, 3), new Point(x, y));
+
+            var room = _map.Rooms.Single();
+            Assert.That(room.First(), 
+                Has.Property(nameof(Cell.Location)).EqualTo(new Point(x, y)));
+            Assert.That(room.All(cell => room.Bounds.Contains(cell.Location)));
+        }
+        #endregion
 
         [TestCase(-2, 5)]
         [TestCase(2, -2)]
