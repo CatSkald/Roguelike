@@ -13,14 +13,19 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
     public sealed class Map : CellContainer, IMap
     {
         private readonly List<Cell> _visitedCells;
+        private readonly List<Room> _rooms;
 
         public Map(int width, int height) : base(width, height)
         {
             _visitedCells = new List<Cell>(Size);
+            _rooms = new List<Room>();
         }
 
         public bool AllVisited => _visitedCells.Count == Size;
-        public Room[] Rooms { get; private set; }
+        public IReadOnlyCollection<Room> Rooms
+        {
+            get { return _rooms.AsReadOnly(); }
+        }
 
         public Cell PickRandomCell()
         {
@@ -110,16 +115,20 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             _visitedCells.Add(cell);
         }
 
-        public void SetRooms(Room[] rooms)
+        public void InsertRoom(Room room, Point position)
         {
-            Throw.IfNull(rooms, nameof(rooms));
-            foreach (var room in rooms)
-            {
-                Throw.IfNull(room, nameof(room));
-                ThrowD.IfOutsideMap(this, room);
-            }
+            Throw.IfNull(room, nameof(room));
+            ThrowD.IfOutsideMap(this, room);
 
-            Rooms = rooms;
+            _rooms.Add(room);
+            foreach (var cell in room)
+            {
+                cell.Location = new Point(
+                    cell.Location.X + position.X,
+                    cell.Location.Y + position.Y);
+                this[cell.Location.X, cell.Location.Y] = cell;
+                //TODO sides for adjacent cells, doors etc.
+            }
         }
 
         private bool IsOutsideMap(Point point)
