@@ -37,7 +37,7 @@ namespace CatSkald.Tools
         {
             if (max < min)
                 throw new ArgumentOutOfRangeException(
-                    $"max should be more than or equal to min, but was: {max} <= {min}");
+                    $"max should be more than or equal to min, but was: {max} < {min}");
             if (min == max)
                 return min;
             if (max - min == 1)
