@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
@@ -16,6 +17,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
         public PlaceRoomsCommand(DungeonParameters parameters)
         {
+            Throw.IfNull(parameters, nameof(parameters));
+            Throw.IfNull(parameters.RoomParameters, nameof(parameters.RoomParameters));
+
             ValidateParameters(parameters);
 
             _params = parameters.RoomParameters;
@@ -26,49 +30,45 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             Throw.IfNull(map, nameof(map));
 
             var rooms = CreateRooms();
-            int bestRoomScore = short.MaxValue;
-            Room roomToPlace = null;
-            Cell cellToPlace = null;
-            var success = false;
+            PlaceRooms(map, rooms);
+        }
+
+        private static void PlaceRooms(IMap map, List<Room> rooms)
+        {
             foreach (var room in rooms)
             {
+                int bestRoomScore = short.MaxValue;
+                Cell cellToPlace = null;
+
                 foreach (var cell in map)
                 {
                     var newBounds = new Rectangle(
                         cell.Location.X,
                         cell.Location.Y,
-                        room.Width + cell.Location.X,
-                        room.Height + cell.Location.Y);
+                        room.Width,
+                        room.Height);
                     if (!map.Bounds.Contains(newBounds))
                         continue;
 
                     var roomScore = CalculateRoomScore(room, map, cell);
-                    success = bestRoomScore > roomScore;
-                    if (success)
+                    if (bestRoomScore > roomScore)
                     {
-                        roomToPlace = room;
                         cellToPlace = cell;
                         bestRoomScore = roomScore;
                     }
                 }
 
-                if (roomToPlace != null && cellToPlace != null)
+                if (cellToPlace != null)
                 {
-                    map.InsertRoom(roomToPlace, cellToPlace.Location);
-
-                    success = false;
-                    roomToPlace = null;
-                    cellToPlace = null;
-                    bestRoomScore = short.MaxValue;
+                    map.InsertRoom(room, cellToPlace.Location);
                 }
             }
         }
 
         private static int CalculateRoomScore(Room room, IMap map, Cell cell)
         {
-            int bestScore = short.MaxValue;
-
             var currentScore = 0;
+
             foreach (var roomCell in room)
             {
                 var currentCell = map[
@@ -77,27 +77,34 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
                 currentScore += adjacentCorridorBonus
                     * roomCell.Sides
-                        .Where(s => s.Value == Side.Wall)
-                        .Count(s => currentCell.Sides[s.Key] == Side.Empty);
+                        .Count(s =>
+                        {
+                            Cell adjacentCell;
+                            return map.TryGetAdjacentCell(
+                                currentCell, s.Key, out adjacentCell)
+                                && adjacentCell.Sides[s.Key] == Side.Empty;
+                        });
 
-                currentScore += overlappedCorridorBonus
-                    * currentCell.Sides.Count(it => it.Value == Side.Empty);
+                if (currentCell.IsCorridor)
+                {
+                    currentScore += overlappedCorridorBonus;
+                }
 
                 currentScore += overlappedRoomBonus
                     * map.Rooms.Count(r => r.Bounds.Contains(currentCell.Location));
             }
 
-            return Math.Min(currentScore, bestScore);
+            return currentScore;
         }
 
-        private Room[] CreateRooms()
+        private List<Room> CreateRooms()
         {
             var rooms = Enumerable
                 .Repeat<Func<Room>>(CreateRoom, _params.Count)
                 #pragma warning disable CC0031 // Check for null before calling a delegate
                 .Select(f => f())
                 #pragma warning restore CC0031 // Check for null before calling a delegate
-                .ToArray();
+                .ToList();
 
             return rooms;
         }
@@ -105,8 +112,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
         private Room CreateRoom()
         {
             return new Room(
-                StaticRandom.Next(_params.MinWidth, _params.MaxWidth),
-                StaticRandom.Next(_params.MinHeight, _params.MaxHeight));
+                StaticRandom.NextInclusive(_params.MinWidth, _params.MaxWidth),
+                StaticRandom.NextInclusive(_params.MinHeight, _params.MaxHeight));
         }
 
         private static void ValidateParameters(DungeonParameters parameters)
