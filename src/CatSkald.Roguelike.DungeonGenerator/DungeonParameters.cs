@@ -8,5 +8,10 @@
         public int CellSparseFactor { get; set; }
         public int DeadEndSparseFactor { get; set; }
         public RoomParameters RoomParameters { get; set; }
+
+        public DungeonParameters()
+        {
+            RoomParameters = new RoomParameters();
+        }
     }
 }
