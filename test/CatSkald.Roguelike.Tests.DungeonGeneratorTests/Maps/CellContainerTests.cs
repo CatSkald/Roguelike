@@ -18,6 +18,18 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             _container = new FakeCellContainer(11, 15);
         }
 
+        [TestCase(1, 2)]
+        [TestCase(4, 4)]
+        [TestCase(100, 25)]
+        public void Offset_SetsCorrectValue(int x, int y)
+        {
+            _container = new FakeCellContainer(15, 10);
+
+            _container.Offset(new Point(x, y));
+
+            Assert.That(_container.Bounds, Is.EqualTo(new Rectangle(x, y, 15, 10)));
+        }
+
         #region Constructor
         [Test]
         public void Constructor_CellsAreNotNull_WhenCellContainerCreated()
