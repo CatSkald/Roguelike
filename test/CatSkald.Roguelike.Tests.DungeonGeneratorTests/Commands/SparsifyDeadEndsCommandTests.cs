@@ -30,12 +30,15 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
         [Test]
         public void Execute_RemovesAllDeadEnds_IfSparseFactor100()
         {
-            var map = new Map(4, 3);
+            var map = new Map(6, 4);
             new CorridorBuilderCommand(50).Execute(map);
             var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
 
             var command = new SparsifyDeadEndsCommand(100);
             command.Execute(map);
+
+            if (!deadEnds.Any())
+                Assert.Inconclusive("No dead ends generated.");
 
             Assert.That(deadEnds.TrueForAll(c => !map[c].IsDeadEnd));
         }
@@ -43,25 +46,31 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
         [Test]
         public void Execute_RemovesNoDeadEnds_IfSparseFactor0()
         {
-            var map = new Map(4, 3);
+            var map = new Map(6, 4);
             new CorridorBuilderCommand(50).Execute(map);
             var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
 
             var command = new SparsifyDeadEndsCommand(0);
             command.Execute(map);
 
+            if (!deadEnds.Any())
+                Assert.Inconclusive("No dead ends generated.");
+
             Assert.That(deadEnds.TrueForAll(c => map[c].IsDeadEnd));
         }
 
         [Test]
-        public void Execute_RemovesSomeDeadEnds_IfSparseFactor0()
+        public void Execute_RemovesSomeDeadEnds_IfSparseFactor50()
         {
-            var map = new Map(4, 3);
+            var map = new Map(6, 4);
             new CorridorBuilderCommand(50).Execute(map);
             var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
 
             var command = new SparsifyDeadEndsCommand(50);
             command.Execute(map);
+
+            if (!deadEnds.Any())
+                Assert.Inconclusive("No dead ends generated.");
 
             Assert.That(deadEnds.Any(c => !map[c].IsDeadEnd));
         }
