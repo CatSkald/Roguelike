@@ -32,7 +32,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
 
             var map = _builder.Build();
 
-            Assert.That(map.Rooms, Has.Length.EqualTo(count));
+            Assert.That(map.Rooms, Has.Count.EqualTo(count));
         }
         
         [TestCase(1)]
