@@ -60,7 +60,7 @@ namespace CatSkald.Roguelike.Host
                     var sides = map[x, y].Sides;
                     if (sides.Values.All(s => s == Side.Empty))
                     {
-                        Console.Write("╬");
+                        Console.Write(".");
                     }
                     else if (sides.Values.All(s => s == Side.Wall))
                     {
