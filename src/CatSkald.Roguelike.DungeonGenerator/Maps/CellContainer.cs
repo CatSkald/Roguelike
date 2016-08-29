@@ -9,6 +9,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
     public abstract class CellContainer : IEnumerable<Cell>
     {
         private readonly Cell[,] cells;
+        private Rectangle bounds;
 
         protected CellContainer(
             int width, int height, Action<Cell> cellInitializer = null)
@@ -19,7 +20,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             Width = width;
             Height = height;
             Size = width * height;
-            Bounds = new Rectangle(0, 0, width, height);
+            bounds = new Rectangle(0, 0, width, height);
 
             cells = new Cell[height, width];
 
@@ -35,7 +36,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         public int Width { get; }
         public int Height { get; }
         public int Size { get; }
-        public Rectangle Bounds { get; }
+        public Rectangle Bounds { get { return bounds; } }
 
         public Cell this[Cell cell] => this[cell.Location];
         public Cell this[Point point] => this[point.X, point.Y];
@@ -49,6 +50,11 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             {
                 cells[height, width] = value;
             }
+        }
+
+        public void Offset(Point position)
+        {
+            bounds.Offset(position);
         }
 
         #region IEnumerable
