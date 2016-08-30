@@ -17,9 +17,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
         public PlaceRoomsCommand(DungeonParameters parameters)
         {
-            Throw.IfNull(parameters, nameof(parameters));
-            Throw.IfNull(parameters.RoomParameters, nameof(parameters.RoomParameters));
-
             ValidateParameters(parameters);
 
             _params = parameters.RoomParameters;
@@ -118,6 +115,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
         private static void ValidateParameters(DungeonParameters parameters)
         {
+            Throw.IfNull(parameters, nameof(parameters));
+
             var roomParameters = parameters.RoomParameters;
 
             Throw.IfNull(roomParameters, nameof(roomParameters));
