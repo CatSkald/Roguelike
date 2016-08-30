@@ -44,7 +44,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Utils
         {
             Throw.IfNull(cell, name);
 
-            if (cell.Sides[direction] != Side.Empty)
+            if (cell.Sides[direction] == Side.Wall)
             {
                 throw new InvalidOperationException(
                     $"{name} has no corridor in direction '{direction}'.");
