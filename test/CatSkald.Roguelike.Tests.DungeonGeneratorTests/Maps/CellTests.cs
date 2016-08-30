@@ -41,6 +41,22 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             Assert.That(cell.Location, Is.EqualTo(new Point(x, y)));
         }
+
+        [Test]
+        public void Constructor_IsVisited_IsFalse()
+        {
+            var cell = new Cell();
+
+            Assert.That(cell.IsVisited, Is.False);
+        }
+
+        [Test]
+        public void Constructor_IsCorridor_IsFalse()
+        {
+            var cell = new Cell();
+
+            Assert.That(cell.IsCorridor, Is.False);
+        }
         #endregion
 
         #region Properties
