@@ -3,6 +3,7 @@
     public enum Side
     {
         Empty,
-        Wall
+        Wall,
+        Door
     }
 }
