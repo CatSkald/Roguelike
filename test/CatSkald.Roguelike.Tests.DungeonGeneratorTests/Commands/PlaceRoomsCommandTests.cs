@@ -85,6 +85,23 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
                 .All(b => !b.IntersectsWith(r))));
         }
         
+        [Test]
+        public void Execute_GeneratedRooms_HasDoors()
+        {
+            _map = new Map(75, 80);
+
+            _parameters.RoomParameters.Count = 8;
+            new CorridorBuilderCommand(50).Execute(_map);
+
+            var command = new PlaceRoomsCommand(_parameters);
+            command.Execute(_map);
+
+            var rooms = _map.Rooms.ToList();
+
+            Assert.That(rooms, 
+                Has.All.With.Some.Matches<Cell>(c => c.Sides.Any(s => s.Value == Side.Door)));
+        }
+        
         [TestCase(3, 3, 3, 3)]
         [TestCase(2, 4, 2, 4)]
         [TestCase(5, 6, 2, 2)]
