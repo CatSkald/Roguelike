@@ -419,19 +419,38 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         {
             _map.InsertRoom(new Room(4, 3), new Point(x, y));
 
-            Assert.That(_map.Rooms.Single().All(cell => cell.Equals(_map[cell.Location])));
+            var room = _map.Rooms.Single();
+
+            Assert.That(room, 
+                Has.All.Matches<Cell>(c => c.Sides.Equals(_map[c.Location].Sides)));
+        }
+        
+        [TestCase(true)]
+        [TestCase(false)]
+        public void InsertRoom_RoomCellsIsVisitedIsUpdated(bool isVisited)
+        {
+            foreach (var cell in _map)
+            {
+                cell.IsVisited = isVisited;
+            }
+
+            _map.InsertRoom(new Room(4, 3), new Point(3, 4));
+
+            var room = _map.Rooms.Single();
+
+            Assert.That(room, 
+                Has.All.With.Property(nameof(Cell.IsVisited)).EqualTo(isVisited));
         }
 
         [TestCase(1, 4)]
         [TestCase(5, 5)]
-        public void InsertRoom_RoomCellLocationsAreUpdated(int x, int y)
+        public void InsertRoom_RoomCellLocationsAreNotChanged(int x, int y)
         {
             _map.InsertRoom(new Room(4, 3), new Point(x, y));
 
-            var room = _map.Rooms.Single();
-            Assert.That(room.First(), 
-                Has.Property(nameof(Cell.Location)).EqualTo(new Point(x, y)));
-            Assert.That(room.All(cell => room.Bounds.Contains(cell.Location)));
+            var actualLocations = _map.Rooms.Single().Select(c => c.Location);
+            var expected = new Room(4, 3).Select(c => c.Location);
+            Assert.That(actualLocations, Is.EquivalentTo(expected));
         }
         #endregion
 

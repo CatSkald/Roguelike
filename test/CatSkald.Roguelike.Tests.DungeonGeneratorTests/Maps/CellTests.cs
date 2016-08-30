@@ -226,58 +226,5 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             CustomAssert.IEquatableMembersWorkForDifferentObjects(_cell, other);
         }
         #endregion
-
-        #region CopyFrom
-        [Test]
-        public void CopyFrom_WorksCorrect_ForDefaultCells()
-        {
-            var other = new Cell();
-
-            var cell = new Cell();
-            cell.CopyFrom(other);
-
-            Assert.That(cell, Is.EqualTo(other));
-        }
-        
-        [TestCase(true, 0, 4)]
-        [TestCase(false, 15, 24)]
-        [TestCase(true, 0, -1)]
-        public void CopyFrom_WorksCorrect_ForDefaultCells(
-            bool isVisited, int x, int y)
-        {
-            var other = new Cell
-            {
-                IsVisited = isVisited,
-                Location = new Point(x, y)
-            };
-
-            var cell = new Cell();
-            cell.CopyFrom(other);
-
-            Assert.That(cell, Has.Property(nameof(Cell.IsVisited))
-                .EqualTo(other.IsVisited)
-                .And.Property(nameof(Cell.Location))
-                .EqualTo(other.Location));
-        }
-
-        [TestCase(new[] { Dir.N })]
-        [TestCase(new[] { Dir.E, Dir.S })]
-        [TestCase(new[] { Dir.W, Dir.E, Dir.N })]
-        [TestCase(new[] { Dir.N, Dir.E, Dir.S, Dir.W })]
-        public void CopyFrom_SetCorrectSides(params Dir[] emptyDirs)
-        {
-            var other = new Cell();
-
-            foreach (var dir in emptyDirs)
-            {
-                other.Sides[dir] = Side.Empty;
-            }
-
-            var cell = new Cell();
-            cell.CopyFrom(other);
-
-            Assert.That(cell, Has.Property(nameof(Cell.Sides)).EquivalentTo(other.Sides));
-        } 
-        #endregion
     }
 }

@@ -126,11 +126,31 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
             foreach (var cell in room)
             {
-                cell.Location = new Point(
+                var newLocation = new Point(
                     cell.Location.X + position.X,
                     cell.Location.Y + position.Y);
-                this[cell.Location.X, cell.Location.Y].CopyFrom(cell);
-                //TODO sides for adjacent cells, doors etc.
+                var mapCell = this[newLocation.X, newLocation.Y];
+
+                CreateBorderIfNeeded(cell.Location.X == 0, Dir.W, mapCell);
+                CreateBorderIfNeeded(cell.Location.X == room.Width - 1, Dir.E, mapCell);
+                CreateBorderIfNeeded(cell.Location.Y == 0, Dir.N, mapCell);
+                CreateBorderIfNeeded(cell.Location.Y == room.Height - 1, Dir.S, mapCell);
+
+                cell.IsVisited = mapCell.IsVisited;
+                foreach (var side in cell.Sides)
+                {
+                    mapCell.Sides[side.Key] = side.Value;
+                }
+            }
+        }
+
+        private void CreateBorderIfNeeded(bool isBorderCell, Dir dir, Cell mapCell)
+        {
+            if (isBorderCell
+                && mapCell.Sides[dir] == Side.Empty
+                && HasAdjacentCell(mapCell, dir))
+            {
+                RemoveCorridor(mapCell, dir);
             }
         }
 
