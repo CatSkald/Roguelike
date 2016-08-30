@@ -87,7 +87,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                     if (map.TryGetAdjacentCell(currentCell, dir, out adjacentCell)
                         && adjacentCell.Sides[dir] == Side.Empty)
                     {
-                        map.CreateSide(currentCell, adjacentCell, dir, Side.Door);
+                        map.CreateCorridorSide(currentCell, adjacentCell, dir, Side.Door);
                         cell.Sides[dir] = Side.Door;
                     }
                 }

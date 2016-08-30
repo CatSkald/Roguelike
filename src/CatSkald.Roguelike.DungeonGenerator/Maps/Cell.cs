@@ -23,8 +23,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         public Point Location { get; set; }
         public Sides Sides { get; }
         public bool IsVisited { get; set; }
-        public bool IsCorridor =>
-            Sides.Values.Any(it => it != Side.Wall);
+        public bool IsCorridor { get; set; }
         public bool IsWall =>
             Sides.Values.All(it => it == Side.Wall);
         public bool IsDeadEnd => 

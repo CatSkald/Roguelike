@@ -53,7 +53,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
                     if (success)
                     {
-                        map.CreateSide(currentCell, nextCell, direction, Side.Empty);
+                        map.CreateCorridorSide(currentCell, nextCell, direction, Side.Empty);
                     }
                 } while (_directionsPicker.HasDirections && !success);
 
