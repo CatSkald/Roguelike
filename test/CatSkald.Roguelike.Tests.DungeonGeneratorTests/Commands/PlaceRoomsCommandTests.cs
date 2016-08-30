@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
@@ -21,7 +23,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
                 CellSparseFactor = 50,
                 DeadEndSparseFactor = 60,
                 TwistFactor = 45,
-                Height = 11,
+                Height = 20,
                 Width = 15,
                 RoomParameters =
                 {
@@ -57,11 +59,32 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             _parameters.RoomParameters.Count = count;
 
             var command = new PlaceRoomsCommand(_parameters);
+            new CorridorBuilderCommand(50).Execute(_map);
             command.Execute(_map);
 
             Assert.That(_map.Rooms, Has.Count.EqualTo(count));
         }
+        
+        [Test]
+        public void Execute_GeneratedRooms_DoNotIntersect()
+        {
+            _map = new Map(75, 80);
 
+            _parameters.RoomParameters.Count = 8;
+            new CorridorBuilderCommand(50).Execute(_map);
+
+            var command = new PlaceRoomsCommand(_parameters);
+            command.Execute(_map);
+
+            var bounds = _map.Rooms.Select(r => r.Bounds).ToList();
+
+            Assert.That(bounds, Is.Unique);
+            Assert.That(bounds, 
+                Has.All.Matches<Rectangle>(r => bounds
+                .Where(b => b != r)
+                .All(b => !b.IntersectsWith(r))));
+        }
+        
         [TestCase(3, 3, 3, 3)]
         [TestCase(2, 4, 2, 4)]
         [TestCase(5, 6, 2, 2)]
@@ -72,6 +95,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             _parameters.RoomParameters.MaxHeight = maxH;
             _parameters.RoomParameters.MinWidth = minW;
             _parameters.RoomParameters.MaxWidth = maxW;
+            new CorridorBuilderCommand(50).Execute(_map);
 
             var command = new PlaceRoomsCommand(_parameters);
             command.Execute(_map);
@@ -132,21 +156,124 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
 
         [TestCase(-10)]
         [TestCase(-1)]
-        public void Constructor_ValidateParameters_Throws_IfRoomCount(int count)
+        public void Constructor_ValidateParameters_Throws_IfMinWidthNegative(int value)
         {
             var map = new Map(5, 5);
             var parameters = new DungeonParameters
             {
                 RoomParameters =
                 {
-                    Count = count
+                    MinWidth = value
                 }
             };
 
             Assert.That(() => new PlaceRoomsCommand(parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
                     .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
-                    .EqualTo(nameof(RoomParameters.Count)));
+                    .EqualTo(nameof(RoomParameters.MinWidth)));
+        }
+        
+        [TestCase(-10)]
+        [TestCase(-1)]
+        public void Constructor_ValidateParameters_Throws_IfMinHeightNegative(int value)
+        {
+            var map = new Map(5, 5);
+            var parameters = new DungeonParameters
+            {
+                RoomParameters =
+                {
+                    MinHeight = value
+                }
+            };
+
+            Assert.That(() => new PlaceRoomsCommand(parameters),
+                Throws.InstanceOf<ArgumentOutOfRangeException>()
+                    .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
+                    .EqualTo(nameof(RoomParameters.MinHeight)));
+        }
+        
+        [TestCase(10, 6)]
+        [TestCase(4, 1)]
+        public void Constructor_ValidateParameters_Throws_IfMaxHeightLessMin(
+            int min, int max)
+        {
+            var map = new Map(5, 5);
+            var parameters = new DungeonParameters
+            {
+                RoomParameters =
+                {
+                    MinHeight = min,
+                    MaxHeight = max
+                }
+            };
+
+            Assert.That(() => new PlaceRoomsCommand(parameters),
+                Throws.InstanceOf<ArgumentOutOfRangeException>()
+                    .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
+                    .EqualTo(nameof(RoomParameters.MaxHeight)));
+        }
+        
+        [TestCase(10, 6)]
+        [TestCase(4, 1)]
+        public void Constructor_ValidateParameters_Throws_IfMaxWidthLessMin(
+            int min, int max)
+        {
+            var map = new Map(5, 5);
+            var parameters = new DungeonParameters
+            {
+                RoomParameters =
+                {
+                    MinWidth = min,
+                    MaxWidth = max
+                }
+            };
+
+            Assert.That(() => new PlaceRoomsCommand(parameters),
+                Throws.InstanceOf<ArgumentOutOfRangeException>()
+                    .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
+                    .EqualTo(nameof(RoomParameters.MaxWidth)));
+        }
+        
+        [TestCase(4, 3)]
+        [TestCase(44, 23)]
+        public void Constructor_ValidateParameters_Throws_IfMaxWidthGreaterThanWidth(
+            int maxW, int w)
+        {
+            var map = new Map(5, 5);
+            var parameters = new DungeonParameters
+            {
+                Width = w,
+                RoomParameters =
+                {
+                    MaxWidth = maxW
+                }
+            };
+
+            Assert.That(() => new PlaceRoomsCommand(parameters),
+                Throws.InstanceOf<ArgumentOutOfRangeException>()
+                    .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
+                    .EqualTo(nameof(RoomParameters.MaxWidth)));
+        }
+        
+        [TestCase(13, 12)]
+        [TestCase(31, 21)]
+        public void Constructor_ValidateParameters_Throws_IfMaxHeightGreaterThanHeight(
+            int maxH, int h)
+        {
+            var map = new Map(5, 5);
+            var parameters = new DungeonParameters
+            {
+                Width = h,
+                RoomParameters =
+                {
+                    MaxHeight = maxH
+                }
+            };
+
+            Assert.That(() => new PlaceRoomsCommand(parameters),
+                Throws.InstanceOf<ArgumentOutOfRangeException>()
+                    .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
+                    .EqualTo(nameof(RoomParameters.MaxHeight)));
         }
 
         [TestCase(-10)]
@@ -168,8 +295,5 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
                     .EqualTo(nameof(RoomParameters.Count)));
         }
         #endregion
-
-        ////TODO Validation
-        ////TODO RoomsAreNotIntersect
     }
 }
