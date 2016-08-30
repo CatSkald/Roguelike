@@ -73,6 +73,15 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             Assert.That(_cell.IsVisited, Is.EqualTo(value));
         }
+        
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IsCorridor_GetReturnsSameValue_AsWasSet(bool value)
+        {
+            _cell.IsCorridor = value;
+
+            Assert.That(_cell.IsCorridor, Is.EqualTo(value));
+        }
 
         [Test]
         public void IsWall_IsTrue_IfAllSidesAreWalls()
@@ -97,29 +106,6 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             Assert.That(_cell.IsWall, Is.False);
         }
         
-        [Test]
-        public void IsCorridor_IsFalse_IfAllSidesAreWalls()
-        {
-            Assert.That(_cell.IsCorridor, Is.False);
-        }
-
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        public void IsCorridor_IsTrue_IfSomeSidesAreEmpty(int countOfEmptySides)
-        {
-            foreach (var dir in _cell.Sides.Keys.ToList())
-            {
-                _cell.Sides[dir] = Side.Empty;
-                countOfEmptySides--;
-                if (countOfEmptySides == 0)
-                    break;
-            }
-
-            Assert.That(_cell.IsCorridor, Is.True);
-        }
-
         [TestCase(Dir.N)]
         [TestCase(Dir.E)]
         [TestCase(Dir.S)]

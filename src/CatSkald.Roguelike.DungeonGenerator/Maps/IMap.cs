@@ -23,7 +23,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
 
         void Visit(Cell currentCell);
 
-        void CreateSide(Cell currentCell, Cell nextCell, Dir direction, Side side);
+        void CreateCorridorSide(Cell currentCell, Cell nextCell, Dir direction, Side side);
         void CreateWall(Cell cell, Dir dir);
 
         void InsertRoom(Room room, Point position);

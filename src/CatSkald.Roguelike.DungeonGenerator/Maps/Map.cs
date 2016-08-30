@@ -83,14 +83,18 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             return true;
         }
         
-        public void CreateSide(Cell startCell, Cell endCell, Dir direction, Side side)
+        public void CreateCorridorSide(Cell startCell, Cell endCell, Dir direction, Side side)
         {
             ThrowD.IfOutsideMap(this, startCell, nameof(startCell));
             ThrowD.IfOutsideMap(this, endCell, nameof(endCell));
             ThrowD.IfNotAdjacent(startCell, endCell, direction);
+            if (side == Side.Wall)
+                throw new ArgumentException("Wall cannot be used as corridor side.");
 
             startCell.Sides[direction] = side;
+            startCell.IsCorridor = true;
             endCell.Sides[DirHelper.Opposite(direction)] = side;
+            endCell.IsCorridor = true;
         }
 
         public void CreateWall(Cell startCell, Dir direction)

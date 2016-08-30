@@ -46,7 +46,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                     map, currentCell, out nextCell, out direction);
                 if (success)
                 {
-                    map.CreateSide(currentCell, nextCell, direction, Side.Empty);
+                    map.CreateCorridorSide(currentCell, nextCell, direction, Side.Empty);
                     map.Visit(nextCell);
                     currentCell = nextCell;
                     nextCell = null;
