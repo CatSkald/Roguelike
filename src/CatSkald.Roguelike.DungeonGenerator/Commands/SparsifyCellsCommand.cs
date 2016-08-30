@@ -47,6 +47,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                         .Key;
 
                     map.CreateWall(cell, emptySide);
+                    cell.IsCorridor = false;
                     nonWalls.Remove(cell);
                     removedCellsCount++;
                 }
