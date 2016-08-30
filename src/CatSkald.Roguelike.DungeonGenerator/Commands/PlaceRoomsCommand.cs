@@ -10,9 +10,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
     public sealed class PlaceRoomsCommand : IMapBuilderCommand
     {
-        private const int adjacentCorridorBonus = 1;
-        private const int overlappedCorridorBonus = 3;
-        private const int overlappedRoomBonus = 100;
+        private const int AdjacentCorridorBonus = 1;
+        private const int OverlappedCorridorBonus = 3;
+        private const int OverlappedRoomBonus = 100;
 
         private RoomParameters _params;
 
@@ -84,7 +84,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                 foreach (var dir in cell.Sides.Keys.ToList())
                 {
                     Cell adjacentCell;
-                    if(map.TryGetAdjacentCell(currentCell, dir, out adjacentCell)
+                    if (map.TryGetAdjacentCell(currentCell, dir, out adjacentCell)
                         && adjacentCell.Sides[dir] == Side.Empty)
                     {
                         map.CreateSide(currentCell, adjacentCell, dir, Side.Door);
@@ -104,16 +104,16 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                     roomCell.Location.X + cell.Location.X,
                     roomCell.Location.Y + cell.Location.Y];
 
-                currentScore += adjacentCorridorBonus
+                currentScore += AdjacentCorridorBonus
                     * roomCell.Sides
                         .Count(s => HasAdjacentCorridor(map, currentCell, s.Key));
 
                 if (currentCell.IsCorridor)
                 {
-                    currentScore += overlappedCorridorBonus;
+                    currentScore += OverlappedCorridorBonus;
                 }
 
-                currentScore += overlappedRoomBonus
+                currentScore += OverlappedRoomBonus
                     * map.Rooms.Count(r => r.Bounds.Contains(currentCell.Location));
             }
 
@@ -131,9 +131,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
         {
             var rooms = Enumerable
                 .Repeat<Func<Room>>(CreateRoom, _params.Count)
-                #pragma warning disable CC0031 // Check for null before calling a delegate
+#pragma warning disable CC0031 // Check for null before calling a delegate
                 .Select(f => f())
-                #pragma warning restore CC0031 // Check for null before calling a delegate
+#pragma warning restore CC0031 // Check for null before calling a delegate
                 .ToList();
 
             return rooms;
