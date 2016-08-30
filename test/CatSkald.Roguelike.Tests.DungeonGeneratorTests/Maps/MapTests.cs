@@ -372,15 +372,6 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         }
 
         #region InsertRoom
-        [TestCase(-1, 0)]
-        [TestCase(100, 150)]
-        [TestCase(0, 99)]
-        public void InsertRoom_ThrowsIfPointOutsideMap(int x, int y)
-        {
-            Assert.That(() => _map.InsertRoom(new Room(4, 4), new Point(x, y)),
-                Throws.TypeOf<ArgumentOutOfRangeException>());
-        }
-        
         [TestCase(0, 0, 10, 3)]
         [TestCase(0, 0, 1, 15)]
         [TestCase(4, 3, 5, 1)]
@@ -415,14 +406,56 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
         [TestCase(1, 0)]
         [TestCase(5, 5)]
-        public void InsertRoom_MapCellsAreUpdated(int x, int y)
+        public void InsertRoom_MapCellSidesAreUpdated(int x, int y)
         {
             _map.InsertRoom(new Room(4, 3), new Point(x, y));
 
             var room = _map.Rooms.Single();
 
-            Assert.That(room, 
-                Has.All.Matches<Cell>(c => c.Sides.Equals(_map[c.Location].Sides)));
+            Assert.That(room, Has.All.Matches<Cell>(c => c.Sides
+                .Equals(_map[new Point(c.Location.X + x, c.Location.Y + y)].Sides)));
+        }
+        
+        [Test]
+        public void InsertRoom_AdjacentCellSidesHaveCorrectSides()
+        {
+            var map = new Map(3, 3);
+            foreach (var cell in map)
+            {
+                foreach (var side in cell.Sides.Keys.ToList())
+                {
+                    cell.Sides[side] = Side.Empty;
+                }
+            }
+            var room = new Room(2, 2);
+
+            map.InsertRoom(room, new Point(0, 0));
+
+            Assert.That(map[2, 0].Sides[Dir.W] == Side.Wall, "[2, 0] W");
+            Assert.That(map[2, 0].Sides
+                .Where(s => s.Key != Dir.W)
+                .All(s => s.Value == Side.Empty), "[2, 0] *");
+
+            Assert.That(map[2, 1].Sides[Dir.W] == Side.Wall, "[2, 1] W");
+            Assert.That(map[2, 1].Sides
+                .Where(s => s.Key != Dir.W)
+                .All(s => s.Value == Side.Empty), "[2, 1] *");
+
+            Assert.That(map[1, 2].Sides[Dir.N] == Side.Wall, "[1, 2] N");
+            Assert.That(map[1, 2].Sides
+                .Where(s => s.Key != Dir.N)
+                .All(s => s.Value == Side.Empty), "[1, 2] *");
+
+            Assert.That(map[0, 2].Sides[Dir.N] == Side.Wall, "[0, 2] N");
+            Assert.That(map[0, 2].Sides
+                .Where(s => s.Key != Dir.N)
+                .All(s => s.Value == Side.Empty), "[0, 2] *");
+
+            foreach (var cell in new Room(2, 2))
+            {
+                Assert.That(cell.Sides, Is.EquivalentTo(map[cell].Sides),
+                    "Failed cell: " + cell.Location);
+            }
         }
         
         [TestCase(true)]
@@ -469,6 +502,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 { "CreateCorridor_StartCell", (m, c) => m.CreateCorridor(c, _map[0, 0], Dir.E) },
                 { "CreateCorridor_EndCell", (m, c) => m.CreateCorridor(_map[0, 0], c, Dir.E) },
                 { "RemoveCorridor", (m, c) => m.RemoveCorridor(c, Dir.E) },
+                { "InsertRoom", (m, c) => m.InsertRoom(new Room(2, 2), c.Location) },
                 { "TryGetAdjacentCell", (m, c) => {
                         Cell outCell;
                         m.TryGetAdjacentCell(c, Dir.E, out outCell);
