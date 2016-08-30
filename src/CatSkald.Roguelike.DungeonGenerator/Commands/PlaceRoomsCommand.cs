@@ -39,6 +39,10 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
                 foreach (var cell in map)
                 {
+                    // place rooms only in corridors to ensure it has exit
+                    if (!cell.IsCorridor)
+                        continue;
+
                     var newBounds = new Rectangle(
                         cell.Location.X,
                         cell.Location.Y,
