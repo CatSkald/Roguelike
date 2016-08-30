@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Tools;
 
@@ -27,41 +28,68 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             Throw.IfNull(map, nameof(map));
 
             var rooms = CreateRooms();
-            PlaceRooms(map, rooms);
-        }
-
-        private static void PlaceRooms(IMap map, List<Room> rooms)
-        {
             foreach (var room in rooms)
             {
-                int bestRoomScore = short.MaxValue;
-                Cell cellToPlace = null;
+                PlaceRooms(map, room);
+            }
+            foreach (var room in map.Rooms)
+            {
+                CreateDoors(map, room);
+            }
+        }
 
-                foreach (var cell in map)
+        private static void PlaceRooms(IMap map, Room room)
+        {
+            int bestRoomScore = short.MaxValue;
+            Cell cellToPlace = null;
+
+            foreach (var cell in map)
+            {
+                // place rooms only in corridors to ensure it has exit
+                if (!cell.IsCorridor)
+                    continue;
+
+                var newBounds = new Rectangle(
+                    cell.Location.X,
+                    cell.Location.Y,
+                    room.Width,
+                    room.Height);
+                if (!map.Bounds.Contains(newBounds))
+                    continue;
+
+                var roomScore = CalculateRoomScore(room, map, cell);
+                if (bestRoomScore > roomScore)
                 {
-                    // place rooms only in corridors to ensure it has exit
-                    if (!cell.IsCorridor)
-                        continue;
-
-                    var newBounds = new Rectangle(
-                        cell.Location.X,
-                        cell.Location.Y,
-                        room.Width,
-                        room.Height);
-                    if (!map.Bounds.Contains(newBounds))
-                        continue;
-
-                    var roomScore = CalculateRoomScore(room, map, cell);
-                    if (bestRoomScore > roomScore)
-                    {
-                        cellToPlace = cell;
-                        bestRoomScore = roomScore;
-                    }
+                    cellToPlace = cell;
+                    bestRoomScore = roomScore;
                 }
+            }
 
-                if (cellToPlace != null)
+            if (cellToPlace != null)
+            {
+                map.InsertRoom(room, cellToPlace.Location);
+            }
+        }
+
+        private static void CreateDoors(IMap map, Room room)
+        {
+            foreach (var cell in room)
+            {
+                var currentCell = map[
+                    room.Bounds.X + cell.Location.X,
+                    room.Bounds.Y + cell.Location.Y];
+
+                var sides = cell.Sides
+                    .Where(s => HasAdjacentCorridor(map, currentCell, s.Key));
+                foreach (var dir in cell.Sides.Keys.ToList())
                 {
-                    map.InsertRoom(room, cellToPlace.Location);
+                    Cell adjacentCell;
+                    if(map.TryGetAdjacentCell(currentCell, dir, out adjacentCell)
+                        && adjacentCell.Sides[dir] == Side.Empty)
+                    {
+                        map.CreateSide(currentCell, adjacentCell, dir, Side.Door);
+                        cell.Sides[dir] = Side.Door;
+                    }
                 }
             }
         }
@@ -78,13 +106,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 
                 currentScore += adjacentCorridorBonus
                     * roomCell.Sides
-                        .Count(s =>
-                        {
-                            Cell adjacentCell;
-                            return map.TryGetAdjacentCell(
-                                currentCell, s.Key, out adjacentCell)
-                                && adjacentCell.Sides[s.Key] == Side.Empty;
-                        });
+                        .Count(s => HasAdjacentCorridor(map, currentCell, s.Key));
 
                 if (currentCell.IsCorridor)
                 {
@@ -96,6 +118,13 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             }
 
             return currentScore;
+        }
+
+        private static bool HasAdjacentCorridor(IMap map, Cell currentCell, Dir dir)
+        {
+            Cell adjacentCell;
+            return map.TryGetAdjacentCell(currentCell, dir, out adjacentCell)
+                && adjacentCell.Sides[dir] == Side.Empty;
         }
 
         private List<Room> CreateRooms()

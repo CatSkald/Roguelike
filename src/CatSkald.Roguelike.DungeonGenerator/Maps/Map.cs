@@ -83,17 +83,17 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             return true;
         }
         
-        public void CreateCorridor(Cell startCell, Cell endCell, Dir direction)
+        public void CreateSide(Cell startCell, Cell endCell, Dir direction, Side side)
         {
             ThrowD.IfOutsideMap(this, startCell, nameof(startCell));
             ThrowD.IfOutsideMap(this, endCell, nameof(endCell));
             ThrowD.IfNotAdjacent(startCell, endCell, direction);
 
-            startCell.Sides[direction] = Side.Empty;
-            endCell.Sides[DirHelper.Opposite(direction)] = Side.Empty;
+            startCell.Sides[direction] = side;
+            endCell.Sides[DirHelper.Opposite(direction)] = side;
         }
 
-        public void RemoveCorridor(Cell startCell, Dir direction)
+        public void CreateWall(Cell startCell, Dir direction)
         {
             ThrowD.IfOutsideMap(this, startCell, nameof(startCell));
             ThrowD.IfNoCorridor(startCell, direction, nameof(startCell));
@@ -150,7 +150,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
                 && mapCell.Sides[dir] == Side.Empty
                 && HasAdjacentCell(mapCell, dir))
             {
-                RemoveCorridor(mapCell, dir);
+                CreateWall(mapCell, dir);
             }
         }
 
