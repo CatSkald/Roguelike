@@ -29,17 +29,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             Sides.Values.All(it => it == Side.Wall);
         public bool IsDeadEnd => 
             Sides.Values.Count(it => it == Side.Empty) == 1;
-
-        public void CopyFrom(Cell cell)
-        {
-            Location = cell.Location;
-            IsVisited = cell.IsVisited;
-            foreach (var side in cell.Sides)
-            {
-                Sides[side.Key] = side.Value;
-            }
-        }
-
+        
         #region IEquatable
         public bool Equals(Cell other)
         {
