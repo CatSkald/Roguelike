@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
@@ -58,6 +59,21 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             command.Execute(map);
 
             Assert.That(map, Has.All.With.Property(nameof(Cell.IsWall)).True);
+        }
+        
+        [Test]
+        public void Execute_Sets_IsCorridor_ToFalse()
+        {
+            var map = new Map(2, 3);
+            new CorridorBuilderCommand(50).Execute(map);
+            var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
+
+            Assert.That(deadEnds, Has.All.With.Property(nameof(Cell.IsCorridor)).True);
+
+            var command = new SparsifyCellsCommand(100);
+            command.Execute(map);
+
+            Assert.That(deadEnds, Has.All.With.Property(nameof(Cell.IsCorridor)).False);
         }
 
         [Test]
