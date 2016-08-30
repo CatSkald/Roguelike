@@ -249,25 +249,26 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         }
         #endregion
 
-        #region CreateCorridor
+        #region CreateSide
         [TestCase(0, 0, 0, 1, Dir.S, Dir.N)]
         [TestCase(1, 1, 1, 0, Dir.N, Dir.S)]
         [TestCase(0, 0, 1, 0, Dir.E, Dir.W)]
         [TestCase(1, 1, 0, 1, Dir.W, Dir.E)]
-        public void CreateCorridor_CorridorCreatedCorrectly(
+        public void CreateSide_CorridorCreatedCorrectly(
             int x1, int y1, int x2, int y2, Dir corridorDir, Dir oppositeDir)
         {
             var map = new Map(5, 5);
             var startCell = map[x1, y1];
             var endCell = map[x2, y2];
+            var emptySide = Side.Empty;
 
-            map.CreateCorridor(startCell, endCell, corridorDir);
+            map.CreateSide(startCell, endCell, corridorDir, emptySide);
 
-            Assert.That(startCell.Sides[corridorDir], Is.EqualTo(Side.Empty));
+            Assert.That(startCell.Sides[corridorDir], Is.EqualTo(emptySide));
             Assert.That(startCell.Sides.Where(s => s.Key != corridorDir),
                 Has.All.With.Property("Value").EqualTo(Side.Wall));
 
-            Assert.That(endCell.Sides[oppositeDir], Is.EqualTo(Side.Empty));
+            Assert.That(endCell.Sides[oppositeDir], Is.EqualTo(emptySide));
             Assert.That(endCell.Sides.Where(s => s.Key != oppositeDir),
                 Has.All.With.Property("Value").EqualTo(Side.Wall));
         }
@@ -279,7 +280,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(1, 1, 1, 1, Dir.E)]
         [TestCase(1, 1, 0, 0, Dir.E)]
         [TestCase(2, 1, 3, 4, Dir.E)]
-        public void CreateCorridor_ThrowsForNonAjacentCells(
+        public void CreateSide_ThrowsForNonAjacentCells(
             int x1, int y1, int x2, int y2, Dir corridorDirection)
         {
             var map = new Map(5, 5);
@@ -287,17 +288,18 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             var startCell = map[x1, y1];
             var endCell = map[x2, y2];
 
-            Assert.That(() => map.CreateCorridor(startCell, endCell, corridorDirection),
+            Assert.That(() => 
+                map.CreateSide(startCell, endCell, corridorDirection, Side.Empty),
                 Throws.InvalidOperationException);
         }
         #endregion
 
-        #region RemoveCorridor
+        #region CreateWall
         [TestCase(0, 0, 0, 1, Dir.S, Dir.N)]
         [TestCase(1, 1, 1, 0, Dir.N, Dir.S)]
         [TestCase(0, 0, 1, 0, Dir.E, Dir.W)]
         [TestCase(1, 1, 0, 1, Dir.W, Dir.E)]
-        public void RemoveCorridor_CorridorRemovedCorrectly(
+        public void CreateWall_CorridorRemovedCorrectly(
             int x1, int y1, int x2, int y2, Dir corridorDir, Dir oppositeDir)
         {
             var map = new Map(5, 5);
@@ -309,7 +311,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 endCell.Sides[dir] = Side.Empty;
             }
 
-            map.RemoveCorridor(startCell, corridorDir);
+            map.CreateWall(startCell, corridorDir);
 
             Assert.That(startCell.Sides[corridorDir], Is.EqualTo(Side.Wall));
             Assert.That(startCell.Sides.Where(s => s.Key != corridorDir),
@@ -324,7 +326,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(1, 1, 1, 0, Dir.N)]
         [TestCase(0, 0, 1, 0, Dir.E)]
         [TestCase(1, 1, 0, 1, Dir.W)]
-        public void RemoveCorridor_Throws_IfStartCellHasNoCorridor(
+        public void CreateWall_Throws_IfStartCellHasNoCorridor(
             int x1, int y1, int x2, int y2, Dir corridorDir)
         {
             var map = new Map(5, 5);
@@ -336,7 +338,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 endCell.Sides[dir] = Side.Wall;
             }
 
-            Assert.That(() => map.RemoveCorridor(startCell, corridorDir),
+            Assert.That(() => map.CreateWall(startCell, corridorDir),
                 Throws.InvalidOperationException);
         }
 
@@ -344,7 +346,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(1, 1, 1, 0, Dir.N)]
         [TestCase(0, 0, 1, 0, Dir.E)]
         [TestCase(1, 1, 0, 1, Dir.W)]
-        public void RemoveCorridor_Throws_IfEndCellHasNoCorridor(
+        public void CreateWall_Throws_IfEndCellHasNoCorridor(
             int x1, int y1, int x2, int y2, Dir corridorDir)
         {
             var map = new Map(5, 5);
@@ -356,7 +358,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 endCell.Sides[dir] = Side.Empty;
             }
 
-            Assert.That(() => map.RemoveCorridor(startCell, corridorDir),
+            Assert.That(() => map.CreateWall(startCell, corridorDir),
                 Throws.InvalidOperationException);
         }
         #endregion
@@ -499,9 +501,9 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             {
                 { "Visit", (m, c) => m.Visit(c) },
                 { "HasAdjacentCell", (m, c) => m.HasAdjacentCell(c, Dir.E) },
-                { "CreateCorridor_StartCell", (m, c) => m.CreateCorridor(c, _map[0, 0], Dir.E) },
-                { "CreateCorridor_EndCell", (m, c) => m.CreateCorridor(_map[0, 0], c, Dir.E) },
-                { "RemoveCorridor", (m, c) => m.RemoveCorridor(c, Dir.E) },
+                { "CreateSide_StartCell", (m, c) => m.CreateSide(c, _map[0, 0], Dir.E, Side.Empty) },
+                { "CreateSide_EndCell", (m, c) => m.CreateSide(_map[0, 0], c, Dir.E, Side.Empty) },
+                { "CreateWall", (m, c) => m.CreateWall(c, Dir.E) },
                 { "InsertRoom", (m, c) => m.InsertRoom(new Room(2, 2), c.Location) },
                 { "TryGetAdjacentCell", (m, c) => {
                         Cell outCell;

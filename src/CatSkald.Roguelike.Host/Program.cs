@@ -58,7 +58,7 @@ namespace CatSkald.Roguelike.Host
                 for (int x = 0; x < map.Width; x++)
                 {
                     var sides = map[x, y].Sides;
-                    if (sides.Values.All(s => s == Side.Empty))
+                    if (sides.Values.All(s => s != Side.Wall))
                     {
                         Console.Write(".");
                     }
@@ -69,70 +69,70 @@ namespace CatSkald.Roguelike.Host
 
                     // One wall
                     else if (sides[Dir.N] == Side.Wall
-                        && sides.Where(s => s.Key != Dir.N).All(s => s.Value == Side.Empty))
+                        && sides.Where(s => s.Key != Dir.N).All(s => s.Value != Side.Wall))
                     {
                         Console.Write("╦");
                     }
                     else if (sides[Dir.S] == Side.Wall
-                        && sides.Where(s => s.Key != Dir.S).All(s => s.Value == Side.Empty))
+                        && sides.Where(s => s.Key != Dir.S).All(s => s.Value != Side.Wall))
                     {
                         Console.Write("╩");
                     }
                     else if (sides[Dir.E] == Side.Wall
-                        && sides.Where(s => s.Key != Dir.E).All(s => s.Value == Side.Empty))
+                        && sides.Where(s => s.Key != Dir.E).All(s => s.Value != Side.Wall))
                     {
                         Console.Write("╣");
                     }
                     else if (sides[Dir.W] == Side.Wall
-                        && sides.Where(s => s.Key != Dir.W).All(s => s.Value == Side.Empty))
+                        && sides.Where(s => s.Key != Dir.W).All(s => s.Value != Side.Wall))
                     {
                         Console.Write("╠");
                     }
 
                     // Dead ends
-                    else if (sides[Dir.N] == Side.Empty
+                    else if (sides[Dir.N] != Side.Wall
                         && sides.Where(s => s.Key != Dir.N).All(s => s.Value == Side.Wall))
                     {
                         Console.Write("^");
                     }
-                    else if (sides[Dir.S] == Side.Empty
+                    else if (sides[Dir.S] != Side.Wall
                         && sides.Where(s => s.Key != Dir.S).All(s => s.Value == Side.Wall))
                     {
                         Console.Write("v");
                     }
-                    else if (sides[Dir.E] == Side.Empty
+                    else if (sides[Dir.E] != Side.Wall
                         && sides.Where(s => s.Key != Dir.E).All(s => s.Value == Side.Wall))
                     {
                         Console.Write(">");
                     }
-                    else if (sides[Dir.W] == Side.Empty
+                    else if (sides[Dir.W] != Side.Wall
                         && sides.Where(s => s.Key != Dir.W).All(s => s.Value == Side.Wall))
                     {
                         Console.Write("<");
                     }
 
                     // Corridors
-                    else if (sides[Dir.N] == Side.Empty && sides[Dir.S] == Side.Empty)
+                    else if (sides[Dir.N] != Side.Wall && sides[Dir.S] != Side.Wall)
                     {
                         Console.Write("║");
                     }
-                    else if (sides[Dir.E] == Side.Empty && sides[Dir.W] == Side.Empty)
+                    else if (sides[Dir.E] != Side.Wall && sides[Dir.W] != Side.Wall)
                     {
                         Console.Write("═");
                     }
-                    else if (sides[Dir.N] == Side.Empty && sides[Dir.W] == Side.Empty)
+                    else if (sides[Dir.N] != Side.Wall && sides[Dir.W] != Side.Wall)
                     {
                         Console.Write("╝");
                     }
-                    else if (sides[Dir.N] == Side.Empty && sides[Dir.E] == Side.Empty)
+                    else if (sides[Dir.N] != Side.Wall && sides[Dir.E] != Side.Wall)
                     {
                         Console.Write("╚");
                     }
-                    else if (sides[Dir.S] == Side.Empty && sides[Dir.W] == Side.Empty)
+                    else if (sides[Dir.S] != Side.Wall && sides[Dir.W] != Side.Wall)
                     {
                         Console.Write("╗");
                     }
-                    else if (sides[Dir.S] == Side.Empty && sides[Dir.E] == Side.Empty)
+                    else if (sides[Dir.S] != Side.Wall && sides[Dir.E] != Side.Wall)
                     {
                         Console.Write("╔");
                     }
