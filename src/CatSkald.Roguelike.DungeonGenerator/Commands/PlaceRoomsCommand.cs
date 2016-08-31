@@ -30,15 +30,11 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             var rooms = CreateRooms();
             foreach (var room in rooms)
             {
-                PlaceRooms(map, room);
-            }
-            foreach (var room in map.Rooms)
-            {
-                CreateDoors(map, room);
+                PlaceRoom(map, room);
             }
         }
 
-        private static void PlaceRooms(IMap map, Room room)
+        private static void PlaceRoom(IMap map, Room room)
         {
             int bestRoomScore = short.MaxValue;
             Cell cellToPlace = null;
@@ -68,29 +64,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             if (cellToPlace != null)
             {
                 map.InsertRoom(room, cellToPlace.Location);
-            }
-        }
-
-        private static void CreateDoors(IMap map, Room room)
-        {
-            foreach (var cell in room)
-            {
-                var currentCell = map[
-                    room.Bounds.X + cell.Location.X,
-                    room.Bounds.Y + cell.Location.Y];
-
-                var sides = cell.Sides
-                    .Where(s => HasAdjacentCorridor(map, currentCell, s.Key));
-                foreach (var dir in cell.Sides.Keys.ToList())
-                {
-                    Cell adjacentCell;
-                    if (map.TryGetAdjacentCell(currentCell, dir, out adjacentCell)
-                        && adjacentCell.Sides[dir] == Side.Empty)
-                    {
-                        map.CreateCorridorSide(currentCell, adjacentCell, dir, Side.Door);
-                        cell.Sides[dir] = Side.Door;
-                    }
-                }
             }
         }
 
@@ -124,7 +97,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
         {
             Cell adjacentCell;
             return map.TryGetAdjacentCell(currentCell, dir, out adjacentCell)
-                && adjacentCell.Sides[dir] == Side.Empty;
+                && adjacentCell.Sides[dir] != Side.Wall;
         }
 
         private List<Room> CreateRooms()
