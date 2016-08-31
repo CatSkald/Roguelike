@@ -9,7 +9,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
         {
         }
 
-        public FakeCellContainer(int width, int height, Action<Cell> cellInitializer)
+        public FakeCellContainer(int width, int height, Action<MapCell> cellInitializer)
              : base(width, height, cellInitializer)
         {
         }

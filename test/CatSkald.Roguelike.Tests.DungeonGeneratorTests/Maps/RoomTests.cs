@@ -1,4 +1,4 @@
-﻿using CatSkald.Roguelike.DungeonGenerator.Directions;
+﻿using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
@@ -14,7 +14,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         {
             var room = new Room(w, h);
 
-            Assert.That(room, Has.All.Matches<Cell>(cell =>
+            Assert.That(room, Has.All.Matches<MapCell>(cell =>
             {
                 return (cell.Sides[Dir.W] == Side.Empty || cell.Location.X == 0)
                 && (cell.Sides[Dir.E] == Side.Empty || cell.Location.X == room.Width - 1)

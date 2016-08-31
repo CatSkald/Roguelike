@@ -6,13 +6,13 @@ using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
-    public abstract class CellContainer : IEnumerable<Cell>
+    public abstract class CellContainer : IEnumerable<MapCell>
     {
-        private readonly Cell[,] cells;
+        private readonly MapCell[,] cells;
         private Rectangle bounds;
 
         protected CellContainer(
-            int width, int height, Action<Cell> cellInitializer = null)
+            int width, int height, Action<MapCell> cellInitializer = null)
         {
             Throw.IfLess(0, width, nameof(width));
             Throw.IfLess(0, height, nameof(height));
@@ -22,12 +22,12 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             Size = width * height;
             bounds = new Rectangle(0, 0, width, height);
 
-            cells = new Cell[height, width];
+            cells = new MapCell[height, width];
 
             for (int x = 0; x < width; x++)
                 for (int y = 0; y < height; y++)
                 {
-                    var cell = new Cell(x, y);
+                    var cell = new MapCell(x, y);
                     cellInitializer?.Invoke(cell);
                     this[x, y] = cell;
                 }
@@ -38,9 +38,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         public int Size { get; }
         public Rectangle Bounds { get { return bounds; } }
 
-        public Cell this[Cell cell] => this[cell.Location];
-        public Cell this[Point point] => this[point.X, point.Y];
-        public Cell this[int width, int height]
+        public MapCell this[MapCell cell] => this[cell.Location];
+        public MapCell this[Point point] => this[point.X, point.Y];
+        public MapCell this[int width, int height]
         {
             get
             {
@@ -58,7 +58,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         }
 
         #region IEnumerable
-        public IEnumerator<Cell> GetEnumerator()
+        public IEnumerator<MapCell> GetEnumerator()
         {
             return Traverse().GetEnumerator();
         }
@@ -68,7 +68,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             return GetEnumerator();
         }
 
-        private IEnumerable<Cell> Traverse()
+        private IEnumerable<MapCell> Traverse()
         {
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)

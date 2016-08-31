@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions

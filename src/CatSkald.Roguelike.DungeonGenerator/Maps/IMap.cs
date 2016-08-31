@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
-    public interface IMap : IEnumerable<Cell>
+    public interface IMap : IEnumerable<MapCell>
     {
         int Width { get; }
         int Height { get; }
@@ -14,21 +14,21 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         bool AllVisited { get; }
         IReadOnlyCollection<Room> Rooms { get; }
 
-        Cell this[Cell point] { get; }
-        Cell this[Point point] { get; }
-        Cell this[int width, int height] { get; }
+        MapCell this[MapCell point] { get; }
+        MapCell this[Point point] { get; }
+        MapCell this[int width, int height] { get; }
 
-        bool HasAdjacentCell(Cell cell, Dir direction);
-        bool TryGetAdjacentCell(Cell cell, Dir direction, out Cell adjacentCell);
+        bool HasAdjacentCell(MapCell cell, Dir direction);
+        bool TryGetAdjacentCell(MapCell cell, Dir direction, out MapCell adjacentCell);
 
-        void Visit(Cell currentCell);
+        void Visit(MapCell currentCell);
 
-        void CreateCorridorSide(Cell currentCell, Cell nextCell, Dir direction, Side side);
-        void CreateWall(Cell cell, Dir dir);
+        void CreateCorridorSide(MapCell currentCell, MapCell nextCell, Dir direction, Side side);
+        void CreateWall(MapCell cell, Dir dir);
 
         void InsertRoom(Room room, Point position);
 
-        Cell PickRandomCell();
-        Cell PickNextRandomVisitedCell(Cell currentCell);
+        MapCell PickRandomCell();
+        MapCell PickNextRandomVisitedCell(MapCell currentCell);
     }
 }

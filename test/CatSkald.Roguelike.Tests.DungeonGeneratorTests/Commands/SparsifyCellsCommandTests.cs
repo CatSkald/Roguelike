@@ -46,7 +46,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             var command = new SparsifyCellsCommand(50);
             command.Execute(map);
 
-            Assert.That(map, Has.Some.With.Property(nameof(Cell.IsWall)).False);
+            Assert.That(map, Has.Some.With.Property(nameof(MapCell.IsWall)).False);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             var command = new SparsifyCellsCommand(100);
             command.Execute(map);
 
-            Assert.That(map, Has.All.With.Property(nameof(Cell.IsWall)).True);
+            Assert.That(map, Has.All.With.Property(nameof(MapCell.IsWall)).True);
         }
         
         [Test]
@@ -68,12 +68,12 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             new CorridorBuilderCommand(50).Execute(map);
             var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
 
-            Assert.That(deadEnds, Has.All.With.Property(nameof(Cell.IsCorridor)).True);
+            Assert.That(deadEnds, Has.All.With.Property(nameof(MapCell.IsCorridor)).True);
 
             var command = new SparsifyCellsCommand(100);
             command.Execute(map);
 
-            Assert.That(deadEnds, Has.All.With.Property(nameof(Cell.IsCorridor)).False);
+            Assert.That(deadEnds, Has.All.With.Property(nameof(MapCell.IsCorridor)).False);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             var command = new SparsifyCellsCommand(0);
             command.Execute(map);
 
-            Assert.That(map, Has.None.With.Property(nameof(Cell.IsWall)).True);
+            Assert.That(map, Has.None.With.Property(nameof(MapCell.IsWall)).True);
         }
     }
 }

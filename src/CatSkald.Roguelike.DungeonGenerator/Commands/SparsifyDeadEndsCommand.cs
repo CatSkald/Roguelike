@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Tools;
 
@@ -32,9 +32,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             }
         }
 
-        private void BuildCorridor(IMap map, Cell currentCell)
+        private void BuildCorridor(IMap map, MapCell currentCell)
         {
-            Cell nextCell;
+            MapCell nextCell;
             var direction = Dir.Zero;
 
             bool success;

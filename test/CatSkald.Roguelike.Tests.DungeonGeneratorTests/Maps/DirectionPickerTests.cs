@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
+using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions

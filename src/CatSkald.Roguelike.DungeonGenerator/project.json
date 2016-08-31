@@ -9,7 +9,8 @@
   },
 
   "dependencies": {
-    "CatSkald.Tools": "0.1.0-*",
+    "CatSkald.Tools": "*",
+    "CatSkald.Roguelike.Core": "*",
     "NETStandard.Library": "1.6.0",
     "System.Drawing.Primitives": "4.0.0"
   },

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Tools;
 
@@ -37,7 +37,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
         private static void PlaceRoom(IMap map, Room room)
         {
             int bestRoomScore = short.MaxValue;
-            Cell cellToPlace = null;
+            MapCell cellToPlace = null;
 
             foreach (var cell in map)
             {
@@ -67,7 +67,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             }
         }
 
-        private static int CalculateRoomScore(Room room, IMap map, Cell cell)
+        private static int CalculateRoomScore(Room room, IMap map, MapCell cell)
         {
             var currentScore = 0;
 
@@ -93,9 +93,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             return currentScore;
         }
 
-        private static bool HasAdjacentCorridor(IMap map, Cell currentCell, Dir dir)
+        private static bool HasAdjacentCorridor(IMap map, MapCell currentCell, Dir dir)
         {
-            Cell adjacentCell;
+            MapCell adjacentCell;
             return map.TryGetAdjacentCell(currentCell, dir, out adjacentCell)
                 && adjacentCell.Sides[dir] != Side.Wall;
         }
