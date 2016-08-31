@@ -4,7 +4,7 @@ using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
+namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Directions
 {
     [TestFixture]
     public class DirectionPickerTests

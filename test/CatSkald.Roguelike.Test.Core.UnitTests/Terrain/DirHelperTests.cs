@@ -2,7 +2,7 @@
 using CatSkald.Roguelike.Core.Terrain;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Directions
+namespace CatSkald.Roguelike.Test.Core.UnitTests
 {
     [TestFixture]
     public class DirHelperTests
