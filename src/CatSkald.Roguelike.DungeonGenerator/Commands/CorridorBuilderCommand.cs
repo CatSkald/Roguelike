@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Tools;
 
@@ -32,7 +32,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                     "Map should not contain visited cells.");
             }
 
-            Cell nextCell;
+            MapCell nextCell;
             var direction = Dir.Zero;
 
             var currentCell = map.PickRandomCell();
@@ -60,7 +60,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
         }
 
         private bool TryPickRandomUnvisitedAdjacentCell(
-            IMap map, Cell currentCell, out Cell nextCell, out Dir direction)
+            IMap map, MapCell currentCell, out MapCell nextCell, out Dir direction)
         {
             var success = false;
             do

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.Drawing;
 using CatSkald.Roguelike.DungeonGenerator;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using Microsoft.Extensions.Configuration;
 

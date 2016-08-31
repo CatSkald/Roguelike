@@ -9,6 +9,7 @@
   },
 
   "dependencies": {
+    "CatSkald.Roguelike.Core": "*",
     "CatSkald.Roguelike.DungeonGenerator": "*",
     "CatSkald.Tools": "*",
     "NUnit": "3.4.1",

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
@@ -56,8 +56,8 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 });
 
             Assert.That(_container, Has.All
-                .With.Property(nameof(Cell.IsVisited)).True
-                .And.Property(nameof(Cell.Sides)).EqualTo(expectedSides));
+                .With.Property(nameof(MapCell.IsVisited)).True
+                .And.Property(nameof(MapCell.Sides)).EqualTo(expectedSides));
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         public void AllIndexers_ReturnCorrectCell(int x, int y)
         {
             var point = new Point(x, y);
-            var cell = new Cell(x, y);
+            var cell = new MapCell(x, y);
             var expected = _container.Single(it => it.Location == point);
 
             Assert.That(_container[x, y], Is.SameAs(expected), "XYIndexer not working");
@@ -87,7 +87,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         {
             int x = 0, y = 0;
             var point = new Point(x, y);
-            var cell = new Cell(x, y);
+            var cell = new MapCell(x, y);
             var expected = _container.First();
 
             Assert.That(_container[x, y], Is.SameAs(expected), "XYIndexer not working");
@@ -100,7 +100,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         {
             int x = _container.Width - 1, y = _container.Height - 1;
             var point = new Point(x, y);
-            var cell = new Cell(x, y);
+            var cell = new MapCell(x, y);
             var expected = _container.Last();
 
             Assert.That(_container[x, y], Is.SameAs(expected), "XYIndexer not working");
@@ -167,7 +167,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         {
             _container = new FakeCellContainer(3, 3);
 
-            var queue = new Queue<Cell>(_container.Size);
+            var queue = new Queue<MapCell>(_container.Size);
             queue.Enqueue(_container[0, 0]);
             queue.Enqueue(_container[0, 1]);
             queue.Enqueue(_container[0, 2]);

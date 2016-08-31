@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
-using CatSkald.Roguelike.Core;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 
 namespace CatSkald.Roguelike.Drawing
@@ -14,7 +13,9 @@ namespace CatSkald.Roguelike.Drawing
 
         public Tile[,] ConvertToTiles(IMap dungeon)
         {
-            var tiles = new Tile[dungeon.Width * 2 + 1, dungeon.Height * 2 + 1];
+            var tiles = new Tile[
+                dungeon.Width * 2 + 1, 
+                dungeon.Height * 2 + 1];
 
             for (var x = 0; x < dungeon.Width * 2 + 1; x++)
             {

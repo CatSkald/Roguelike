@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Tools;
 
@@ -22,7 +22,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Utils
             }
         }
         
-        public static void IfOutsideMap(IMap map, Cell cell, string name = "cell")
+        public static void IfOutsideMap(IMap map, MapCell cell, string name = "cell")
         {
             Throw.IfNull(cell, name);
 
@@ -40,7 +40,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Utils
             }
         }
 
-        public static void IfNoCorridor(Cell cell, Dir direction, string name = "cell")
+        public static void IfNoCorridor(MapCell cell, Dir direction, string name = "cell")
         {
             Throw.IfNull(cell, name);
 
@@ -51,7 +51,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Utils
             }
         }
 
-        public static void IfNotAdjacent(Cell startCell, Cell endCell, Dir direction)
+        public static void IfNotAdjacent(MapCell startCell, MapCell endCell, Dir direction)
         {
             Throw.IfNull(startCell, nameof(startCell));
             Throw.IfNull(endCell, nameof(endCell));

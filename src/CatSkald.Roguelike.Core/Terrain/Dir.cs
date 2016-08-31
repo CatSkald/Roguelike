@@ -1,4 +1,4 @@
-﻿namespace CatSkald.Roguelike.DungeonGenerator.Directions
+﻿namespace CatSkald.Roguelike.Core.Terrain
 {
     public enum Dir
     {

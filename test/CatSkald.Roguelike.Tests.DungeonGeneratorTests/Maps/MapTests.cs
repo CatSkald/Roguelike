@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
@@ -22,7 +22,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [Test]
         public void Constructor_CellsAreNotVisited_WhenMapCreated()
         {
-            Assert.That(_map, Has.All.Property(nameof(Cell.IsVisited)).False);
+            Assert.That(_map, Has.All.Property(nameof(MapCell.IsVisited)).False);
         }
 
         #region AllVisited
@@ -123,7 +123,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             var cell = _map.PickNextRandomVisitedCell(visitedCell);
 
             Assert.That(cell, Is.Not.EqualTo(visitedCell)
-                .And.With.Property(nameof(Cell.IsVisited)).True);
+                .And.With.Property(nameof(MapCell.IsVisited)).True);
         } 
         #endregion
 
@@ -224,7 +224,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(14, 9, Dir.S)]
         public void TryGetAdjacentCell_ReturnsFalse_IfNoAdjacentCell(int x, int y, Dir dir)
         {
-            Cell adjacent;
+            MapCell adjacent;
 
             var result = _map.TryGetAdjacentCell(_map[x, y], dir, out adjacent);
 
@@ -240,7 +240,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             int x, int y, Dir dir, int expectedX, int expectedY)
         {
             var map = new Map(1, 1);
-            Cell adjacent;
+            MapCell adjacent;
 
             var result = _map.TryGetAdjacentCell(_map[x, y], dir, out adjacent);
 
@@ -424,7 +424,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             var room = _map.Rooms.Single();
 
-            Assert.That(room, Has.All.Matches<Cell>(c => c.Sides
+            Assert.That(room, Has.All.Matches<MapCell>(c => c.Sides
                 .Equals(_map[new Point(c.Location.X + x, c.Location.Y + y)].Sides)));
         }
         
@@ -507,7 +507,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             var room = _map.Rooms.Single();
 
             Assert.That(room, 
-                Has.All.With.Property(nameof(Cell.IsVisited)).EqualTo(isVisited));
+                Has.All.With.Property(nameof(MapCell.IsVisited)).EqualTo(isVisited));
         }
 
         [TestCase(1, 4)]
@@ -530,7 +530,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(100, 300)]
         public void MapActionsThrowCorrectExceptionWhenPointIsOutsideMap(int x, int y)
         {
-            var actions = new Dictionary<string, Action<IMap, Cell>>
+            var actions = new Dictionary<string, Action<IMap, MapCell>>
             {
                 { "Visit", (m, c) => m.Visit(c) },
                 { "HasAdjacentCell", (m, c) => m.HasAdjacentCell(c, Dir.E) },
@@ -539,7 +539,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
                 { "CreateWall", (m, c) => m.CreateWall(c, Dir.E) },
                 { "InsertRoom", (m, c) => m.InsertRoom(new Room(2, 2), c.Location) },
                 { "TryGetAdjacentCell", (m, c) => {
-                        Cell outCell;
+                        MapCell outCell;
                         m.TryGetAdjacentCell(c, Dir.E, out outCell);
                     }
                 }
@@ -547,7 +547,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             foreach (var action in actions.Values)
             {
-                Assert.That(() => action(_map, new Cell(x, y)),
+                Assert.That(() => action(_map, new MapCell(x, y)),
                     Throws.TypeOf<ArgumentOutOfRangeException>(),
                     action + " should throw correct error if point is outside the map.");
             }

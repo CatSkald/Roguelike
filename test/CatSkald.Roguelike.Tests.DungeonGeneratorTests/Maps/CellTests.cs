@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
@@ -9,12 +9,12 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
     [TestFixture]
     public class CellTests
     {
-        private Cell _cell;
+        private MapCell _cell;
 
         [SetUp]
         public void SetUp()
         {
-            _cell = new Cell();
+            _cell = new MapCell();
         }
 
         #region Constructor
@@ -25,7 +25,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(150, 150)]
         public void Constructor_SetsCorrectLocationForXY(int x, int y)
         {
-            var cell = new Cell(x, y);
+            var cell = new MapCell(x, y);
 
             Assert.That(cell.Location, Is.EqualTo(new Point(x, y)));
         }
@@ -37,7 +37,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(150, 150)]
         public void Constructor_SetsCorrectLocationForPoint(int x, int y)
         {
-            var cell = new Cell(new Point(x, y));
+            var cell = new MapCell(new Point(x, y));
 
             Assert.That(cell.Location, Is.EqualTo(new Point(x, y)));
         }
@@ -45,7 +45,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [Test]
         public void Constructor_IsVisited_IsFalse()
         {
-            var cell = new Cell();
+            var cell = new MapCell();
 
             Assert.That(cell.IsVisited, Is.False);
         }
@@ -53,7 +53,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [Test]
         public void Constructor_IsCorridor_IsFalse()
         {
-            var cell = new Cell();
+            var cell = new MapCell();
 
             Assert.That(cell.IsCorridor, Is.False);
         }
@@ -67,7 +67,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(150, 150)]
         public void Location_GetReturnsSameValue_AsWasSet(int x, int y)
         {
-            var cell = new Cell
+            var cell = new MapCell
             {
                 Location = new Point(x, y)
             };
@@ -166,7 +166,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [Test]
         public void IEquatableMembers_WorksCorrect_ForDefaultCells()
         {
-            var other = new Cell();
+            var other = new MapCell();
 
             CustomAssert.IEqualityMembersWorkForEqualObjects(_cell, other);
         }
@@ -180,7 +180,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
             _cell.IsVisited = isVisited;
             _cell.Location = new Point(x, y);
 
-            var other = new Cell
+            var other = new MapCell
             {
                 IsVisited = isVisited,
                 Location = new Point(x, y)
@@ -199,7 +199,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         public void IEquatableMembers_WorksCorrect_IfIsVisitedDiffers()
         {
             _cell.IsVisited = true;
-            var other = new Cell
+            var other = new MapCell
             {
                 IsVisited = false
             };
@@ -215,7 +215,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         {
             _cell.Location = new Point(x1, y1);
 
-            var other = new Cell
+            var other = new MapCell
             {
                 Location = new Point(x2, y2)
             };
@@ -229,7 +229,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(new[] { Dir.N, Dir.E, Dir.S, Dir.W })]
         public void IEquatableMembers_WorksCorrect_IfSidesDiffers(params Dir[] emptyDirs)
         {
-            var other = new Cell();
+            var other = new MapCell();
 
             foreach (var dir in emptyDirs)
             {

@@ -47,7 +47,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             var command = new CorridorBuilderCommand(50);
             command.Execute(map);
 
-            Assert.That(map, Has.All.With.Property(nameof(Cell.IsWall)).False);
+            Assert.That(map, Has.All.With.Property(nameof(MapCell.IsWall)).False);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             var command = new CorridorBuilderCommand(100);
             command.Execute(map);
 
-            Assert.That(map, Has.All.With.Property(nameof(Cell.IsVisited)).True);
+            Assert.That(map, Has.All.With.Property(nameof(MapCell.IsVisited)).True);
         }
     }
 }

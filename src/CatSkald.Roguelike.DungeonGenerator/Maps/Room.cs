@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
@@ -11,7 +11,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         {
         }
 
-        private static void CellInitializer(Cell cell, int width, int height)
+        private static void CellInitializer(MapCell cell, int width, int height)
         {
             cell.Sides[Dir.W] = cell.Location.X == 0 ? Side.Wall : Side.Empty;
             cell.Sides[Dir.E] = cell.Location.X == width - 1 ? Side.Wall : Side.Empty;

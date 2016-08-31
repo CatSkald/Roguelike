@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Directions
+namespace CatSkald.Roguelike.Core.Terrain
 {
     public static class DirHelper
     {

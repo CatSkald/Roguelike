@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Tools;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Directions
+namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
-    [DebuggerDisplay("HasDirs:{HasDirections},Last:{LastDirection},TwistDactor:{TwistFactor}")]
+    [DebuggerDisplay("HasDirs:{HasDirections},Last:{LastDirection}")]
     public sealed class DirectionPicker
     {
         private const int TwistFactorMin = 0;

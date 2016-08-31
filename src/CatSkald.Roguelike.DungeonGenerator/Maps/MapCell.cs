@@ -5,17 +5,17 @@ using System.Linq;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
-    [DebuggerDisplay("{Location}(IsVisited:{IsVisited}, IsWall:{IsWall})")]
-    public sealed class Cell : IEquatable<Cell>
+    [DebuggerDisplay("{Location}(IsWall:{IsWall})")]
+    public sealed class MapCell : IEquatable<MapCell>
     {
-        public Cell()
+        public MapCell()
         {
             Sides = new Sides();
         }
-        public Cell(int x, int y) : this(new Point(x, y))
+        public MapCell(int x, int y) : this(new Point(x, y))
         {
         }
-        public Cell(Point location) : this()
+        public MapCell(Point location) : this()
         {
             Location = location;
         }
@@ -30,7 +30,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             Sides.Values.Count(it => it != Side.Wall) == 1;
         
         #region IEquatable
-        public bool Equals(Cell other)
+        public bool Equals(MapCell other)
         {
             return Location == other.Location
                 && IsVisited == other.IsVisited
@@ -49,7 +49,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         {
             if (obj.GetType() != this.GetType())
                 return false;
-            return this.Equals((Cell)obj);
+            return this.Equals((MapCell)obj);
         }
         #endregion
     }

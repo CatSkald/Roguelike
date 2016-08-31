@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using CatSkald.Roguelike.DungeonGenerator.Directions;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Utils;
 using CatSkald.Tools;
 
@@ -12,12 +12,12 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
     [DebuggerDisplay("[{Width},{Height}](AllVisited:{AllVisited})")]
     public sealed class Map : CellContainer, IMap
     {
-        private readonly List<Cell> _visitedCells;
+        private readonly List<MapCell> _visitedCells;
         private readonly List<Room> _rooms;
 
         public Map(int width, int height) : base(width, height)
         {
-            _visitedCells = new List<Cell>(Size);
+            _visitedCells = new List<MapCell>(Size);
             _rooms = new List<Room>();
         }
 
@@ -27,7 +27,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             get { return _rooms.AsReadOnly(); }
         }
 
-        public Cell PickRandomCell()
+        public MapCell PickRandomCell()
         {
             var point = new Point(
                 StaticRandom.Next(Width), 
@@ -35,7 +35,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             return this[point];
         }
         
-        public Cell PickNextRandomVisitedCell(Cell oldCell)
+        public MapCell PickNextRandomVisitedCell(MapCell oldCell)
         {
             if (_visitedCells.Count <= 1)
                 throw new InvalidOperationException("No visited cells to choose.");
@@ -45,7 +45,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
                 return _visitedCells.Single(c => c != oldCell);
             }
 
-            Cell next;
+            MapCell next;
             var maxIndex = _visitedCells.Count - 1;
             do
             {
@@ -58,7 +58,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             return next;
         }
 
-        public bool HasAdjacentCell(Cell cell, Dir direction)
+        public bool HasAdjacentCell(MapCell cell, Dir direction)
         {
             ThrowD.IfOutsideMap(this, cell);
 
@@ -67,7 +67,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         }
 
         public bool TryGetAdjacentCell(
-            Cell cell, Dir direction, out Cell adjacentCell)
+            MapCell cell, Dir direction, out MapCell adjacentCell)
         {
             ThrowD.IfOutsideMap(this, cell);
 
@@ -83,7 +83,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             return true;
         }
         
-        public void CreateCorridorSide(Cell startCell, Cell endCell, Dir direction, Side side)
+        public void CreateCorridorSide(MapCell startCell, MapCell endCell, Dir direction, Side side)
         {
             ThrowD.IfOutsideMap(this, startCell, nameof(startCell));
             ThrowD.IfOutsideMap(this, endCell, nameof(endCell));
@@ -97,7 +97,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             endCell.IsCorridor = true;
         }
 
-        public void CreateWall(Cell startCell, Dir direction)
+        public void CreateWall(MapCell startCell, Dir direction)
         {
             ThrowD.IfOutsideMap(this, startCell, nameof(startCell));
             ThrowD.IfNoCorridor(startCell, direction, nameof(startCell));
@@ -111,7 +111,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             endCell.Sides[endDirection] = Side.Wall;
         }
         
-        public void Visit(Cell cell)
+        public void Visit(MapCell cell)
         {
             ThrowD.IfOutsideMap(this, cell);
 
@@ -153,9 +153,9 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         }
 
         private void CreateDoorIfNeeded(
-            bool isBorderCell, Cell roomCell, Dir wallDir, Cell mapCell)
+            bool isBorderCell, MapCell roomCell, Dir wallDir, MapCell mapCell)
         {
-            Cell adjacent;
+            MapCell adjacent;
             if (isBorderCell
                 && mapCell.Sides[wallDir] != Side.Wall
                 && TryGetAdjacentCell(mapCell, wallDir, out adjacent))

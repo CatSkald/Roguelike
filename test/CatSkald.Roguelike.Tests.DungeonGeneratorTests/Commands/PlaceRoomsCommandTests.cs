@@ -99,7 +99,7 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
             var rooms = _map.Rooms.ToList();
 
             Assert.That(rooms, 
-                Has.All.With.Some.Matches<Cell>(c => c.Sides.Any(s => s.Value == Side.Door)));
+                Has.All.With.Some.Matches<MapCell>(c => c.Sides.Any(s => s.Value == Side.Door)));
         }
         
         [TestCase(3, 3, 3, 3)]
