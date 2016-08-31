@@ -7,10 +7,6 @@ namespace CatSkald.Roguelike.Drawing
 {
     public class MapConverter
     {
-        public MapConverter()
-        {
-        }
-
         public Tile[,] ConvertToTiles(IMap dungeon)
         {
             var tiles = new Tile[
