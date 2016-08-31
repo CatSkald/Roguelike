@@ -43,7 +43,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                 _directionsPicker.LastDirection = direction;
                 _directionsPicker.ResetDirections();
                 var emptySide = currentCell.Sides
-                    .Single(s => s.Value == Side.Empty)
+                    .Single(s => s.Value != Side.Wall)
                     .Key;
                 success = false;
                 do
