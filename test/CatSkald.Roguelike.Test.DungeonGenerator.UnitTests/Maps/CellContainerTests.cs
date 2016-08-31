@@ -5,7 +5,7 @@ using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
+namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
 {
     [TestFixture]
     public class CellContainerTests

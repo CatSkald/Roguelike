@@ -5,7 +5,7 @@ using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Roguelike.DungeonGenerator.Utils;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Utils
+namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Utils
 {
     [TestFixture]
     public class ThrowDTests

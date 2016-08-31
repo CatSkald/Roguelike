@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>6f66fb54-69ed-4faf-a428-1d70aec28098</ProjectGuid>
-    <RootNamespace>CatSkald.Roguelike.Tests.DungeonGeneratorTests</RootNamespace>
+    <ProjectGuid>1d3d0310-6dfd-48f4-9d84-e58958e54bbd</ProjectGuid>
+    <RootNamespace>CatSkald.Roguelike.Test.Core.UnitTests</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>

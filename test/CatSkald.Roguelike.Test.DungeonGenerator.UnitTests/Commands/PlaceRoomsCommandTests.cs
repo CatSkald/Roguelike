@@ -6,7 +6,7 @@ using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Commands
+namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
 {
     [TestFixture]
     public class PlaceRoomsCommandTests

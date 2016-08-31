@@ -1,7 +1,7 @@
 ﻿using CatSkald.Roguelike.DungeonGenerator;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests
+namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
 {
     [TestFixture]
     public class MapBuilderTests
