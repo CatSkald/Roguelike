@@ -126,9 +126,20 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
         [TestCase(Dir.E)]
         [TestCase(Dir.S)]
         [TestCase(Dir.W)]
-        public void IsDeadEnd_IsTrue_IfAllSidesAreWallsExceptOne(Dir empty)
+        public void IsDeadEnd_IsTrue_IfOneSideIsEmpty(Dir empty)
         {
             _cell.Sides[empty] = Side.Empty;
+
+            Assert.That(_cell.IsDeadEnd, Is.True);
+        }
+        
+        [TestCase(Dir.N)]
+        [TestCase(Dir.E)]
+        [TestCase(Dir.S)]
+        [TestCase(Dir.W)]
+        public void IsDeadEnd_IsTrue_IfOneSideIsDoor(Dir empty)
+        {
+            _cell.Sides[empty] = Side.Door;
 
             Assert.That(_cell.IsDeadEnd, Is.True);
         }

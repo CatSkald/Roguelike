@@ -27,7 +27,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
         public bool IsWall =>
             Sides.Values.All(it => it == Side.Wall);
         public bool IsDeadEnd => 
-            Sides.Values.Count(it => it == Side.Empty) == 1;
+            Sides.Values.Count(it => it != Side.Wall) == 1;
         
         #region IEquatable
         public bool Equals(Cell other)

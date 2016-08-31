@@ -43,7 +43,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                         continue;
 
                     var emptySide = cell.Sides
-                        .Single(s => s.Value == Side.Empty)
+                        .Single(s => s.Value != Side.Wall)
                         .Key;
 
                     map.CreateWall(cell, emptySide);
