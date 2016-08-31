@@ -135,10 +135,14 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
                     cell.Location.Y + position.Y);
                 var mapCell = this[newLocation.X, newLocation.Y];
 
-                CreateBorderIfNeeded(cell.Location.X == 0, Dir.W, mapCell);
-                CreateBorderIfNeeded(cell.Location.X == room.Width - 1, Dir.E, mapCell);
-                CreateBorderIfNeeded(cell.Location.Y == 0, Dir.N, mapCell);
-                CreateBorderIfNeeded(cell.Location.Y == room.Height - 1, Dir.S, mapCell);
+                CreateDoorIfNeeded(
+                    cell.Location.X == 0, cell, Dir.W, mapCell);
+                CreateDoorIfNeeded(
+                    cell.Location.X == room.Width - 1, cell, Dir.E, mapCell);
+                CreateDoorIfNeeded(
+                    cell.Location.Y == 0, cell, Dir.N, mapCell);
+                CreateDoorIfNeeded(
+                    cell.Location.Y == room.Height - 1, cell, Dir.S, mapCell);
 
                 cell.IsVisited = mapCell.IsVisited;
                 foreach (var side in cell.Sides)
@@ -148,13 +152,16 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             }
         }
 
-        private void CreateBorderIfNeeded(bool isBorderCell, Dir dir, Cell mapCell)
+        private void CreateDoorIfNeeded(
+            bool isBorderCell, Cell roomCell, Dir wallDir, Cell mapCell)
         {
+            Cell adjacent;
             if (isBorderCell
-                && mapCell.Sides[dir] == Side.Empty
-                && HasAdjacentCell(mapCell, dir))
+                && mapCell.Sides[wallDir] != Side.Wall
+                && TryGetAdjacentCell(mapCell, wallDir, out adjacent))
             {
-                CreateWall(mapCell, dir);
+                roomCell.Sides[wallDir] = Side.Door;
+                CreateCorridorSide(mapCell, adjacent, wallDir, Side.Door);
             }
         }
 

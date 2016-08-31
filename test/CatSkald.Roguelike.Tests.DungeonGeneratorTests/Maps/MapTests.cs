@@ -443,31 +443,54 @@ namespace CatSkald.Roguelike.Tests.DungeonGeneratorTests.Maps
 
             map.InsertRoom(room, new Point(0, 0));
 
-            Assert.That(map[2, 0].Sides[Dir.W] == Side.Wall, "[2, 0] W");
-            Assert.That(map[2, 0].Sides
-                .Where(s => s.Key != Dir.W)
-                .All(s => s.Value == Side.Empty), "[2, 0] *");
+            Assert.That(map[2, 0].Sides[Dir.W], Is.EqualTo(Side.Door), "[2, 0] W");
+            Assert.That(map[2, 0].Sides.Where(s => s.Key != Dir.W).Select(s => s.Value),
+                Has.All.EqualTo(Side.Empty), "[2, 0] *");
 
-            Assert.That(map[2, 1].Sides[Dir.W] == Side.Wall, "[2, 1] W");
-            Assert.That(map[2, 1].Sides
-                .Where(s => s.Key != Dir.W)
-                .All(s => s.Value == Side.Empty), "[2, 1] *");
+            Assert.That(map[2, 1].Sides[Dir.W], Is.EqualTo(Side.Door), "[2, 1] W");
+            Assert.That(map[2, 1].Sides.Where(s => s.Key != Dir.W).Select(s => s.Value),
+                Has.All.EqualTo(Side.Empty), "[2, 1] *");
 
-            Assert.That(map[1, 2].Sides[Dir.N] == Side.Wall, "[1, 2] N");
-            Assert.That(map[1, 2].Sides
-                .Where(s => s.Key != Dir.N)
-                .All(s => s.Value == Side.Empty), "[1, 2] *");
+            Assert.That(map[1, 2].Sides[Dir.N], Is.EqualTo(Side.Door), "[1, 2] N");
+            Assert.That(map[1, 2].Sides.Where(s => s.Key != Dir.N).Select(s => s.Value),
+                Has.All.EqualTo(Side.Empty), "[1, 2] *");
 
-            Assert.That(map[0, 2].Sides[Dir.N] == Side.Wall, "[0, 2] N");
-            Assert.That(map[0, 2].Sides
-                .Where(s => s.Key != Dir.N)
-                .All(s => s.Value == Side.Empty), "[0, 2] *");
+            Assert.That(map[0, 2].Sides[Dir.N], Is.EqualTo(Side.Door), "[0, 2] N");
+            Assert.That(map[0, 2].Sides.Where(s => s.Key != Dir.N).Select(s => s.Value), 
+                Has.All.EqualTo(Side.Empty), "[0, 2] *");
 
-            foreach (var cell in new Room(2, 2))
+            var newRoom = new Room(2, 2);
+            newRoom[0, 1].Sides[Dir.S] = Side.Door;
+            newRoom[1, 0].Sides[Dir.E] = Side.Door;
+            newRoom[1, 1].Sides[Dir.S] = Side.Door;
+            newRoom[1, 1].Sides[Dir.E] = Side.Door;
+            foreach (var cell in newRoom)
             {
                 Assert.That(cell.Sides, Is.EquivalentTo(map[cell].Sides),
                     "Failed cell: " + cell.Location);
             }
+        }
+        
+        [Test]
+        public void InsertRoom_WithSize1Cell_CellIsCorridorWithDoors()
+        {
+            var map = new Map(2, 2);
+            foreach (var cell in map)
+            {
+                foreach (var side in cell.Sides.Keys.ToList())
+                {
+                    cell.Sides[side] = Side.Empty;
+                }
+            }
+            var room = new Room(1, 1);
+
+            map.InsertRoom(room, new Point(0, 0));
+            var mapCellSides = map[0, 0].Sides;
+
+            Assert.That(mapCellSides[Dir.W], Is.EqualTo(Side.Wall), "W");
+            Assert.That(mapCellSides[Dir.E], Is.EqualTo(Side.Door), "E");
+            Assert.That(mapCellSides[Dir.S], Is.EqualTo(Side.Door), "S");
+            Assert.That(mapCellSides[Dir.N], Is.EqualTo(Side.Wall), "N");
         }
         
         [TestCase(true)]
