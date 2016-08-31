@@ -9,8 +9,8 @@
   },
 
   "dependencies": {
-    "CatSkald.Roguelike.DungeonGenerator": "0.0.1-*",
-    "CatSkald.Tools": "0.1.0-*",
+    "CatSkald.Roguelike.DungeonGenerator": "*",
+    "CatSkald.Tools": "*",
     "NUnit": "3.4.1",
     "dotnet-test-nunit": "3.4.0-beta-2",
     "System.Drawing.Primitives": "4.0.0"

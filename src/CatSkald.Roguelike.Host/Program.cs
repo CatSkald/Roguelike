@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CatSkald.Roguelike.Drawing;
 using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Directions;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
@@ -14,11 +15,27 @@ namespace CatSkald.Roguelike.Host
             var parameters = GatherParameters();
             var generator = new MapBuilder(parameters);
             var map = generator.Build();
+            var mapConverter = new MapConverter();
+            var tiles = mapConverter.ConvertToTiles(map);
 
-            DrawMap(map);
+            DrawMap(tiles);
 
             Console.ReadKey();
             Console.ReadLine();
+        }
+
+        private static void DrawMap(Tile[,] tiles)
+        {
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            for (int y = 0; y < tiles.GetLength(1); y++)
+            {
+                for (int x = 0; x < tiles.GetLength(0); x++)
+                {
+                    char sides = (char)tiles[x, y];
+                    Console.Write(sides);
+                }
+                Console.WriteLine();
+            }
         }
 
         private static DungeonParameters GatherParameters()
