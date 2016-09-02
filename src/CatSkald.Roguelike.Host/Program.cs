@@ -2,6 +2,7 @@
 using CatSkald.Roguelike.Drawing.Painters;
 using CatSkald.Roguelike.DungeonGenerator;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CatSkald.Roguelike.Host
 {
@@ -9,10 +10,17 @@ namespace CatSkald.Roguelike.Host
     {
         public static void Main()
         {
-            var parameters = GatherParameters();
-            var generator = new MapBuilder(parameters);
-            var map = generator.Build();
-            var mapPainter = new TilesMapPainter();
+            var services = new ServiceCollection();
+            services.AddTransient(_ => GatherParameters())
+                .AddMapBuilding()
+                .AddMapPainting();
+
+            var provider = services.BuildServiceProvider();
+            var mapBuilder = provider.GetService<IMapBuilder>();
+
+            var map = mapBuilder.Build();
+
+            var mapPainter = provider.GetService<IMapPainter>();
             mapPainter.PaintMap(map);
 
             Console.ReadKey();

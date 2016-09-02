@@ -5,7 +5,7 @@ using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator
 {
-    public sealed class MapBuilder
+    public sealed class MapBuilder : IMapBuilder
     {
         private readonly List<IMapBuilderCommand> _commands = 
             new List<IMapBuilderCommand>();
@@ -19,7 +19,6 @@ namespace CatSkald.Roguelike.DungeonGenerator
         public void SetParameters(DungeonParameters parameters)
         {
             Throw.IfNull(parameters, nameof(parameters));
-            Throw.IfNull(parameters.RoomParameters, nameof(parameters.RoomParameters));
 
             _params = parameters;
             _commands.Clear();

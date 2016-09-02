@@ -66,13 +66,5 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
         {
             Assert.That(() => _builder.SetParameters(null), Throws.ArgumentNullException);
         }
-
-        [Test]
-        public void SetParameters_ShouldThrow_IfRoomParametersNull()
-        {
-            Assert.That(
-                () => _builder.SetParameters(new DungeonParameters { RoomParameters = null }),
-                Throws.ArgumentNullException);
-        }
     }
 }
