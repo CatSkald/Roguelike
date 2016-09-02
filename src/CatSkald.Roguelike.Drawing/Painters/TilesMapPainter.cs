@@ -1,14 +1,21 @@
 ﻿using System;
+using CatSkald.Roguelike.Drawing.Converters;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 
 namespace CatSkald.Roguelike.Drawing.Painters
 {
     public sealed class TilesMapPainter : IMapPainter
     {
+        private readonly ITilesConverter<IMap> _converter;
+
+        public TilesMapPainter(ITilesConverter<IMap> converter)
+        {
+            _converter = converter;
+        }
+
         public void PaintMap(IMap map)
         {
-            var mapConverter = new MapConverter();
-            var tiles = mapConverter.ConvertToTiles(map);
+            var tiles = _converter.ConvertToTiles(map);
 
             for (int y = 0; y < tiles.GetLength(1); y++)
             {

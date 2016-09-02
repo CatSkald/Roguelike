@@ -1,6 +1,8 @@
 ﻿using System;
+using CatSkald.Roguelike.Drawing.Converters;
 using CatSkald.Roguelike.Drawing.Painters;
 using CatSkald.Roguelike.DungeonGenerator;
+using CatSkald.Roguelike.DungeonGenerator.Maps;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CatSkald.Roguelike.Host
@@ -26,7 +28,8 @@ namespace CatSkald.Roguelike.Host
         public static IServiceCollection AddMapPainting(
             this IServiceCollection services)
         {
-            services.AddScoped<IMapPainter, TilesMapPainter>();
+            services.AddTransient<ITilesConverter<IMap>, TilesConverter>();
+            services.AddTransient<IMapPainter, TilesMapPainter>();
 
             return services;
         }

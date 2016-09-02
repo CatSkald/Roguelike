@@ -3,9 +3,9 @@ using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 
-namespace CatSkald.Roguelike.Drawing
+namespace CatSkald.Roguelike.Drawing.Converters
 {
-    public class MapConverter
+    public class TilesConverter : ITilesConverter<IMap>
     {
         public Tile[,] ConvertToTiles(IMap dungeon)
         {
