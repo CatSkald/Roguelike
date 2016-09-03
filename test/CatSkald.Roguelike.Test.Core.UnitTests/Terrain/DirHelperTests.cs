@@ -13,7 +13,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests
             Assert.That(DirHelper.GetNonEmptyDirs(),
                 Is.EquivalentTo(new[] { Dir.N, Dir.E, Dir.S, Dir.W }));
         }
-        
+
         [TestCase(Dir.N, Dir.S)]
         [TestCase(Dir.E, Dir.W)]
         public void Opposite_ReturnsCorrectDir(Dir dir, Dir opposite)
@@ -29,7 +29,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests
         {
             Assert.That(() => DirHelper.Opposite((Dir)dir), Throws.ArgumentException);
         }
-        
+
         [TestCase(0)]
         [TestCase(-1)]
         [TestCase(5)]

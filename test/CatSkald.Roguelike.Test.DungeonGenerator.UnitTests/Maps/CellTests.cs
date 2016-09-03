@@ -2,6 +2,7 @@
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
@@ -89,7 +90,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
 
             Assert.That(_cell.IsVisited, Is.EqualTo(value));
         }
-        
+
         [TestCase(true)]
         [TestCase(false)]
         public void IsCorridor_GetReturnsSameValue_AsWasSet(bool value)
@@ -121,7 +122,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
 
             Assert.That(_cell.IsWall, Is.False);
         }
-        
+
         [TestCase(Dir.N)]
         [TestCase(Dir.E)]
         [TestCase(Dir.S)]
@@ -132,7 +133,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
 
             Assert.That(_cell.IsDeadEnd, Is.True);
         }
-        
+
         [TestCase(Dir.N)]
         [TestCase(Dir.E)]
         [TestCase(Dir.S)]

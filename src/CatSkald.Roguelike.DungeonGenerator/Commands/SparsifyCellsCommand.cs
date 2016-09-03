@@ -1,32 +1,18 @@
 ﻿using System;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public sealed class SparsifyCellsCommand : IMapBuilderCommand
+    public sealed class SparsifyCellsCommand : AbstractMapBuilderCommand
     {
-        private int _sparseFactor;
-
-        public SparsifyCellsCommand(int sparseFactor)
+        protected override void ExecuteCommand(IMap map, IDungeonParameters parameters)
         {
-            Throw.IfNotInRange(0, 100, sparseFactor, nameof(sparseFactor));
-
-            _sparseFactor = sparseFactor;
-        }
-
-        public void Execute(IMap map)
-        {
-            Throw.IfNull(map, nameof(map));
-
-            Sparsify(map);
-        }
-
-        private void Sparsify(IMap map)
-        {
-            var expectedNumberOfRemovedCells = 
-                (int)Math.Ceiling(map.Size * (_sparseFactor / 100m)) - 1;
+            var sparseFactor = parameters.CellSparseFactor;
+            var expectedNumberOfRemovedCells =
+                   (int)Math.Ceiling(map.Size * (sparseFactor / 100m)) - 1;
 
             var removedCellsCount = 0;
             var nonWalls = map.Where(c => !c.IsWall).ToList();
@@ -52,6 +38,12 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                     removedCellsCount++;
                 }
             }
+        }
+
+        protected override void ValidateParameters(IDungeonParameters parameters)
+        {
+            Throw.IfNotInRange(0, 100, parameters.CellSparseFactor,
+                nameof(parameters.CellSparseFactor));
         }
     }
 }

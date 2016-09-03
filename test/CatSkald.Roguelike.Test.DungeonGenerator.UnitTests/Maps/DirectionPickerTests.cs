@@ -15,7 +15,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Directions
         [SetUp]
         public void SetUp()
         {
-            _picker = new DirectionPicker(100);
+            _picker = new DirectionPicker(50);
         }
 
         #region NextDirection
@@ -29,14 +29,14 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Directions
             Assert.That(() => _picker.NextDirection(),
                 Throws.TypeOf<InvalidOperationException>());
         }
-        
+
         [TestCase(Dir.N)]
         [TestCase(Dir.S)]
         [TestCase(Dir.W)]
         [TestCase(Dir.E)]
         public void NextDirection_DoesNotChooseLastIfTwistFactor100(Dir lastDir)
         {
-            _picker.TwistFactor = 100;
+            _picker.SetTwistFactor(100);
             _picker.LastDirection = lastDir;
 
             Assert.That(_picker.NextDirection(), Is.Not.EqualTo(lastDir));
@@ -48,7 +48,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Directions
         [TestCase(Dir.E)]
         public void NextDirection_ChoosesLastIfTwistFactor0(Dir lastDir)
         {
-            _picker.TwistFactor = 0;
+            _picker.SetTwistFactor(0);
             _picker.LastDirection = lastDir;
 
             Assert.That(_picker.NextDirection(), Is.EqualTo(lastDir));
@@ -96,19 +96,6 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Directions
 
         #endregion
 
-        #region TwistFactor
-
-        [TestCase(42)]
-        [TestCase(10)]
-        public void TwistFactors_GetReturnsCorrectValue(int value)
-        {
-            _picker.TwistFactor = value;
-
-            Assert.That(_picker.TwistFactor, Is.EqualTo(value));
-        }
-
-        #endregion
-
         #region Constructor
 
         [Test]
@@ -144,6 +131,28 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Directions
 
         #endregion
 
+        #region SetTwistFactor
+        [TestCase(-1)]
+        [TestCase(101)]
+        [TestCase(10000)]
+        public void SetTwistFactor_ThrowsCorrectErrorIfTwistFactorIsIncorrect(
+    int value)
+        {
+            Assert.That(() => new DirectionPicker(value),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        [TestCase(0)]
+        [TestCase(66)]
+        [TestCase(100)]
+        public void SetTwistFactor_SetsCorrectTwistFactor(int value)
+        {
+            _picker.SetTwistFactor(value);
+
+            Assert.That(_picker.TwistFactor, Is.EqualTo(value));
+        }
+        #endregion
+
         #region ResetDirections
 
         [Test]
@@ -162,17 +171,17 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Directions
 
             Assert.That(dirs, Is.EquivalentTo(expectedDirs));
         }
-        
+
         [TestCase(42)]
         [TestCase(99)]
         public void ResetDirections_DoesNotChangeTwistFactor(int value)
         {
-            _picker.TwistFactor = value;
+            _picker.SetTwistFactor(value);
             _picker.ResetDirections();
 
             Assert.That(_picker.TwistFactor, Is.EqualTo(value));
         }
-        
+
         [TestCase(Dir.Zero)]
         [TestCase(Dir.N)]
         [TestCase(Dir.W)]
@@ -191,14 +200,16 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Directions
         [Test]
         public void ShouldChangeDirection_TrueForTwistFactor100()
         {
-            _picker.TwistFactor = 100;
+            _picker.SetTwistFactor(100);
+
             Assert.That(_picker.ShouldChangeDirection(), Is.True);
         }
 
         [Test]
         public void ShouldChangeDirection_FalseForTwistFactor0()
         {
-            _picker.TwistFactor = 0;
+            _picker.SetTwistFactor(0);
+
             Assert.That(_picker.ShouldChangeDirection(), Is.False);
         }
 

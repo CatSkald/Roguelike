@@ -2,6 +2,7 @@
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
@@ -9,83 +10,94 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
     [TestFixture]
     public class SparsifyCellsCommandTests
     {
+        private Map _map;
+        private DungeonParameters _parameters;
+        private SparsifyCellsCommand _command;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _map = new Map(8, 6);
+            _parameters = new DungeonParameters
+            {
+                TwistFactor = 50,
+                CellSparseFactor = 50
+            };
+            _command = new SparsifyCellsCommand();
+        }
+
         [Test]
         public void Execute_ShouldThrow_IfAllCellsAreWalls()
         {
-            var map = new Map(2, 5);
-            var command = new SparsifyCellsCommand(50);
-
-            Assert.That(() => command.Execute(map),
+            Assert.That(() => _command.Execute(_map, _parameters),
                 Throws.InvalidOperationException);
         }
-        
-        [Test]
-        public void Execute_ShouldThrow_IfMapNull()
-        {
-            Map map = null;
-            var command = new SparsifyCellsCommand(100);
 
-            Assert.That(() => command.Execute(map),
-                Throws.ArgumentNullException);
-        }
-        
         [TestCase(-5)]
         [TestCase(101)]
         public void Execute_ShouldThrow_IfSparseFactorIsInvalid(int factor)
         {
-            Assert.That(() => new SparsifyCellsCommand(factor),
+            _parameters.CellSparseFactor = factor;
+
+            Assert.That(() => _command.Execute(_map, _parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
         public void Execute_LeaveNonWalls_IfSparseFactor50()
         {
-            var map = new Map(4, 5);
-            new CorridorBuilderCommand(50).Execute(map);
+            BuildCorridors();
 
-            var command = new SparsifyCellsCommand(50);
-            command.Execute(map);
+            _command.Execute(_map, _parameters);
 
-            Assert.That(map, Has.Some.With.Property(nameof(MapCell.IsWall)).False);
+            Assert.That(_map,
+                Has.Some.With.Property(nameof(MapCell.IsWall)).False
+                .And.Some.With.Property(nameof(MapCell.IsWall)).True);
         }
 
         [Test]
         public void Execute_MakeAllCellsWalls_IfSparseFactor100()
         {
-            var map = new Map(2, 3);
-            new CorridorBuilderCommand(50).Execute(map);
+            BuildCorridors();
 
-            var command = new SparsifyCellsCommand(100);
-            command.Execute(map);
+            _parameters.CellSparseFactor = 100;
+            _command.Execute(_map, _parameters);
 
-            Assert.That(map, Has.All.With.Property(nameof(MapCell.IsWall)).True);
+            Assert.That(_map,
+                Has.All.With.Property(nameof(MapCell.IsWall)).True);
         }
-        
+
         [Test]
         public void Execute_Sets_IsCorridor_ToFalse()
         {
-            var map = new Map(2, 3);
-            new CorridorBuilderCommand(50).Execute(map);
-            var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
+            BuildCorridors();
 
-            Assert.That(deadEnds, Has.All.With.Property(nameof(MapCell.IsCorridor)).True);
+            var deadEnds = _map.Where(c => c.IsDeadEnd).ToList();
 
-            var command = new SparsifyCellsCommand(100);
-            command.Execute(map);
+            _parameters.CellSparseFactor = 100;
+            _command.Execute(_map, _parameters);
 
-            Assert.That(deadEnds, Has.All.With.Property(nameof(MapCell.IsCorridor)).False);
+            Assert.That(deadEnds,
+                Has.All.With.Property(nameof(MapCell.IsCorridor)).False);
         }
 
         [Test]
         public void Execute_NoCellsMadeWalls_IfSparseFactor0()
         {
-            var map = new Map(2, 3);
-            new CorridorBuilderCommand(50).Execute(map);
+            BuildCorridors();
 
-            var command = new SparsifyCellsCommand(0);
-            command.Execute(map);
+            _parameters.CellSparseFactor = 0;
+            _command.Execute(_map, _parameters);
 
-            Assert.That(map, Has.None.With.Property(nameof(MapCell.IsWall)).True);
+            Assert.That(_map,
+                Has.None.With.Property(nameof(MapCell.IsWall)).True);
+        }
+
+        private void BuildCorridors()
+        {
+            var corridorBuilderCommand = new CorridorBuilderCommand(
+                    new DirectionPicker(_parameters.TwistFactor));
+            corridorBuilderCommand.Execute(_map, _parameters);
         }
     }
 }

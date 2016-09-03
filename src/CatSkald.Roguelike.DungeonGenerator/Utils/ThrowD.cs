@@ -17,25 +17,25 @@ namespace CatSkald.Roguelike.DungeonGenerator.Utils
             if (point.X < 0 || point.X >= map.Width
                 || point.Y < 0 || point.Y >= map.Height)
             {
-                throw new ArgumentOutOfRangeException(name, point, 
+                throw new ArgumentOutOfRangeException(name, point,
                     name + " is outside the map. Map bounds: " + map.Bounds);
             }
         }
-        
+
         public static void IfOutsideMap(IMap map, MapCell cell, string name = "cell")
         {
             Throw.IfNull(cell, name);
 
             IfOutsideMap(map, cell.Location, name);
         }
-        
+
         public static void IfOutsideMap(IMap map, Room room, string name = "room")
         {
             Throw.IfNull(room, name);
 
             if (!map.Bounds.Contains(room.Bounds))
             {
-                throw new ArgumentOutOfRangeException(name, room.Bounds, 
+                throw new ArgumentOutOfRangeException(name, room.Bounds,
                     name + " is outside the map. Map bounds: " + map.Bounds);
             }
         }

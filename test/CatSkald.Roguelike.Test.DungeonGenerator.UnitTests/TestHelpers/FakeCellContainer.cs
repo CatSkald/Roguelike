@@ -1,7 +1,7 @@
 ﻿using System;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 
-namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
+namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers
 {
     public class FakeCellContainer : CellContainer
     {

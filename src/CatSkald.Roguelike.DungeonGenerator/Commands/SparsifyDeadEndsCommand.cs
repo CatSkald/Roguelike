@@ -2,27 +2,25 @@
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public sealed class SparsifyDeadEndsCommand : IMapBuilderCommand
+    public sealed class SparsifyDeadEndsCommand : AbstractMapBuilderCommand
     {
-        private int _sparseFactor;
-        private DirectionPicker _directionsPicker;
+        private IDirectionPicker _directionPicker;
 
-        public SparsifyDeadEndsCommand(int sparseFactor)
+        public SparsifyDeadEndsCommand(IDirectionPicker directionPicker)
         {
-            Throw.IfNotInRange(0, 100, sparseFactor, nameof(sparseFactor));
-
-            _sparseFactor = sparseFactor;
-            _directionsPicker = new DirectionPicker(0);
+            _directionPicker = directionPicker;
+            // this allows to create nice loops for sparsified corridors
+            _directionPicker.SetTwistFactor(0);
         }
 
-        public void Execute(IMap map)
+        protected override void ExecuteCommand(IMap map, IDungeonParameters parameters)
         {
-            Throw.IfNull(map, nameof(map));
-
+            var _sparseFactor = parameters.DeadEndSparseFactor;
             foreach (var cell in map)
             {
                 if (cell.IsDeadEnd && _sparseFactor > StaticRandom.Next(0, 100))
@@ -30,6 +28,12 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
                     BuildCorridor(map, cell);
                 }
             }
+        }
+
+        protected override void ValidateParameters(IDungeonParameters parameters)
+        {
+            Throw.IfNotInRange(0, 100, parameters.DeadEndSparseFactor,
+                nameof(parameters.DeadEndSparseFactor));
         }
 
         private void BuildCorridor(IMap map, MapCell currentCell)
@@ -40,26 +44,26 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             bool success;
             do
             {
-                _directionsPicker.LastDirection = direction;
-                _directionsPicker.ResetDirections();
+                _directionPicker.LastDirection = direction;
+                _directionPicker.ResetDirections();
                 var emptySide = currentCell.Sides
                     .Single(s => s.Value != Side.Wall)
                     .Key;
                 success = false;
                 do
                 {
-                    direction = _directionsPicker.NextDirectionExcept(emptySide);
+                    direction = _directionPicker.NextDirectionExcept(emptySide);
                     success = map.TryGetAdjacentCell(currentCell, direction, out nextCell);
 
                     if (success)
                     {
                         map.CreateCorridorSide(currentCell, nextCell, direction, Side.Empty);
                     }
-                } while (_directionsPicker.HasDirections && !success);
+                } while (_directionPicker.HasDirections && !success);
 
                 if (!success)
                 {
-                    break;
+                    return;
                 }
             } while (currentCell.IsDeadEnd);
         }

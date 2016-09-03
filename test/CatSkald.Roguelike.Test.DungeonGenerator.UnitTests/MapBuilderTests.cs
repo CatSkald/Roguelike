@@ -1,4 +1,8 @@
-﻿using CatSkald.Roguelike.DungeonGenerator;
+﻿using System;
+using System.Collections.Generic;
+using CatSkald.Roguelike.DungeonGenerator;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
@@ -18,53 +22,66 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
                 Height = 10,
                 RoomParameters = new RoomParameters()
             };
-            _builder = new MapBuilder(_params);
-        }
-
-        [TestCase(1)]
-        [TestCase(3)]
-        public void Build_ReturnsMapWithCorrectRoomCount(int count)
-        {
-            _params.RoomParameters.MaxWidth = 5;
-            _params.RoomParameters.MaxHeight = 5;
-            _params.RoomParameters.Count = count;
-            _builder.SetParameters(_params);
-
-            var map = _builder.Build();
-
-            Assert.That(map.Rooms, Has.Count.EqualTo(count));
-        }
-        
-        [TestCase(1)]
-        [TestCase(11)]
-        [TestCase(144)]
-        public void Build_ReturnsMapWithCorrectHeight(int h)
-        {
-            _params.Height = h;
-            _builder.SetParameters(_params);
-
-            var map = _builder.Build();
-
-            Assert.That(map.Height, Is.EqualTo(h));
-        }
-
-        [TestCase(1)]
-        [TestCase(14)]
-        [TestCase(144)]
-        public void Build_ReturnsMapWithCorrectWidth(int w)
-        {
-            _params.Width = w;
-            _builder.SetParameters(_params);
-
-            var map = _builder.Build();
-
-            Assert.That(map.Width, Is.EqualTo(w));
+            _builder = new MapBuilder(new List<IMapBuilderCommand>());
         }
 
         [Test]
-        public void SetParameters_ShouldThrow_IfParametersNull()
+        public void Constructor_Throws_IfCommandsNull()
         {
-            Assert.That(() => _builder.SetParameters(null), Throws.ArgumentNullException);
+            IDungeonParameters parameters = null;
+
+            Assert.That(() => _builder.Build(parameters),
+                Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void Build_ExecutesEveryCommand()
+        {
+            var commands = new List<IMapBuilderCommand>
+            {
+                new FakeMapBuilderCommand(),
+                new FakeMapBuilderCommand(),
+                new FakeMapBuilderCommand(),
+                new FakeMapBuilderCommand(),
+                new FakeMapBuilderCommand()
+            };
+            var builder = new MapBuilder(commands);
+            builder.Build(_params);
+
+            Assert.That(commands, Has.All
+                .With.Property(nameof(FakeMapBuilderCommand.ExecuteCommandCalls))
+                .EqualTo(1));
+        }
+
+        [Test]
+        public void Build_Throws_IfParametersNull()
+        {
+            IDungeonParameters parameters = null;
+
+            Assert.That(() => _builder.Build(parameters),
+                Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [TestCase(-52)]
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void Build_Throws_IfWidthLess1(int width)
+        {
+            _params.Width = width;
+
+            Assert.That(() => _builder.Build(_params),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
+
+        [TestCase(-25)]
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void Build_Throws_IfHeightLess1(int height)
+        {
+            _params.Width = height;
+
+            Assert.That(() => _builder.Build(_params),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
         }
     }
 }

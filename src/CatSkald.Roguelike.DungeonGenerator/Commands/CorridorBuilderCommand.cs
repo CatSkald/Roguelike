@@ -2,26 +2,28 @@
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public sealed class CorridorBuilderCommand : IMapBuilderCommand
+    public sealed class CorridorBuilderCommand : AbstractMapBuilderCommand
     {
-        private DirectionPicker _directionsPicker;
+        private readonly IDirectionPicker _directionPicker;
 
-        public CorridorBuilderCommand(int twistFactor)
+        public CorridorBuilderCommand(IDirectionPicker directionPicker)
         {
-            Throw.IfNotInRange(0, 100, twistFactor, nameof(twistFactor));
-
-            _directionsPicker = new DirectionPicker(twistFactor);
+            _directionPicker = directionPicker;
         }
 
-        public void Execute(IMap map)
+        protected override void ExecuteCommand(IMap map, IDungeonParameters parameters)
         {
-            Throw.IfNull(map, nameof(map));
-
             BuildCorridors(map);
+        }
+
+        protected override void ValidateParameters(IDungeonParameters parameters)
+        {
+            Throw.IfNotInRange(0, 100, parameters.TwistFactor, nameof(parameters.TwistFactor));
         }
 
         private void BuildCorridors(IMap map)
@@ -40,8 +42,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             bool success;
             do
             {
-                _directionsPicker.LastDirection = direction;
-                _directionsPicker.ResetDirections();
+                _directionPicker.LastDirection = direction;
+                _directionPicker.ResetDirections();
                 success = TryPickRandomUnvisitedAdjacentCell(
                     map, currentCell, out nextCell, out direction);
                 if (success)
@@ -65,11 +67,11 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             var success = false;
             do
             {
-                direction = _directionsPicker.NextDirection();
+                direction = _directionPicker.NextDirection();
                 success = map.TryGetAdjacentCell(currentCell, direction, out nextCell)
                     && !nextCell.IsVisited;
             }
-            while (_directionsPicker.HasDirections && !success);
+            while (_directionPicker.HasDirections && !success);
 
             return success;
         }

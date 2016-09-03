@@ -4,34 +4,47 @@ using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public sealed class PlaceRoomsCommand : IMapBuilderCommand
+    public sealed class PlaceRoomsCommand : AbstractMapBuilderCommand
     {
         private const int AdjacentCorridorBonus = 1;
         private const int OverlappedCorridorBonus = 3;
         private const int OverlappedRoomBonus = 100;
 
-        private RoomParameters _params;
-
-        public PlaceRoomsCommand(DungeonParameters parameters)
+        protected override void ExecuteCommand(
+            IMap map, IDungeonParameters parameters)
         {
-            ValidateParameters(parameters);
-
-            _params = parameters.RoomParameters;
-        }
-
-        public void Execute(IMap map)
-        {
-            Throw.IfNull(map, nameof(map));
-
-            var rooms = CreateRooms();
+            var rooms = CreateRooms(parameters.RoomParameters);
             foreach (var room in rooms)
             {
                 PlaceRoom(map, room);
             }
+        }
+
+        protected override void ValidateParameters(IDungeonParameters parameters)
+        {
+            var roomParameters = parameters.RoomParameters;
+
+            Throw.IfNull(roomParameters, nameof(roomParameters));
+
+            Throw.IfLess(0, roomParameters.Count, nameof(roomParameters.Count));
+
+            Throw.IfLess(0, roomParameters.MinWidth, nameof(roomParameters.MinWidth));
+            Throw.IfLess(0, roomParameters.MinHeight, nameof(roomParameters.MinHeight));
+
+            Throw.IfLess(roomParameters.MinWidth, roomParameters.MaxWidth,
+                nameof(roomParameters.MaxWidth));
+            Throw.IfLess(roomParameters.MinHeight, roomParameters.MaxHeight,
+                nameof(roomParameters.MaxHeight));
+
+            Throw.IfGreater(parameters.Width, roomParameters.MaxWidth,
+                nameof(roomParameters.MaxWidth));
+            Throw.IfGreater(parameters.Height, roomParameters.MaxHeight,
+                nameof(roomParameters.MaxHeight));
         }
 
         private static void PlaceRoom(IMap map, Room room)
@@ -93,17 +106,18 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             return currentScore;
         }
 
-        private static bool HasAdjacentCorridor(IMap map, MapCell currentCell, Dir dir)
+        private static bool HasAdjacentCorridor(
+            IMap map, MapCell currentCell, Dir dir)
         {
             MapCell adjacentCell;
             return map.TryGetAdjacentCell(currentCell, dir, out adjacentCell)
                 && adjacentCell.Sides[dir] != Side.Wall;
         }
 
-        private List<Room> CreateRooms()
+        private static List<Room> CreateRooms(RoomParameters parameters)
         {
             var rooms = Enumerable
-                .Repeat<Func<Room>>(CreateRoom, _params.Count)
+                .Repeat<Func<Room>>(() => CreateRoom(parameters), parameters.Count)
 #pragma warning disable CC0031 // Check for null before calling a delegate
                 .Select(f => f())
 #pragma warning restore CC0031 // Check for null before calling a delegate
@@ -112,35 +126,11 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             return rooms;
         }
 
-        private Room CreateRoom()
+        private static Room CreateRoom(RoomParameters parameters)
         {
             return new Room(
-                StaticRandom.NextInclusive(_params.MinWidth, _params.MaxWidth),
-                StaticRandom.NextInclusive(_params.MinHeight, _params.MaxHeight));
-        }
-
-        private static void ValidateParameters(DungeonParameters parameters)
-        {
-            Throw.IfNull(parameters, nameof(parameters));
-
-            var roomParameters = parameters.RoomParameters;
-
-            Throw.IfNull(roomParameters, nameof(roomParameters));
-
-            Throw.IfLess(0, roomParameters.Count, nameof(roomParameters.Count));
-
-            Throw.IfLess(0, roomParameters.MinWidth, nameof(roomParameters.MinWidth));
-            Throw.IfLess(0, roomParameters.MinHeight, nameof(roomParameters.MinHeight));
-
-            Throw.IfLess(roomParameters.MinWidth, roomParameters.MaxWidth,
-                nameof(roomParameters.MaxWidth));
-            Throw.IfLess(roomParameters.MinHeight, roomParameters.MaxHeight,
-                nameof(roomParameters.MaxHeight));
-
-            Throw.IfGreater(parameters.Width, roomParameters.MaxWidth,
-                nameof(roomParameters.MaxWidth));
-            Throw.IfGreater(parameters.Height, roomParameters.MaxHeight,
-                nameof(roomParameters.MaxHeight));
+                StaticRandom.NextInclusive(parameters.MinWidth, parameters.MaxWidth),
+                StaticRandom.NextInclusive(parameters.MinHeight, parameters.MaxHeight));
         }
     }
 }

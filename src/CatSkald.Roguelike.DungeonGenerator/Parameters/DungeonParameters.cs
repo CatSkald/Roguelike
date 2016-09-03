@@ -1,6 +1,6 @@
-﻿namespace CatSkald.Roguelike.DungeonGenerator
+﻿namespace CatSkald.Roguelike.DungeonGenerator.Parameters
 {
-    public sealed class DungeonParameters
+    public sealed class DungeonParameters : IDungeonParameters
     {
         public DungeonParameters()
         {

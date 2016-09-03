@@ -6,7 +6,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
     [DebuggerDisplay("[{Width},{Height}]")]
     public sealed class Room : CellContainer
     {
-        public Room(int width, int height) 
+        public Room(int width, int height)
             : base(width, height, cell => CellInitializer(cell, width, height))
         {
         }

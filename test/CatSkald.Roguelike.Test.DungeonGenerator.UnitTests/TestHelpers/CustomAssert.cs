@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
+namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers
 {
     /// <summary>
     /// Custom NUnit asserts

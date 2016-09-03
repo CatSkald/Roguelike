@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
@@ -11,8 +11,9 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
     [TestFixture]
     public class PlaceRoomsCommandTests
     {
-        private DungeonParameters _parameters;
+        private IDungeonParameters _parameters;
         private Map _map;
+        private PlaceRoomsCommand _command;
 
         [SetUp]
         public void SetUp()
@@ -34,23 +35,14 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
                     MinWidth = 4
                 }
             };
-        }
+            _command = new PlaceRoomsCommand();
 
+            var corridorBuilderCommand = new CorridorBuilderCommand(
+                new DirectionPicker(_parameters.TwistFactor));
+            corridorBuilderCommand.Execute(_map, _parameters);
+        }
+        
         #region Execute
-        [Test]
-        public void Execute_ShouldThrow_IfMapNull()
-        {
-            Map map = null;
-            var parameters = new DungeonParameters
-            {
-                RoomParameters = new RoomParameters()
-            };
-            var command = new PlaceRoomsCommand(parameters);
-
-            Assert.That(() => command.Execute(map),
-                Throws.ArgumentNullException);
-        }
-
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(3)]
@@ -58,9 +50,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         {
             _parameters.RoomParameters.Count = count;
 
-            var command = new PlaceRoomsCommand(_parameters);
-            new CorridorBuilderCommand(50).Execute(_map);
-            command.Execute(_map);
+            _command.Execute(_map, _parameters);
 
             Assert.That(_map.Rooms, Has.Count.EqualTo(count));
         }
@@ -71,35 +61,29 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
             _map = new Map(75, 80);
 
             _parameters.RoomParameters.Count = 8;
-            new CorridorBuilderCommand(50).Execute(_map);
 
-            var command = new PlaceRoomsCommand(_parameters);
-            command.Execute(_map);
+            _command.Execute(_map, _parameters);
 
             var bounds = _map.Rooms.Select(r => r.Bounds).ToList();
 
-            Assert.That(bounds, Is.Unique);
-            Assert.That(bounds, 
-                Has.All.Matches<Rectangle>(r => bounds
-                .Where(b => b != r)
-                .All(b => !b.IntersectsWith(r))));
+            Assert.That(bounds, Is.Unique
+                .And.All.Matches<Rectangle>(current => bounds
+                .Where(b => b != current)
+                .All(b => !b.IntersectsWith(current))));
         }
-        
+
         [Test]
         public void Execute_GeneratedRooms_HasDoors()
         {
             _map = new Map(75, 80);
-
             _parameters.RoomParameters.Count = 8;
-            new CorridorBuilderCommand(50).Execute(_map);
 
-            var command = new PlaceRoomsCommand(_parameters);
-            command.Execute(_map);
+            _command.Execute(_map, _parameters);
 
             var rooms = _map.Rooms.ToList();
 
-            Assert.That(rooms, 
-                Has.All.With.Some.Matches<MapCell>(c => c.Sides.Any(s => s.Value == Side.Door)));
+            Assert.That(rooms, Has.All.With.Some
+                .Matches<MapCell>(c => c.Sides.Any(s => s.Value == Side.Door)));
         }
         
         [TestCase(3, 3, 3, 3)]
@@ -112,15 +96,16 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
             _parameters.RoomParameters.MaxHeight = maxH;
             _parameters.RoomParameters.MinWidth = minW;
             _parameters.RoomParameters.MaxWidth = maxW;
-            new CorridorBuilderCommand(50).Execute(_map);
 
-            var command = new PlaceRoomsCommand(_parameters);
-            command.Execute(_map);
+            _command.Execute(_map, _parameters);
 
             Assert.That(_map.Rooms,
-                Has.All.Matches<Room>(r => r.Width <= maxW && r.Width >= minW
-                && r.Height <= maxH && r.Height >= minH));
-        } 
+                Has.All.Matches<Room>(r =>
+                r.Width <= maxW
+                && r.Width >= minW
+                && r.Height <= maxH
+                && r.Height >= minH));
+        }
         #endregion
 
         #region Constructor_ValidateParameters
@@ -144,36 +129,13 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
                     MinWidth = 4
                 }
             };
-
-            Assert.That(() => new PlaceRoomsCommand(parameters), Throws.Nothing);
-        }
-
-        [Test]
-        public void Constructor_ValidateParameters_Throws_IfParametersNull()
-        {
-            var map = new Map(5, 5);
-            DungeonParameters parameters = null;
-
-            Assert.That(() => new PlaceRoomsCommand(parameters),
-                Throws.ArgumentNullException);
-        }
-
-        [Test]
-        public void Constructor_ValidateParameters_Throws_IfRoomParametersNull()
-        {
-            var map = new Map(5, 5);
-            var parameters = new DungeonParameters
-            {
-                RoomParameters = null
-            };
-
-            Assert.That(() => new PlaceRoomsCommand(parameters),
-                Throws.ArgumentNullException);
+            Assert.That(() => _command.Execute(map, parameters), Throws.Nothing);
         }
 
         [TestCase(-10)]
         [TestCase(-1)]
-        public void Constructor_ValidateParameters_Throws_IfMinWidthNegative(int value)
+        public void Constructor_ValidateParameters_Throws_IfMinWidthNegative(
+            int value)
         {
             var map = new Map(5, 5);
             var parameters = new DungeonParameters
@@ -184,7 +146,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
                 }
             };
 
-            Assert.That(() => new PlaceRoomsCommand(parameters),
+            Assert.That(() => _command.Execute(map, parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
                     .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
                     .EqualTo(nameof(RoomParameters.MinWidth)));
@@ -203,7 +165,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
                 }
             };
 
-            Assert.That(() => new PlaceRoomsCommand(parameters),
+            Assert.That(() => _command.Execute(map, parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
                     .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
                     .EqualTo(nameof(RoomParameters.MinHeight)));
@@ -224,7 +186,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
                 }
             };
 
-            Assert.That(() => new PlaceRoomsCommand(parameters),
+            Assert.That(() => _command.Execute(map, parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
                     .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
                     .EqualTo(nameof(RoomParameters.MaxHeight)));
@@ -245,7 +207,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
                 }
             };
 
-            Assert.That(() => new PlaceRoomsCommand(parameters),
+            Assert.That(() => _command.Execute(map, parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
                     .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
                     .EqualTo(nameof(RoomParameters.MaxWidth)));
@@ -266,7 +228,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
                 }
             };
 
-            Assert.That(() => new PlaceRoomsCommand(parameters),
+            Assert.That(() => _command.Execute(map, parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
                     .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
                     .EqualTo(nameof(RoomParameters.MaxWidth)));
@@ -287,7 +249,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
                 }
             };
 
-            Assert.That(() => new PlaceRoomsCommand(parameters),
+            Assert.That(() => _command.Execute(map, parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
                     .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
                     .EqualTo(nameof(RoomParameters.MaxHeight)));
@@ -306,7 +268,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
                 }
             };
 
-            Assert.That(() => new PlaceRoomsCommand(parameters),
+            Assert.That(() => _command.Execute(map, parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
                     .With.Property(nameof(ArgumentOutOfRangeException.ParamName))
                     .EqualTo(nameof(RoomParameters.Count)));

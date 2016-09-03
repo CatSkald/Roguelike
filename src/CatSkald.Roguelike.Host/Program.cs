@@ -1,6 +1,7 @@
 ﻿using System;
 using CatSkald.Roguelike.Drawing.Painters;
 using CatSkald.Roguelike.DungeonGenerator;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +19,7 @@ namespace CatSkald.Roguelike.Host
             var provider = services.BuildServiceProvider();
             var mapBuilder = provider.GetService<IMapBuilder>();
 
-            var map = mapBuilder.Build();
+            var map = mapBuilder.Build(GatherParameters());
 
             var mapPainter = provider.GetService<IMapPainter>();
             mapPainter.PaintMap(map);
@@ -27,7 +28,7 @@ namespace CatSkald.Roguelike.Host
             Console.ReadLine();
         }
 
-        private static DungeonParameters GatherParameters()
+        private static IDungeonParameters GatherParameters()
         {
             var builder = new ConfigurationBuilder()
                     .AddJsonFile("AppSettings.json")

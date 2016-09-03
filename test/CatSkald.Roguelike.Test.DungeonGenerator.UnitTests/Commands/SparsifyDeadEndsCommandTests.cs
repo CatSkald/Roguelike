@@ -2,6 +2,7 @@
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
@@ -9,70 +10,87 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
     [TestFixture]
     public class SparsifyDeadEndsCommandTests
     {
-        [Test]
-        public void Execute_ShouldThrow_IfMapNull()
-        {
-            Map map = null;
-            var command = new SparsifyDeadEndsCommand(100);
+        private Map _map;
+        private DungeonParameters _parameters;
+        private SparsifyDeadEndsCommand _command;
 
-            Assert.That(() => command.Execute(map),
-                Throws.ArgumentNullException);
+        [SetUp]
+        public void SetUp()
+        {
+            _map = new Map(12, 16);
+            _parameters = new DungeonParameters
+            {
+                TwistFactor = 50,
+                DeadEndSparseFactor = 50
+            };
+            _command = new SparsifyDeadEndsCommand(new DirectionPicker(0));
         }
 
         [TestCase(-5)]
         [TestCase(101)]
         public void Execute_ShouldThrow_IfSparseFactorIsInvalid(int factor)
         {
-            Assert.That(() => new SparsifyDeadEndsCommand(factor),
+            _parameters.DeadEndSparseFactor = factor;
+
+            Assert.That(() => _command.Execute(_map, _parameters),
                 Throws.InstanceOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
         public void Execute_RemovesAllDeadEnds_IfSparseFactor100()
         {
-            var map = new Map(6, 4);
-            new CorridorBuilderCommand(50).Execute(map);
-            var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
+            BuildCorridors();
 
-            var command = new SparsifyDeadEndsCommand(100);
-            command.Execute(map);
+            var deadEnds = _map.Where(c => c.IsDeadEnd).ToList();
 
             if (!deadEnds.Any())
                 Assert.Inconclusive("No dead ends generated.");
 
-            Assert.That(deadEnds.TrueForAll(c => !map[c].IsDeadEnd));
+            _parameters.DeadEndSparseFactor = 100;
+            _command.Execute(_map, _parameters);
+
+            Assert.That(deadEnds.TrueForAll(c => !_map[c].IsDeadEnd));
         }
 
         [Test]
         public void Execute_RemovesNoDeadEnds_IfSparseFactor0()
         {
-            var map = new Map(6, 4);
-            new CorridorBuilderCommand(50).Execute(map);
-            var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
+            BuildCorridors();
 
-            var command = new SparsifyDeadEndsCommand(0);
-            command.Execute(map);
+            var deadEnds = _map.Where(c => c.IsDeadEnd).ToList();
 
             if (!deadEnds.Any())
                 Assert.Inconclusive("No dead ends generated.");
 
-            Assert.That(deadEnds.TrueForAll(c => map[c].IsDeadEnd));
+            _parameters.DeadEndSparseFactor = 0;
+            _command.Execute(_map, _parameters);
+
+            Assert.That(deadEnds.TrueForAll(c => _map[c].IsDeadEnd));
         }
 
         [Test]
         public void Execute_RemovesSomeDeadEnds_IfSparseFactor50()
         {
-            var map = new Map(6, 4);
-            new CorridorBuilderCommand(50).Execute(map);
-            var deadEnds = map.Where(c => c.IsDeadEnd).ToList();
+            BuildCorridors();
 
-            var command = new SparsifyDeadEndsCommand(50);
-            command.Execute(map);
+            var deadEnds = _map.Where(c => c.IsDeadEnd).ToList();
 
             if (!deadEnds.Any())
                 Assert.Inconclusive("No dead ends generated.");
 
-            Assert.That(deadEnds.Any(c => !map[c].IsDeadEnd));
+            _parameters.DeadEndSparseFactor = 50;
+            _command.Execute(_map, _parameters);
+
+            Assert.That(deadEnds, 
+                Has.Some.Matches<MapCell>(c => !_map[c].IsDeadEnd)
+                .And.Some.Matches<MapCell>(c => _map[c].IsDeadEnd));
+        }
+
+        private void BuildCorridors()
+        {
+            var corridorBuilderCommand = new CorridorBuilderCommand(
+                    new DirectionPicker(_parameters.TwistFactor));
+            corridorBuilderCommand.Execute(_map, _parameters);
         }
     }
 }

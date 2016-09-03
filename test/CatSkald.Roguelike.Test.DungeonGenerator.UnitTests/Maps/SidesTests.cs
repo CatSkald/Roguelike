@@ -2,6 +2,7 @@
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
@@ -38,7 +39,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
         [Test]
         public void IEnumerable_SidesHasCorrectItems()
         {
-            IEnumerable<KeyValuePair<Dir, Side>> items = 
+            IEnumerable<KeyValuePair<Dir, Side>> items =
                 DirHelper.GetNonEmptyDirs()
                     .ToDictionary(key => key, value => Side.Wall);
 
@@ -70,7 +71,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
 
             CustomAssert.IEqualityMembersWorkForEqualObjects(_sides, other);
         }
-        
+
         [TestCase(new[] { Dir.N, Dir.E, Dir.S, Dir.W })]
         [TestCase(new[] { Dir.E, Dir.N, Dir.W })]
         [TestCase(new[] { Dir.E, Dir.S })]

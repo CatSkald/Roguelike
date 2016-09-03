@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
@@ -36,7 +37,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
         {
             Assert.That(_container, Has.All.Not.Null);
         }
-        
+
         [Test]
         public void Constructor_InitializeCellsMethodIsCalled_WhenCellContainerCreated()
         {
@@ -46,7 +47,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
             expectedSides[Dir.W] = Side.Wall;
             expectedSides[Dir.S] = Side.Wall;
 
-            _container = new FakeCellContainer(32, 57, 
+            _container = new FakeCellContainer(32, 57,
                 cell => {
                     cell.Sides[Dir.N] = Side.Empty;
                     cell.Sides[Dir.E] = Side.Empty;
@@ -85,20 +86,21 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
         [Test]
         public void PointIndexer_ReturnsCorrectCell_IfCellIsFirst()
         {
-            int x = 0, y = 0;
-            var point = new Point(x, y);
-            var cell = new MapCell(x, y);
+            const int X = 0, Y = 0;
+            var point = new Point(X, Y);
+            var cell = new MapCell(X, Y);
             var expected = _container.First();
 
-            Assert.That(_container[x, y], Is.SameAs(expected), "XYIndexer not working");
+            Assert.That(_container[X, Y], Is.SameAs(expected), "XYIndexer not working");
             Assert.That(_container[point], Is.SameAs(expected), "PointIndexer not working");
             Assert.That(_container[cell], Is.SameAs(expected), "CellIndexer not working");
         }
-        
+
         [Test]
         public void PointIndexer_ReturnsCorrectCell_IfCellIsLast()
         {
-            int x = _container.Width - 1, y = _container.Height - 1;
+            var x = _container.Width - 1;
+            var y = _container.Height - 1;
             var point = new Point(x, y);
             var cell = new MapCell(x, y);
             var expected = _container.Last();
@@ -139,7 +141,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
 
             Assert.That(_container.Size, Is.EqualTo(w * h));
         }
-        
+
         [TestCase(2, 3)]
         [TestCase(4, 4)]
         [TestCase(101, 15)]

@@ -8,29 +8,33 @@ using CatSkald.Tools;
 namespace CatSkald.Roguelike.DungeonGenerator.Maps
 {
     [DebuggerDisplay("HasDirs:{HasDirections},Last:{LastDirection}")]
-    public sealed class DirectionPicker
+    public sealed class DirectionPicker : IDirectionPicker
     {
         private const int TwistFactorMin = 0;
         private const int TwistFactorMax = 100;
+        private int _twistFactor;
 
         private List<Dir> _directions;
 
         public DirectionPicker(int twistFactor)
         {
-            Throw.IfNotInRange(TwistFactorMin, TwistFactorMax, twistFactor, 
-                nameof(twistFactor));
-
-            TwistFactor = twistFactor;
+            SetTwistFactor(twistFactor);
             ResetDirections();
         }
 
+        public int TwistFactor => _twistFactor;
         public bool HasDirections => _directions.Count > 0;
-        public int TwistFactor { get; set; }
         public Dir LastDirection { get; set; }
 
-        public bool ShouldChangeDirection()
+        public bool ShouldChangeDirection() =>
+            _twistFactor > StaticRandom.Next(TwistFactorMin, TwistFactorMax);
+
+        public void SetTwistFactor(int twistFactor)
         {
-            return TwistFactor > StaticRandom.Next(TwistFactorMin, TwistFactorMax);
+            Throw.IfNotInRange(TwistFactorMin, TwistFactorMax, twistFactor,
+                nameof(twistFactor));
+
+            _twistFactor = twistFactor;
         }
 
         public Dir NextDirectionExcept(Dir direction)
@@ -54,7 +58,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Maps
             else
             {
                 var changeDirection = ShouldChangeDirection();
-                if (LastDirection != Dir.Zero 
+                if (LastDirection != Dir.Zero
                     && !changeDirection
                     && _directions.Contains(LastDirection))
                 {

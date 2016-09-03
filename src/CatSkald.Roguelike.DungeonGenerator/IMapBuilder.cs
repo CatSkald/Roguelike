@@ -1,10 +1,10 @@
 ﻿using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 
 namespace CatSkald.Roguelike.DungeonGenerator
 {
     public interface IMapBuilder
     {
-        void SetParameters(DungeonParameters parameters);
-        IMap Build();
+        IMap Build(IDungeonParameters parameters);
     }
 }

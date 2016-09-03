@@ -1,43 +1,32 @@
 ﻿using System.Collections.Generic;
-using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator
 {
     public sealed class MapBuilder : IMapBuilder
     {
-        private readonly List<IMapBuilderCommand> _commands = 
-            new List<IMapBuilderCommand>();
-        private DungeonParameters _params;
+        private readonly IList<IMapBuilderCommand> _commands;
 
-        public MapBuilder(DungeonParameters parameters)
+        public MapBuilder(IList<IMapBuilderCommand> commands)
         {
-            SetParameters(parameters);
+            Throw.IfNull(commands, nameof(commands));
+
+            _commands = commands;
         }
 
-        public void SetParameters(DungeonParameters parameters)
+        public IMap Build(IDungeonParameters parameters)
         {
             Throw.IfNull(parameters, nameof(parameters));
+            Throw.IfLess(1, parameters.Width, nameof(parameters.Width));
+            Throw.IfLess(1, parameters.Height, nameof(parameters.Height));
 
-            _params = parameters;
-            _commands.Clear();
-            // order matters
-            _commands.AddRange(new IMapBuilderCommand[] {
-                new CorridorBuilderCommand(parameters.TwistFactor),
-                new SparsifyCellsCommand(parameters.CellSparseFactor),
-                new SparsifyDeadEndsCommand(parameters.DeadEndSparseFactor),
-                new PlaceRoomsCommand(parameters)
-            });
-        }
-
-        public IMap Build()
-        {
-            var map = new Map(_params.Width, _params.Height);
+            var map = new Map(parameters.Width, parameters.Height);
 
             foreach (var command in _commands)
             {
-                command.Execute(map);
+                command.Execute(map, parameters);
             }
 
             return map;
