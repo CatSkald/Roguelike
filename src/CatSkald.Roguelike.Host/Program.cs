@@ -4,28 +4,38 @@ using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NLog;
 
 namespace CatSkald.Roguelike.Host
 {
     public static class Program
     {
+        private static Logger Log = LogManager.GetCurrentClassLogger();
+
         public static void Main()
         {
             var services = new ServiceCollection();
             services.AddTransient(_ => GatherParameters())
+                .AddLogging()
                 .AddMapBuilding()
                 .AddMapPainting();
-
             var provider = services.BuildServiceProvider();
+
+            StartApplication(provider);
+
+            Console.ReadLine();
+        }
+
+        private static void StartApplication(IServiceProvider provider)
+        {
+            Log.Info("Roguelike started.");
+
             var mapBuilder = provider.GetService<IMapBuilder>();
 
             var map = mapBuilder.Build(GatherParameters());
 
             var mapPainter = provider.GetService<IMapPainter>();
             mapPainter.PaintMap(map);
-
-            Console.ReadKey();
-            Console.ReadLine();
         }
 
         private static IDungeonParameters GatherParameters()

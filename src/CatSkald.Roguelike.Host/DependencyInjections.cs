@@ -7,6 +7,8 @@ using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
 namespace CatSkald.Roguelike.Host
 {
@@ -14,8 +16,10 @@ namespace CatSkald.Roguelike.Host
     {
         public static IServiceCollection AddLogging(IServiceCollection services)
         {
-            // ILoggerFactory loggerFactory = new Logging.LoggerFactory();
-            // serviceCollection.AddInstance<ILoggerFactory>(loggerFactory);
+            var loggerFactory = new LoggerFactory();
+            loggerFactory.AddNLog();
+              
+            services.AddSingleton<ILoggerFactory>(loggerFactory);
 
             return services;
         }
@@ -27,7 +31,7 @@ namespace CatSkald.Roguelike.Host
                 s => new DirectionPicker(
                     s.GetService<IDungeonParameters>().TwistFactor));
 
-            services.AddTransient(s => GenerateCommands(s));
+            services.AddTransient<IList<IMapBuilderCommand>>(s => GenerateCommands(s));
             services.AddScoped<IMapBuilder, MapBuilder>();
 
             return services;
@@ -42,7 +46,7 @@ namespace CatSkald.Roguelike.Host
             return services;
         }
 
-        private static IList<IMapBuilderCommand> GenerateCommands(IServiceProvider s)
+        private static List<IMapBuilderCommand> GenerateCommands(IServiceProvider s)
         {
             // order matters
             return new List<IMapBuilderCommand> {
