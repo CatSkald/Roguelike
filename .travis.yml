@@ -1,0 +1,4 @@
+language: csharp
+solution: CatSkald.Roguelike.sln
+install:
+  - nuget restore CatSkald.Roguelike.sln
