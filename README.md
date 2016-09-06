@@ -1,6 +1,11 @@
 # CatSkald.Roguelike
 Old-style roguelike console game
 
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/krgpuvllw4d39068?svg=true)](https://ci.appveyor.com/project/CatSkald/Roguelike)
+[![Travis CI build status](https://travis-ci.org/CatSkald/Roguelike.svg?branch=master)](https://travis-ci.org/CatSkald/Roguelike)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/CatSkald/Roguelike/master/LICENSE)
+
+
 ####Useful resources that inspired and helped a lot
 * [Hunt and Kill Algorithm](http://weblog.jamisbuck.org/2011/1/24/maze-generation-hunt-and-kill-algorithm) by Jamis Buck
   * DungeonGenerator implementation is based on this algorithm.
