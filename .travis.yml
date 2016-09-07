@@ -2,7 +2,7 @@ language: csharp
 solution: CatSkald.Roguelike.sln
 install:
   - nuget restore
-  - nuget OpenCover -OutputDirectory tools
+  - nuget install OpenCover -OutputDirectory tools
   - nuget install coveralls.net -OutputDirectory tools
   - nuget install xunit.runners -OutputDirectory testrunner
 script:
