@@ -29,7 +29,7 @@ namespace CatSkald.Test.Tools.UnitTests
 
         [TestCase("someArgument")]
         [TestCase("null")]
-        public void ThrowMethods_ThrowCorrectExceptionWhenPointIsOutsideMap(
+        public void ThrowMethods_ThrowException_WithCorrectParamName(
             string paramName)
         {
             var actions = new Dictionary<string, Action<string>>
