@@ -528,7 +528,8 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
         [TestCase(1, 30)]
         [TestCase(-1, -30)]
         [TestCase(100, 300)]
-        public void MapActionsThrowCorrectExceptionWhenPointIsOutsideMap(int x, int y)
+        public void MapActions_ThrowCorrectException_WhenPointIsOutsideMap(
+            int x, int y)
         {
             var actions = new Dictionary<string, Action<IMap, MapCell>>
             {
