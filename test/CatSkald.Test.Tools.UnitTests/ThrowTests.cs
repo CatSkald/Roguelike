@@ -13,7 +13,10 @@ namespace CatSkald.Test.Tools.UnitTests
             Assert.That(() => Throw.IfNull(new object(), "myParameter"),
                 Throws.Nothing);
         }
+        
+        //TODO add tests for failures
 
+        //TODO extract range into parameters
         #region IfNotInRange
         [TestCase(0)]
         [TestCase(1)]
@@ -27,6 +30,28 @@ namespace CatSkald.Test.Tools.UnitTests
         }
         #endregion
 
+        #region IfGreater
+        [TestCase(-34, -35)]
+        [TestCase(1, 0)]
+        [TestCase(5097, 907)]
+        public void IfGreater_ThrowsNothing_IfValueIsLess(int max, int value)
+        {
+            Assert.That(() => Throw.IfGreater(max, value, "p"),
+                Throws.Nothing);
+        }
+        #endregion
+
+        #region IfLess
+        [TestCase(-345, -344)]
+        [TestCase(-1, 0)]
+        [TestCase(5097, 9047)]
+        public void IfLess_ThrowsNothing_IfValueIsGreater(int min, int value)
+        {
+            Assert.That(() => Throw.IfLess(min, value, "p"),
+                Throws.Nothing);
+        }
+        #endregion
+        
         [TestCase("someArgument")]
         [TestCase("null")]
         public void ThrowMethods_ThrowException_WithCorrectParamName(
