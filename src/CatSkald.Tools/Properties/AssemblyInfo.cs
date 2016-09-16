@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Set of useful classes developed by CatSkald")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(nameof(CatSkald))]
-[assembly: AssemblyProduct("CatSkald Roguelike")]
+[assembly: AssemblyProduct("CatSkald Tools")]
 [assembly: AssemblyCopyright("Copyright © CatSkald 2016")]
 [assembly: AssemblyTrademark("")]
 
