@@ -14,13 +14,7 @@ namespace CatSkald.Roguelike.Host
 
         public static void Main()
         {
-            var services = new ServiceCollection();
-            services.AddTransient(_ => GatherParameters())
-                .AddLogging()
-                .AddMapBuilding()
-                .AddMapPainting();
-            var provider = services.BuildServiceProvider();
-
+            var provider = BuildServiceProvider();
             StartApplication(provider);
 
             Console.ReadLine();
@@ -36,6 +30,17 @@ namespace CatSkald.Roguelike.Host
 
             var mapPainter = provider.GetService<IMapPainter>();
             mapPainter.PaintMap(map);
+        }
+
+        private static IServiceProvider BuildServiceProvider()
+        {
+            var services = new ServiceCollection();
+            services.AddTransient(_ => GatherParameters())
+                .AddLogging()
+                .AddMapBuilding()
+                .AddMapPainting();
+
+            return services.BuildServiceProvider();
         }
 
         private static IDungeonParameters GatherParameters()
