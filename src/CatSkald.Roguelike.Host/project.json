@@ -15,6 +15,7 @@
   "dependencies": {
     "CatSkald.Roguelike.Drawing": "*",
     "CatSkald.Roguelike.DungeonGenerator": "*",
+    "CatSkald.Roguelike.GameProcessor": "*",
     "Microsoft.Extensions.Configuration": "1.0.0",
     "Microsoft.Extensions.Configuration.Binder": "1.0.0",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",

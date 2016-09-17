@@ -6,6 +6,7 @@ using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.GameProcessor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
@@ -33,6 +34,14 @@ namespace CatSkald.Roguelike.Host
 
             services.AddTransient<IList<IMapBuilderCommand>>(s => GenerateCommands(s));
             services.AddScoped<IMapBuilder, MapBuilder>();
+
+            return services;
+        }
+        
+        public static IServiceCollection AddMapProcessing(
+            this IServiceCollection services)
+        {
+            services.AddScoped<IProcessor, Processor>();
 
             return services;
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using CatSkald.Roguelike.Drawing.Painters;
-using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.GameProcessor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
@@ -32,13 +32,12 @@ namespace CatSkald.Roguelike.Host
 
         private static void StartApplication(IServiceProvider provider)
         {
-            var mapBuilder = provider.GetService<IMapBuilder>();
-            var map = mapBuilder.Build(GatherParameters());
-            Log.Debug("Map created.");
+            var processor = provider.GetService<IProcessor>();
+            processor.Initialize(GatherParameters());
 
             var mapPainter = provider.GetService<IMapPainter>();
-            mapPainter.PaintMap(map);
-            Log.Debug("Map painted.");
+            mapPainter.PaintMap(processor.Dungeon);
+            Console.WriteLine(processor.Message);
         }
 
         private static IServiceProvider BuildServiceProvider()
@@ -47,6 +46,7 @@ namespace CatSkald.Roguelike.Host
             services.AddTransient(_ => GatherParameters())
                 .AddLogging()
                 .AddMapBuilding()
+                .AddMapProcessing()
                 .AddMapPainting();
 
             return services.BuildServiceProvider();

@@ -29,6 +29,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.Test.Cor
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Test.Tools.UnitTests", "test\CatSkald.Test.Tools.UnitTests\CatSkald.Test.Tools.UnitTests.xproj", "{CCCBC973-4752-45D1-A447-58D0E7CE34B4}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.GameProcessor", "src\CatSkald.Roguelike.GameProcessor\CatSkald.Roguelike.GameProcessor.xproj", "{D4890EDF-2AE4-43FD-BFC6-25A601EED5BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{CCCBC973-4752-45D1-A447-58D0E7CE34B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCCBC973-4752-45D1-A447-58D0E7CE34B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCCBC973-4752-45D1-A447-58D0E7CE34B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4890EDF-2AE4-43FD-BFC6-25A601EED5BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4890EDF-2AE4-43FD-BFC6-25A601EED5BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4890EDF-2AE4-43FD-BFC6-25A601EED5BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4890EDF-2AE4-43FD-BFC6-25A601EED5BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +86,6 @@ Global
 		{04B85EB0-6828-4CEB-AD2F-6FD8A664F96A} = {80083AF5-2AF4-49EF-A89F-3DE47A5D5084}
 		{1D3D0310-6DFD-48F4-9D84-E58958E54BBD} = {80083AF5-2AF4-49EF-A89F-3DE47A5D5084}
 		{CCCBC973-4752-45D1-A447-58D0E7CE34B4} = {80083AF5-2AF4-49EF-A89F-3DE47A5D5084}
+		{D4890EDF-2AE4-43FD-BFC6-25A601EED5BC} = {9BFB618E-B552-499D-BBCF-E3F3C443D15D}
 	EndGlobalSection
 EndGlobal

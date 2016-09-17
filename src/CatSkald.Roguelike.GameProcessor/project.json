@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1-*",
+  "buildOptions": {
+    "compile": {
+      "includeFiles": [
+        "../../CommonAssemblyInfo.cs"
+      ]
+    }
+  },
+
+  "dependencies": {
+    "CatSkald.Tools": "*",
+    "CatSkald.Roguelike.Core": "*",
+    "CatSkald.Roguelike.DungeonGenerator": "*",
+    "NETStandard.Library": "1.6.0",
+    "System.Drawing.Primitives": "4.0.0",
+    "NLog.Extensions.Logging": "1.0.0-*"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}
