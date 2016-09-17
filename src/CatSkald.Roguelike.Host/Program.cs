@@ -14,22 +14,31 @@ namespace CatSkald.Roguelike.Host
 
         public static void Main()
         {
-            var provider = BuildServiceProvider();
-            StartApplication(provider);
+            try
+            {
+                Log.Debug("Roguelike started.");
+
+                var provider = BuildServiceProvider();
+                StartApplication(provider);
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "Oops, you've just catched a fatal bug.");
+                throw;
+            }
 
             Console.ReadLine();
         }
 
         private static void StartApplication(IServiceProvider provider)
         {
-            Log.Info("Roguelike started.");
-
             var mapBuilder = provider.GetService<IMapBuilder>();
-
             var map = mapBuilder.Build(GatherParameters());
+            Log.Debug("Map created.");
 
             var mapPainter = provider.GetService<IMapPainter>();
             mapPainter.PaintMap(map);
+            Log.Debug("Map painted.");
         }
 
         private static IServiceProvider BuildServiceProvider()
