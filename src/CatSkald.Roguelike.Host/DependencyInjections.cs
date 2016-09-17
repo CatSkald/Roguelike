@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using CatSkald.Roguelike.Drawing.Converters;
-using CatSkald.Roguelike.Drawing.Painters;
+using CatSkald.Roguelike.Core.Services;
+using CatSkald.Roguelike.Drawing;
 using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using CatSkald.Roguelike.GameProcessor;
+using CatSkald.Roguelike.GameProcessor.Initialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
@@ -41,6 +42,8 @@ namespace CatSkald.Roguelike.Host
         public static IServiceCollection AddMapProcessing(
             this IServiceCollection services)
         {
+            services.AddScoped<IDungeonPopulator, DungeonPopulator>();
+            services.AddScoped<IMapConverter, MapConverter>();
             services.AddScoped<IProcessor, Processor>();
 
             return services;
@@ -49,8 +52,7 @@ namespace CatSkald.Roguelike.Host
         public static IServiceCollection AddMapPainting(
             this IServiceCollection services)
         {
-            services.AddTransient<ITilesConverter<IMap>, TilesConverter>();
-            services.AddTransient<IMapPainter, TilesMapPainter>();
+            services.AddTransient<IMapPainter, ConsolePainter>();
 
             return services;
         }

@@ -1,11 +1,11 @@
-﻿using CatSkald.Roguelike.DungeonGenerator.Maps;
+﻿using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Parameters;
 
 namespace CatSkald.Roguelike.GameProcessor
 {
     public interface IProcessor
     {
-        IMap Dungeon { get; }
+        IDungeon Dungeon { get; }
         string Message { get; }
 
         void Initialize(IDungeonParameters parameters);

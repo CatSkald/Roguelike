@@ -1,5 +1,4 @@
 ﻿using System;
-using CatSkald.Roguelike.Drawing.Painters;
 using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using CatSkald.Roguelike.GameProcessor;
 using Microsoft.Extensions.Configuration;
@@ -35,9 +34,12 @@ namespace CatSkald.Roguelike.Host
             var processor = provider.GetService<IProcessor>();
             processor.Initialize(GatherParameters());
 
-            var mapPainter = provider.GetService<IMapPainter>();
-            mapPainter.PaintMap(processor.Dungeon);
-            Console.WriteLine(processor.Message);
+            bool result;
+            do
+            {
+                result = processor.Process();
+                Console.ReadKey();
+            } while (result);
         }
 
         private static IServiceProvider BuildServiceProvider()

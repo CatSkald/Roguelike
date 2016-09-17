@@ -1,17 +1,18 @@
-﻿namespace CatSkald.Roguelike.Core.Terrain
+﻿using CatSkald.Roguelike.Core.Objects;
+
+namespace CatSkald.Roguelike.Core.Terrain
 {
     public sealed class Cell
     {
-        public Cell(int x, int y, string image)
+        public Cell(int x, int y)
         {
             X = x;
             Y = y;
-            Image = image;
         }
 
         public int X { get; set; }
         public int Y { get; set; }
 
-        public string Image { get; set; }
+        public XType Type { get; set; }
     }
 }
