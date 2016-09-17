@@ -14,19 +14,27 @@ namespace CatSkald.Test.Tools.UnitTests
                 Throws.Nothing);
         }
         
-        //TODO add tests for failures
-
-        //TODO extract range into parameters
         #region IfNotInRange
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(42)]
-        [TestCase(99)]
-        [TestCase(100)]
-        public void IfNotInRange_ThrowsNothing_IfValueInRange(int value)
+        [TestCase(0, 10, 0)]
+        [TestCase(5, 144, 144)]
+        [TestCase(-1, 1, 0)]
+        [TestCase(-44, -44, -44)]
+        public void IfNotInRange_ThrowsNothing_IfValueInRange(
+            int min, int max, int value)
         {
-            Assert.That(() => Throw.IfNotInRange(0, 100, value, "p"),
+            Assert.That(() => Throw.IfNotInRange(min, max, value, "p"),
                 Throws.Nothing);
+        }
+
+        [TestCase(0, 10, -5)]
+        [TestCase(5, 144, 145)]
+        [TestCase(-1, 1, -2)]
+        [TestCase(-44, -44, -43)]
+        public void IfNotInRange_Throws_IfValueNotInRange(
+            int min, int max, int value)
+        {
+            Assert.That(() => Throw.IfNotInRange(min, max, value, "p"),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
         }
         #endregion
 
@@ -39,6 +47,15 @@ namespace CatSkald.Test.Tools.UnitTests
             Assert.That(() => Throw.IfGreater(max, value, "p"),
                 Throws.Nothing);
         }
+
+        [TestCase(-36, -35)]
+        [TestCase(-1, 0)]
+        [TestCase(-5097, 907)]
+        public void IfGreater_ThrowsNothing_IfValueIsGreater(int max, int value)
+        {
+            Assert.That(() => Throw.IfGreater(max, value, "p"),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
         #endregion
 
         #region IfLess
@@ -50,8 +67,17 @@ namespace CatSkald.Test.Tools.UnitTests
             Assert.That(() => Throw.IfLess(min, value, "p"),
                 Throws.Nothing);
         }
+
+        [TestCase(-343, -344)]
+        [TestCase(1, 0)]
+        [TestCase(97, -500)]
+        public void IfLess_Throws_IfValueIsLess(int min, int value)
+        {
+            Assert.That(() => Throw.IfLess(min, value, "p"),
+                Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
         #endregion
-        
+
         [TestCase("someArgument")]
         [TestCase("null")]
         public void ThrowMethods_ThrowException_WithCorrectParamName(
