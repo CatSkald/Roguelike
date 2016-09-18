@@ -1,12 +1,12 @@
 ﻿using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
     public abstract class AbstractMapBuilderCommand : IMapBuilderCommand
     {
-        public void Execute(IMap map, IDungeonParameters parameters)
+        public void Execute(IMap map, DungeonParameters parameters)
         {
             Throw.IfNull(map, nameof(map));
             Throw.IfNull(parameters, nameof(parameters));
@@ -16,7 +16,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             ExecuteCommand(map, parameters);
         }
 
-        protected abstract void ValidateParameters(IDungeonParameters parameters);
-        protected abstract void ExecuteCommand(IMap map, IDungeonParameters parameters);
+        protected abstract void ValidateParameters(DungeonParameters parameters);
+        protected abstract void ExecuteCommand(IMap map, DungeonParameters parameters);
     }
 }

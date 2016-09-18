@@ -1,5 +1,5 @@
-﻿using CatSkald.Roguelike.Core.Terrain;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+﻿using CatSkald.Roguelike.Core.Parameters;
+using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.GameProcessor
 {
@@ -8,7 +8,7 @@ namespace CatSkald.Roguelike.GameProcessor
         IDungeon Dungeon { get; }
         string Message { get; }
 
-        void Initialize(IDungeonParameters parameters);
+        void Initialize(DungeonParameters parameters);
         bool Process();
     }
 }

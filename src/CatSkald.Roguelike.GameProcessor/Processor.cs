@@ -1,7 +1,6 @@
-﻿using CatSkald.Roguelike.Core.Services;
+﻿using CatSkald.Roguelike.Core.Parameters;
+using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
-using CatSkald.Roguelike.DungeonGenerator;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
 using NLog;
 
 namespace CatSkald.Roguelike.GameProcessor.Initialization
@@ -10,18 +9,15 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
     {
         private readonly IMapPainter painter;
         private readonly IDungeonPopulator populator;
-        private readonly IMapConverter converter;
         private readonly IMapBuilder builder;
         private static Logger Log = LogManager.GetCurrentClassLogger();
 
         public Processor(
             IMapBuilder builder, 
-            IMapConverter converter, 
             IDungeonPopulator populator,
             IMapPainter painter)
         {
             this.builder = builder;
-            this.converter = converter;
             this.populator = populator;
             this.painter = painter;
         }
@@ -29,10 +25,9 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         public IDungeon Dungeon { get; private set; }
         public string Message { get; private set; }
 
-        public void Initialize(IDungeonParameters parameters)
+        public void Initialize(DungeonParameters parameters)
         {
-            var map = builder.Build(parameters);
-            Dungeon = converter.ConvertToDungeon(map);
+            Dungeon = builder.Build(parameters);
             populator.Fill(Dungeon);
             Log.Debug("Dungeon initialized.");
         }

@@ -1,22 +1,26 @@
 ﻿using System.Collections.Generic;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Tools;
+using CatSkald.Roguelike.Core.Terrain;
+using CatSkald.Roguelike.Core.Services;
 
 namespace CatSkald.Roguelike.DungeonGenerator
 {
     public sealed class MapBuilder : IMapBuilder
     {
-        private readonly IList<IMapBuilderCommand> _commands;
+        private readonly IMapConverter converter;
+        private readonly IList<IMapBuilderCommand> commands;
 
-        public MapBuilder(IList<IMapBuilderCommand> commands)
+        public MapBuilder(IList<IMapBuilderCommand> commands, IMapConverter converter)
         {
             Throw.IfNull(commands, nameof(commands));
 
-            _commands = commands;
+            this.commands = commands;
+            this.converter = converter;
         }
 
-        public IMap Build(IDungeonParameters parameters)
+        public IDungeon Build(DungeonParameters parameters)
         {
             Throw.IfNull(parameters, nameof(parameters));
             Throw.IfLess(1, parameters.Width, nameof(parameters.Width));
@@ -24,12 +28,12 @@ namespace CatSkald.Roguelike.DungeonGenerator
 
             var map = new Map(parameters.Width, parameters.Height);
 
-            foreach (var command in _commands)
+            foreach (var command in commands)
             {
                 command.Execute(map, parameters);
             }
 
-            return map;
+            return converter.ConvertToDungeon(map);
         }
     }
 }

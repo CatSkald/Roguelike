@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
@@ -16,7 +16,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
         private const int OverlappedRoomBonus = 100;
 
         protected override void ExecuteCommand(
-            IMap map, IDungeonParameters parameters)
+            IMap map, DungeonParameters parameters)
         {
             var rooms = CreateRooms(parameters.RoomParameters);
             foreach (var room in rooms)
@@ -25,7 +25,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             }
         }
 
-        protected override void ValidateParameters(IDungeonParameters parameters)
+        protected override void ValidateParameters(DungeonParameters parameters)
         {
             var roomParameters = parameters.RoomParameters;
 

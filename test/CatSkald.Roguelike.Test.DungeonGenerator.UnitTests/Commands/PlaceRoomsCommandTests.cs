@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
@@ -11,7 +11,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
     [TestFixture]
     public class PlaceRoomsCommandTests
     {
-        private IDungeonParameters _parameters;
+        private DungeonParameters _parameters;
         private Map _map;
         private PlaceRoomsCommand _command;
 

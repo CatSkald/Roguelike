@@ -1,6 +1,6 @@
 ﻿using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers
 {
@@ -10,12 +10,12 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers
         public int ValidateParametersCalls { get; set; }
 
         protected override void ExecuteCommand(
-            IMap map, IDungeonParameters parameters)
+            IMap map, DungeonParameters parameters)
         {
             ExecuteCommandCalls++;
         }
 
-        protected override void ValidateParameters(IDungeonParameters parameters)
+        protected override void ValidateParameters(DungeonParameters parameters)
         {
             ValidateParametersCalls++;
         }

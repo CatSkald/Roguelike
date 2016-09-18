@@ -1,4 +1,4 @@
-﻿namespace CatSkald.Roguelike.DungeonGenerator.Parameters
+﻿namespace CatSkald.Roguelike.Core.Parameters
 {
     public class RoomParameters
     {

@@ -4,7 +4,7 @@ using CatSkald.Roguelike.Core.Objects;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
 
-namespace CatSkald.Roguelike.GameProcessor.Initialization
+namespace CatSkald.Roguelike.DungeonGenerator
 {
     public class MapConverter : IMapConverter
     {

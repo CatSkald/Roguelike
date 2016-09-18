@@ -1,5 +1,5 @@
 ﻿using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
 using NUnit.Framework;
 
@@ -12,7 +12,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_ShouldThrow_IfMapNull()
         {
             Map map = null;
-            IDungeonParameters parameters = new DungeonParameters();
+            DungeonParameters parameters = new DungeonParameters();
             var command = new FakeMapBuilderCommand();
 
             Assert.That(() => command.Execute(map, parameters),
@@ -23,7 +23,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_ShouldThrow_IfRoomParametersNull()
         {
             var map = new Map(3, 4);
-            IDungeonParameters parameters = new DungeonParameters
+            DungeonParameters parameters = new DungeonParameters
             {
                 RoomParameters = null
             };
@@ -37,7 +37,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_ShouldThrow_IfParametersNull()
         {
             var map = new Map(3, 4);
-            IDungeonParameters parameters = null;
+            DungeonParameters parameters = null;
             var command = new FakeMapBuilderCommand();
 
             Assert.That(() => command.Execute(map, parameters),
@@ -48,7 +48,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_ShouldCallValidateParameters()
         {
             var map = new Map(3, 4);
-            IDungeonParameters parameters = new DungeonParameters();
+            DungeonParameters parameters = new DungeonParameters();
             var command = new FakeMapBuilderCommand();
 
             command.Execute(map, parameters);
@@ -60,7 +60,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_ShouldCallExecuteCommand()
         {
             var map = new Map(3, 4);
-            IDungeonParameters parameters = new DungeonParameters();
+            DungeonParameters parameters = new DungeonParameters();
             var command = new FakeMapBuilderCommand();
 
             command.Execute(map, parameters);

@@ -1,5 +1,5 @@
 ﻿using System;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.GameProcessor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +54,7 @@ namespace CatSkald.Roguelike.Host
             return services.BuildServiceProvider();
         }
 
-        private static IDungeonParameters GatherParameters()
+        private static DungeonParameters GatherParameters()
         {
             var builder = new ConfigurationBuilder()
                     .AddJsonFile("AppSettings.json")

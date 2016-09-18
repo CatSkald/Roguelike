@@ -2,7 +2,7 @@
 using System.Linq;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands

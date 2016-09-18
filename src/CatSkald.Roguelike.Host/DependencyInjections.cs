@@ -5,7 +5,7 @@ using CatSkald.Roguelike.Drawing;
 using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.GameProcessor;
 using CatSkald.Roguelike.GameProcessor.Initialization;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,9 +31,10 @@ namespace CatSkald.Roguelike.Host
         {
             services.AddTransient<IDirectionPicker>(
                 s => new DirectionPicker(
-                    s.GetService<IDungeonParameters>().TwistFactor));
+                    s.GetService<DungeonParameters>().TwistFactor));
 
             services.AddTransient<IList<IMapBuilderCommand>>(s => GenerateCommands(s));
+            services.AddScoped<IMapConverter, MapConverter>();
             services.AddScoped<IMapBuilder, MapBuilder>();
 
             return services;
@@ -43,7 +44,6 @@ namespace CatSkald.Roguelike.Host
             this IServiceCollection services)
         {
             services.AddScoped<IDungeonPopulator, DungeonPopulator>();
-            services.AddScoped<IMapConverter, MapConverter>();
             services.AddScoped<IProcessor, Processor>();
 
             return services;

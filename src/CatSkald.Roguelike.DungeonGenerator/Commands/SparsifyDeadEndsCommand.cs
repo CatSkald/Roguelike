@@ -2,7 +2,7 @@
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
@@ -18,7 +18,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             _directionPicker.SetTwistFactor(0);
         }
 
-        protected override void ExecuteCommand(IMap map, IDungeonParameters parameters)
+        protected override void ExecuteCommand(IMap map, DungeonParameters parameters)
         {
             var _sparseFactor = parameters.DeadEndSparseFactor;
             foreach (var cell in map)
@@ -30,7 +30,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             }
         }
 
-        protected override void ValidateParameters(IDungeonParameters parameters)
+        protected override void ValidateParameters(DungeonParameters parameters)
         {
             Throw.IfNotInRange(0, 100, parameters.DeadEndSparseFactor,
                 nameof(parameters.DeadEndSparseFactor));

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using CatSkald.Roguelike.DungeonGenerator;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
 using NUnit.Framework;
+using NSubstitute;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
 {
@@ -22,13 +23,14 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
                 Height = 10,
                 RoomParameters = new RoomParameters()
             };
-            _builder = new MapBuilder(new List<IMapBuilderCommand>());
+            _builder = new MapBuilder(new List<IMapBuilderCommand>(), 
+                Substitute.For<IMapConverter>());
         }
 
         [Test]
         public void Constructor_Throws_IfCommandsNull()
         {
-            IDungeonParameters parameters = null;
+            DungeonParameters parameters = null;
 
             Assert.That(() => _builder.Build(parameters),
                 Throws.TypeOf<ArgumentNullException>());
@@ -45,7 +47,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
                 new FakeMapBuilderCommand(),
                 new FakeMapBuilderCommand()
             };
-            var builder = new MapBuilder(commands);
+            var builder = new MapBuilder(commands, Substitute.For<IMapConverter>());
             builder.Build(_params);
 
             Assert.That(commands, Has.All
@@ -56,7 +58,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests
         [Test]
         public void Build_Throws_IfParametersNull()
         {
-            IDungeonParameters parameters = null;
+            DungeonParameters parameters = null;
 
             Assert.That(() => _builder.Build(parameters),
                 Throws.TypeOf<ArgumentNullException>());

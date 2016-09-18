@@ -2,7 +2,7 @@
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Maps;
-using CatSkald.Roguelike.DungeonGenerator.Parameters;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
@@ -16,12 +16,12 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             _directionPicker = directionPicker;
         }
 
-        protected override void ExecuteCommand(IMap map, IDungeonParameters parameters)
+        protected override void ExecuteCommand(IMap map, DungeonParameters parameters)
         {
             BuildCorridors(map);
         }
 
-        protected override void ValidateParameters(IDungeonParameters parameters)
+        protected override void ValidateParameters(DungeonParameters parameters)
         {
             Throw.IfNotInRange(0, 100, parameters.TwistFactor, nameof(parameters.TwistFactor));
         }
