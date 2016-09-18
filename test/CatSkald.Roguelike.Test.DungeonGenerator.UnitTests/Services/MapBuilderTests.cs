@@ -6,6 +6,7 @@ using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
 using NUnit.Framework;
 using NSubstitute;
+using CatSkald.Roguelike.DungeonGenerator.Terrain;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
 {
@@ -70,6 +71,20 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
             Assert.That(commands, Has.All
                 .With.Property(nameof(FakeMapBuilderCommand.ExecuteCommandCalls))
                 .EqualTo(1));
+        }
+        
+        [Test]
+        public void Build_UsesConverter()
+        {
+            var dungeon = new Dungeon(5, 5);
+            var converter = Substitute.For<IMapConverter>();
+            converter.ConvertToDungeon(Arg.Any<IMap>()).Returns(dungeon);
+            var builder = new MapBuilder(
+                new List<IMapBuilderCommand>(), converter);
+
+            var result = builder.Build(_params);
+
+            Assert.That(result, Is.SameAs(dungeon));
         }
 
         [Test]
