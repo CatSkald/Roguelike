@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using CatSkald.Roguelike.Core.Terrain;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Maps
+namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     [DebuggerDisplay("[{Width},{Height}]")]
     public sealed class Room : CellContainer

@@ -1,6 +1,7 @@
 ﻿using System;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Services;
+using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using CatSkald.Roguelike.Core.Parameters;
 using NUnit.Framework;
 

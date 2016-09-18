@@ -1,6 +1,6 @@
 ﻿using CatSkald.Roguelike.Core.Terrain;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Maps
+namespace CatSkald.Roguelike.DungeonGenerator.Services
 {
     public interface IDirectionPicker
     {

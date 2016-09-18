@@ -1,5 +1,5 @@
 ﻿using System;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Terrain;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers
 {

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Maps
+namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     [DebuggerDisplay("{Location}(IsWall:{IsWall})")]
     public sealed class MapCell : IEquatable<MapCell>

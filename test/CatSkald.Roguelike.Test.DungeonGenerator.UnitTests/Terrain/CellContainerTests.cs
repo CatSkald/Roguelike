@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Maps
+namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
 {
     [TestFixture]
     public class CellContainerTests

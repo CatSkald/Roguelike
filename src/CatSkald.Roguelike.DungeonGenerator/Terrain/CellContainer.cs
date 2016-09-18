@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using CatSkald.Tools;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Maps
+namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     public abstract class CellContainer : IEnumerable<MapCell>
     {

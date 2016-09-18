@@ -2,7 +2,7 @@
 using System.Drawing;
 using CatSkald.Roguelike.Core.Terrain;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Maps
+namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     public interface IMap : IEnumerable<MapCell>
     {

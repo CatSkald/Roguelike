@@ -1,4 +1,4 @@
-﻿namespace CatSkald.Roguelike.DungeonGenerator.Maps
+﻿namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     public enum Side
     {

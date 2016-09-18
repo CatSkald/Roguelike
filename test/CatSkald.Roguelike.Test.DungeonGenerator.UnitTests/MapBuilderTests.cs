@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CatSkald.Roguelike.DungeonGenerator;
+using CatSkald.Roguelike.DungeonGenerator.Services;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
 using NUnit.Framework;

@@ -5,7 +5,7 @@ using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Tools;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Maps
+namespace CatSkald.Roguelike.DungeonGenerator.Services
 {
     [DebuggerDisplay("HasDirs:{HasDirections},Last:{LastDirection}")]
     public sealed class DirectionPicker : IDirectionPicker

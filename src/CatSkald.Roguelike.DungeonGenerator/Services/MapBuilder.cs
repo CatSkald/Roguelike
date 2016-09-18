@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Tools;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.Core.Services;
 
-namespace CatSkald.Roguelike.DungeonGenerator
+namespace CatSkald.Roguelike.DungeonGenerator.Services
 {
     public sealed class MapBuilder : IMapBuilder
     {

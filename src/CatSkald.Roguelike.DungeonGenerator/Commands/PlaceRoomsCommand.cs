@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Tools;
 

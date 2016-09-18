@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Maps
+namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     public sealed class Sides : IEnumerable<KeyValuePair<Dir, Side>>, IEquatable<Sides>
     {

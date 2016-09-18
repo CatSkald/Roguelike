@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Tools;
 
-namespace CatSkald.Roguelike.DungeonGenerator
+namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     public class Dungeon : IDungeon
     {

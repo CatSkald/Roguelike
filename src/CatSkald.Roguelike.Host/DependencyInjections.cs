@@ -4,7 +4,7 @@ using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Drawing;
 using CatSkald.Roguelike.DungeonGenerator;
 using CatSkald.Roguelike.DungeonGenerator.Commands;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Services;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.GameProcessor;
 using CatSkald.Roguelike.GameProcessor.Initialization;

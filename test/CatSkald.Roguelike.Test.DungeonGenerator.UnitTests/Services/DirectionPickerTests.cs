@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using CatSkald.Roguelike.Core.Terrain;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Services;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Directions
+namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
 {
     [TestFixture]
     public class DirectionPickerTests

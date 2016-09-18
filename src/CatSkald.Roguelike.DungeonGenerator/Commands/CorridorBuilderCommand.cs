@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Tools;
+using CatSkald.Roguelike.DungeonGenerator.Services;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {

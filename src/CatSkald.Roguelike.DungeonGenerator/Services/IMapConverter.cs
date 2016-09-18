@@ -1,7 +1,7 @@
 ﻿using CatSkald.Roguelike.Core.Terrain;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Terrain;
 
-namespace CatSkald.Roguelike.DungeonGenerator
+namespace CatSkald.Roguelike.DungeonGenerator.Services
 {
     public interface IMapConverter
     {

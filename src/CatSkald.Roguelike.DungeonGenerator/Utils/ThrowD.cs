@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using CatSkald.Roguelike.Core.Terrain;
-using CatSkald.Roguelike.DungeonGenerator.Maps;
+using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Utils

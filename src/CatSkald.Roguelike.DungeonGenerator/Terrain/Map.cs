@@ -7,7 +7,7 @@ using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Utils;
 using CatSkald.Tools;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Maps
+namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     [DebuggerDisplay("[{Width},{Height}](AllVisited:{AllVisited})")]
     public sealed class Map : CellContainer, IMap
