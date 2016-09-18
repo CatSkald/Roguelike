@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CatSkald.Tools
 {
@@ -19,6 +21,26 @@ namespace CatSkald.Tools
             if (value == null)
             {
                 throw new ArgumentNullException(name);
+            }
+        }
+        
+        /// <summary>
+        /// Validates that <paramref name="collection"/> is not null and does not contain nulls.
+        /// </summary>
+        /// <typeparam name="T">The type of items in <paramref name="collection"/>. Must be reference type.</typeparam>
+        /// <param name="collection">The collection to check.</param>
+        /// <param name="name">The name of object which is validated.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> contains any null.</exception>
+        public static void IfNullOrHasNull<T>(IEnumerable<T> collection, string name) where T : class
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(name);
+            }
+            if (collection.Any(it => it == null))
+            {
+                throw new ArgumentException(name + "can't contain nulls", name);
             }
         }
 

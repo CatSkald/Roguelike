@@ -14,7 +14,8 @@ namespace CatSkald.Roguelike.DungeonGenerator.Services
 
         public MapBuilder(IList<IMapBuilderCommand> commands, IMapConverter converter)
         {
-            Throw.IfNull(commands, nameof(commands));
+            Throw.IfNullOrHasNull(commands, nameof(commands));
+            Throw.IfNull(converter, nameof(converter));
 
             this.commands = commands;
             this.converter = converter;

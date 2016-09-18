@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CatSkald.Tools;
 using NUnit.Framework;
 
@@ -7,13 +8,49 @@ namespace CatSkald.Test.Tools.UnitTests
 {
     public class ThrowTests
     {
+        #region IfNull
         [Test]
         public void IfNull_ThrowsNothing_ForNotNull()
         {
             Assert.That(() => Throw.IfNull(new object(), "myParameter"),
                 Throws.Nothing);
         }
-        
+
+        [Test]
+        public void IfNull_ThrowsCorrectException_ForNull()
+        {
+            Assert.That(() => Throw.IfNull<object>(null, "myParameter"),
+                Throws.TypeOf<ArgumentNullException>());
+        }
+        #endregion
+
+        #region IfNullOrHasNull
+        [Test]
+        public void IfNullOrHasNull_ThrowsNothing_ForNotNull()
+        {
+            Assert.That(() => Throw.IfNullOrHasNull(
+                    Enumerable.Repeat(new object(), 3), "myParameter"),
+                Throws.Nothing);
+        }
+
+        [Test]
+        public void IfNullOrHasNull_ThrowsCorrectException_IfCollectionNull()
+        {
+            Assert.That(
+                () => Throw.IfNullOrHasNull<object>(null, "myParameter"),
+                Throws.TypeOf<ArgumentNullException>());
+        } 
+        [Test]
+        public void IfNullOrHasNull_ThrowsCorrectException_IfCollectionContainsNull()
+        {
+            Assert.That(
+                () => Throw.IfNullOrHasNull(
+                    new object[] { new object(), null, new object()}, 
+                    "myParameter"),
+                Throws.TypeOf<ArgumentException>());
+        } 
+        #endregion
+
         #region IfNotInRange
         [TestCase(0, 10, 0)]
         [TestCase(5, 144, 144)]
@@ -89,6 +126,10 @@ namespace CatSkald.Test.Tools.UnitTests
                 { "IfNotInRange", (p) => Throw.IfNotInRange(0, 0, 100, p) },
                 { "IfGreater", (p) => Throw.IfGreater(0, 100, p) },
                 { "IfLess", (p) => Throw.IfLess(100, 0, p) },
+                { "IfNullOrHasNull for null collection",
+                    (p) => Throw.IfNullOrHasNull<object>(null, p) },
+                { "IfNullOrHasNull for null item in collection",
+                    (p) => Throw.IfNullOrHasNull(new object[] { null }, p) },
             };
 
             foreach (var action in actions)

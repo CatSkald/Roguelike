@@ -31,9 +31,25 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
         [Test]
         public void Constructor_Throws_IfCommandsNull()
         {
-            DungeonParameters parameters = null;
-
-            Assert.That(() => _builder.Build(parameters),
+            Assert.That(() => new MapBuilder(null, Substitute.For<IMapConverter>()),
+                Throws.TypeOf<ArgumentNullException>());
+        }
+        
+        [Test]
+        public void Constructor_Throws_IfAnyCommand()
+        {
+            Assert.That(() => 
+                    new MapBuilder(new List<IMapBuilderCommand> { null }, 
+                    Substitute.For<IMapConverter>()),
+                Throws.TypeOf<ArgumentNullException>());
+        }
+        
+        [Test]
+        public void Constructor_Throws_IfConverterNull()
+        {
+            Assert.That(() => new MapBuilder(
+                    new List<IMapBuilderCommand>(), 
+                    null),
                 Throws.TypeOf<ArgumentNullException>());
         }
 
