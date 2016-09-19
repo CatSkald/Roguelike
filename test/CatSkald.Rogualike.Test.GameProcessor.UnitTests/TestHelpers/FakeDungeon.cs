@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using CatSkald.Roguelike.Core.Objects;
 using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers
@@ -20,6 +21,17 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers
             Size = width * height;
 
             cells = new Cell[height, width];
+
+            for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
+                {
+                    var cell = new Cell
+                    {
+                        Location = new Point(x, y),
+                        Type = XType.Wall
+                    };
+                    this[x, y] = cell;
+                }
         }
 
         public int Width { get; }
