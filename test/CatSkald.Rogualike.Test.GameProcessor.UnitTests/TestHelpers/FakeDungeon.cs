@@ -1,60 +1,64 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers
 {
     public class FakeDungeon : IDungeon
     {
-        public Cell this[Cell point]
+        private readonly Cell[,] cells;
+
+        public FakeDungeon() : this(0, 0)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
         }
 
+        public FakeDungeon(int width, int height)
+        {
+            Width = width;
+            Height = height;
+            Size = width * height;
+
+            cells = new Cell[height, width];
+        }
+
+        public int Width { get; }
+        public int Height { get; }
+        public int Size { get; }
+
+        public Cell this[Cell cell] => this[cell.Location];
+        public Cell this[Point point] => this[point.X, point.Y];
         public Cell this[int width, int height]
         {
             get
             {
-                throw new NotImplementedException();
+                return cells[height, width];
             }
-        }
-
-        public int Height
-        {
-            get
+            protected set
             {
-                throw new NotImplementedException();
+                cells[height, width] = value;
             }
         }
 
-        public int Size
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public int Width
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        #region IEnumerable
         public IEnumerator<Cell> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return Traverse().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
+
+        private IEnumerable<Cell> Traverse()
+        {
+            for (int x = 0; x < Width; x++)
+                for (int y = 0; y < Height; y++)
+                {
+                    yield return this[x, y];
+                }
+        }
+        #endregion
     }
 }
