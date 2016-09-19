@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
 {
     [TestFixture]
-    public class CellTests
+    public class MapCellTests
     {
         private MapCell _cell;
 
