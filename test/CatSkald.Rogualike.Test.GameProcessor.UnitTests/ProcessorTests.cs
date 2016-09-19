@@ -60,7 +60,7 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
         }
 
         [Test]
-        public void Process_PainterIsCalled()
+        public void Process_PainterDrawMapIsCalled()
         {
             var parameters = new DungeonParameters();
             var dungeon = new FakeDungeon();
@@ -76,6 +76,26 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
             processor.Process();
 
             painter.Received(1).DrawMap(dungeon);
+        }
+
+        [Test]
+        public void Process_PainterDrawMessageIsCalled()
+        {
+            var parameters = new DungeonParameters();
+            var dungeon = new FakeDungeon();
+            var mapBuilder = Substitute.For<IMapBuilder>();
+            mapBuilder.Build(parameters).Returns(dungeon);
+            var painter = Substitute.For<IMapPainter>();
+
+            var processor = new Processor(
+                mapBuilder,
+                Substitute.For<IDungeonPopulator>(),
+                painter);
+            processor.Initialize(parameters);
+            processor.Process();
+
+            ////TODO test precise message
+            painter.Received(1).DrawMessage(Arg.Any<string>());
         }
     }
 }
