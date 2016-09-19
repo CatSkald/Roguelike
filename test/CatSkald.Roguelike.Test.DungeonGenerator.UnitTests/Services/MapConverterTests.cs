@@ -1,4 +1,8 @@
-﻿using CatSkald.Roguelike.DungeonGenerator.Services;
+﻿using System.Drawing;
+using System.Linq;
+using CatSkald.Roguelike.Core.Objects;
+using CatSkald.Roguelike.Core.Terrain;
+using CatSkald.Roguelike.DungeonGenerator.Services;
 using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using NUnit.Framework;
 
@@ -15,11 +19,77 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
             var expectedWidth = w * 2 + 1;
             var expectedHeight = h * 2 + 1;
 
-            var dungeon = converter.ConvertToDungeon(new Map(w, h));
+            var dungeon = converter.ConvertToDungeon(map);
 
             Assert.That(dungeon, 
                 Has.Property(nameof(Dungeon.Width)).EqualTo(expectedWidth)
                 .And.Property(nameof(Dungeon.Height)).EqualTo(expectedHeight));
-        } 
+        }
+
+        [Test]
+        public void ConvertToDungeon_DungeonHasOnlyWalls_IfMapContainsAllWalls()
+        {
+            var converter = new MapConverter();
+            var map = new Map(5, 5);
+
+            var dungeon = converter.ConvertToDungeon(map);
+
+            Assert.That(dungeon,
+                Has.All.With.Property(nameof(Cell.Type)).EqualTo(XType.Wall));
+        }
+
+        [Test]
+        public void ConvertToDungeon_DungeonIsRoom_IfMapIsSingleRoom()
+        {
+            var converter = new MapConverter();
+            var map = new Map(5, 5);
+            map.InsertRoom(new Room(5, 5), new Point(0, 0));
+
+            var dungeon = converter.ConvertToDungeon(map);
+
+            Assert.That(
+                dungeon.Where(c => c.X != 0
+                    && c.X != dungeon.Width - 1
+                    && c.Y != 0
+                    && c.Y != dungeon.Height - 1),
+                Has.All.With.Property(nameof(Cell.Type)).EqualTo(XType.Empty));
+        }
+
+        [Test]
+        public void ConvertToDungeon_Dungeon_HasSomeEmptyCells_IfMapContainsCorridor()
+        {
+            var converter = new MapConverter();
+            var map = new Map(5, 5);
+            map.CreateCorridorSide(map[1, 2], map[2, 2], Dir.E, Side.Empty);
+
+            var dungeon = converter.ConvertToDungeon(map);
+
+            Assert.That(dungeon,
+                Has.Some.With.Property(nameof(Cell.Type)).EqualTo(XType.Empty), 
+                "Non borders should be empty.");
+
+            Assert.That(
+                dungeon.Where(c => c.X == 0
+                    || c.X == dungeon.Width - 1
+                    || c.Y == 0
+                    || c.Y == dungeon.Height - 1),
+                Has.All.With.Property(nameof(Cell.Type)).EqualTo(XType.Wall),
+                "Borders should be walls.");
+        }
+        
+        [Test]
+        public void ConvertToDungeon_Dungeon_HasDoor_IfMapContainsDoor()
+        {
+            var converter = new MapConverter();
+            var map = new Map(5, 5);
+            var cell1 = map[1, 2];
+            var cell2 = map[1, 2];
+            map.CreateCorridorSide(map[1, 2], map[2, 2], Dir.E, Side.Door);
+
+            var dungeon = converter.ConvertToDungeon(map);
+
+            Assert.That(dungeon,
+                Has.Some.With.Property(nameof(Cell.Type)).EqualTo(XType.DoorClosed));
+        }
     }
 }
