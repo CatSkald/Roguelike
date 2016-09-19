@@ -13,14 +13,20 @@ build:
 test_script:
 - cmd: >-
     nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
+
     nuget install coveralls.net -Version 0.412.0 -OutputDirectory tools
+
 
     .\tools\OpenCover.4.6.519\tools\opencover.console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test test\CatSkald.Roguelike.Test.Core.UnitTests" -filter:"+[*]* -[*Tests]*" -output:coverage.xml -register:user -mergeoutput -oldstyle
 
+
     .\tools\OpenCover.4.6.519\tools\opencover.console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test test\CatSkald.Roguelike.Test.DungeonGenerator.UnitTests" -filter:"+[*]* -[*Tests]*" -output:coverage.xml -register:user -mergeoutput -oldstyle
+
 
     .\tools\OpenCover.4.6.519\tools\opencover.console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test test\CatSkald.Roguelike.Test.GameProcessor.UnitTests" -filter:"+[*]* -[*Tests]*" -output:coverage.xml -register:user -mergeoutput -oldstyle
 
+
     .\tools\OpenCover.4.6.519\tools\opencover.console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test test\CatSkald.Test.Tools.UnitTests" -filter:"+[*]* -[*Tests]*" -output:coverage.xml -register:user -mergeoutput -oldstyle
+
 
     .\tools\coveralls.net.0.412\tools\csmacnz.Coveralls.exe --opencover -i .\coverage.xml
