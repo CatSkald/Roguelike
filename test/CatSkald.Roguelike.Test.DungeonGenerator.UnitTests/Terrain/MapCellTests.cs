@@ -3,6 +3,7 @@ using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
+using CatSkald.Roguelike.Test.TestHelpers;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
@@ -144,6 +145,12 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
             var other = new MapCell();
 
             CustomAssert.IEqualityMembersWorkForEqualObjects(_cell, other);
+        }
+
+        [Test]
+        public void IEquatableMembers_WorksCorrect_ForSameCell()
+        {
+            CustomAssert.IEqualityMembersWorkForEqualObjects(_cell, _cell);
         }
 
         [TestCase(true, 250, 1000, new[] { Dir.N, Dir.E, Dir.S, Dir.W })]
