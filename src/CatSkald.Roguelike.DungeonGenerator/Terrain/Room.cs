@@ -4,7 +4,7 @@ using CatSkald.Roguelike.Core.Terrain;
 namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     [DebuggerDisplay("[{Width},{Height}]")]
-    public sealed class Room : CellContainer
+    public sealed class Room : CellContainer<MapCell>
     {
         public Room(int width, int height)
             : base(width, height, cell => CellInitializer(cell, width, height))

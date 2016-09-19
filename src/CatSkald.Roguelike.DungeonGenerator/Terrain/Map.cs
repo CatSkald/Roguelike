@@ -10,7 +10,7 @@ using CatSkald.Tools;
 namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     [DebuggerDisplay("[{Width},{Height}](AllVisited:{AllVisited})")]
-    public sealed class Map : CellContainer, IMap
+    public sealed class Map : CellContainer<MapCell>, IMap
     {
         private readonly List<MapCell> _visitedCells;
         private readonly List<Room> _rooms;

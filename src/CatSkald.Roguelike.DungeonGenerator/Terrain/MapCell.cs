@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     [DebuggerDisplay("{Location}(IsWall:{IsWall})")]
-    public sealed class MapCell : IEquatable<MapCell>
+    public sealed class MapCell : IEquatable<MapCell>, ICell
     {
         public MapCell()
         {

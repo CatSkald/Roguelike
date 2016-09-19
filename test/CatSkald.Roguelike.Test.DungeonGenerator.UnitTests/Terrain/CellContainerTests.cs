@@ -11,7 +11,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
     [TestFixture]
     public class CellContainerTests
     {
-        private CellContainer _container;
+        private CellContainer<MapCell> _container;
 
         [SetUp]
         public void SetUp()

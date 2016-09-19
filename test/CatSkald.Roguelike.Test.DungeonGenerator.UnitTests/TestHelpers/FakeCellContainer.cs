@@ -3,7 +3,7 @@ using CatSkald.Roguelike.DungeonGenerator.Terrain;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers
 {
-    public class FakeCellContainer : CellContainer
+    public class FakeCellContainer : CellContainer<MapCell>
     {
         public FakeCellContainer(int width, int height) : this(width, height, null)
         {

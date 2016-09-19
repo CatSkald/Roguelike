@@ -48,10 +48,10 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
             var dungeon = converter.ConvertToDungeon(map);
 
             Assert.That(
-                dungeon.Where(c => c.X != 0
-                    && c.X != dungeon.Width - 1
-                    && c.Y != 0
-                    && c.Y != dungeon.Height - 1),
+                dungeon.Where(c => c.Location.X != 0
+                    && c.Location.X != dungeon.Width - 1
+                    && c.Location.Y != 0
+                    && c.Location.Y != dungeon.Height - 1),
                 Has.All.With.Property(nameof(Cell.Type)).EqualTo(XType.Empty));
         }
 
@@ -69,10 +69,10 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
                 "Non borders should be empty.");
 
             Assert.That(
-                dungeon.Where(c => c.X == 0
-                    || c.X == dungeon.Width - 1
-                    || c.Y == 0
-                    || c.Y == dungeon.Height - 1),
+                dungeon.Where(c => c.Location.X == 0
+                    || c.Location.X == dungeon.Width - 1
+                    || c.Location.Y == 0
+                    || c.Location.Y == dungeon.Height - 1),
                 Has.All.With.Property(nameof(Cell.Type)).EqualTo(XType.Wall),
                 "Borders should be walls.");
         }
