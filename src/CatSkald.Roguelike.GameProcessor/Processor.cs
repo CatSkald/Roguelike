@@ -27,8 +27,9 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 
         public void Initialize(DungeonParameters parameters)
         {
-            Dungeon = builder.Build(parameters);
-            populator.Fill(Dungeon);
+            var dungeon = builder.Build(parameters);
+            populator.Fill(dungeon);
+            Dungeon = dungeon;
             Log.Debug("Dungeon initialized.");
         }
 
