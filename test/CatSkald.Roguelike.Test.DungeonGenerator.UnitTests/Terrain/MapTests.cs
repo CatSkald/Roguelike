@@ -531,40 +531,30 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         public void MapActions_ThrowCorrectException_WhenPointIsOutsideMap(
             int x, int y)
         {
-            var actions = new Dictionary<string, Action>
+            var actions = new Dictionary<string, Action<MapCell>>
             {
-                { "Visit", () => _map.Visit(_map[x, y]) },
-                {
-                    "HasAdjacentCell",
-                    () => _map.HasAdjacentCell(_map[x, y], Dir.E)
-                },
-                {
-                    "CreateCorridorSide_StartCell",
-                    () => _map.CreateCorridorSide(
-                        _map[x, y], _map[0, 0], Dir.E, Side.Empty)
-                },
-                {
-                    "CreateCorridorSide_EndCell",
-                    () => _map.CreateCorridorSide(
-                        _map[0, 0], _map[x, y], Dir.E, Side.Empty)
-                },
-                { "CreateWall", () => _map.CreateWall(_map[x, y], Dir.E) },
-                {
-                    "InsertRoom",
-                    () => _map.InsertRoom(new Room(2, 2), _map[x, y].Location)
-                },
-                {
-                    "TryGetAdjacentCell",
-                    () => {
+                { "Visit", c => _map.Visit(c) },
+                { "HasAdjacentCell", c => _map.HasAdjacentCell(c, Dir.E) },
+                { "CreateWall", c => _map.CreateWall(c, Dir.E) },
+                { "CreateCorridorSide_StartCell",
+                    c => _map.CreateCorridorSide(c, _map[0, 0], Dir.E, Side.Empty) },
+                { "CreateCorridorSide_EndCell",
+                    c => _map.CreateCorridorSide(_map[0, 0], c, Dir.E, Side.Empty) },
+                { "InsertRoom",
+                    c => _map.InsertRoom(new Room(2, 2), c.Location) },
+                { "TryGetAdjacentCell",
+                    c => {
                         MapCell outCell;
-                        _map.TryGetAdjacentCell(_map[x, y], Dir.E, out outCell);
+                        _map.TryGetAdjacentCell(c, Dir.E, out outCell);
                     }
                 }
             };
 
             foreach (var action in actions.Values)
             {
-                Assert.That(action, Throws.TypeOf<ArgumentOutOfRangeException>(),
+                Assert.That(
+                    () => action(new MapCell { Location = new Point(x, y)}), 
+                    Throws.TypeOf<ArgumentOutOfRangeException>(),
                     action + " should throw correct error if point is outside the map.");
             }
         }

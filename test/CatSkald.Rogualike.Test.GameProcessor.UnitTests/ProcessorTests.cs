@@ -71,7 +71,7 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
             var processor = new Processor(
                 mapBuilder,
                 Substitute.For<IDungeonPopulator>(),
-                Substitute.For<IMapPainter>());
+                painter);
             processor.Initialize(parameters);
             processor.Process();
 

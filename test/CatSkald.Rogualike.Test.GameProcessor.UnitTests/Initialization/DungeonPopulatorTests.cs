@@ -12,7 +12,7 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests.Initialization
         public void Fill_UpstairsAdded()
         {
             var populator = new DungeonPopulator();
-            var dungeon = new FakeDungeon(5, 3);
+            var dungeon = new FakeDungeon(5, 7);
             dungeon[2, 2].Type = XType.Empty;
             dungeon[3, 3].Type = XType.Empty;
 
@@ -28,7 +28,7 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests.Initialization
         public void Fill_DownstairsAdded()
         {
             var populator = new DungeonPopulator();
-            var dungeon = new FakeDungeon(5, 3);
+            var dungeon = new FakeDungeon(5, 7);
             dungeon[2, 2].Type = XType.Empty;
             dungeon[3, 3].Type = XType.Empty;
 
