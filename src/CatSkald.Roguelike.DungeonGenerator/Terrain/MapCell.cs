@@ -13,13 +13,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Terrain
         {
             Sides = new Sides();
         }
-        public MapCell(int x, int y) : this(new Point(x, y))
-        {
-        }
-        public MapCell(Point location) : this()
-        {
-            Location = location;
-        }
 
         public Point Location { get; set; }
         public Sides Sides { get; }

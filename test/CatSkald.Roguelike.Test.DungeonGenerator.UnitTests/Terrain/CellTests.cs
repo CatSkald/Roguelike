@@ -19,30 +19,6 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         }
 
         #region Constructor
-        [TestCase(0, 0)]
-        [TestCase(-2, -150)]
-        [TestCase(5, 7)]
-        [TestCase(15, 1)]
-        [TestCase(150, 150)]
-        public void Constructor_SetsCorrectLocationForXY(int x, int y)
-        {
-            var cell = new MapCell(x, y);
-
-            Assert.That(cell.Location, Is.EqualTo(new Point(x, y)));
-        }
-
-        [TestCase(0, 0)]
-        [TestCase(-2, -150)]
-        [TestCase(5, 7)]
-        [TestCase(15, 1)]
-        [TestCase(150, 150)]
-        public void Constructor_SetsCorrectLocationForPoint(int x, int y)
-        {
-            var cell = new MapCell(new Point(x, y));
-
-            Assert.That(cell.Location, Is.EqualTo(new Point(x, y)));
-        }
-
         [Test]
         public void Constructor_IsVisited_IsFalse()
         {

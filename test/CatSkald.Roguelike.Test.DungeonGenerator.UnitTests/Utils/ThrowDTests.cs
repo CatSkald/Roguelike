@@ -17,7 +17,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Utils
         public void IfOutsideMap_Cell_ShouldSucceed_IfInsideMap(int x, int y)
         {
             var map = new Map(5, 5);
-            var cell = new MapCell(x, y);
+            var cell = new MapCell { Location = new Point(x, y) };
 
             Assert.That(() => ThrowD.IfOutsideMap(map, cell), Throws.Nothing);
         }
@@ -31,7 +31,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Utils
         public void IfOutsideMap_Cell_ShouldThrow_IfOutsideMap(int x, int y)
         {
             var map = new Map(5, 5);
-            var cell = new MapCell(x, y);
+            var cell = new MapCell { Location = new Point(x, y) };
 
             Assert.That(() => ThrowD.IfOutsideMap(map, cell),
                 Throws.InstanceOf<ArgumentOutOfRangeException>());
@@ -43,7 +43,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Utils
             int width, int height, string name)
         {
             var map = new Map(width, height);
-            var cell = new MapCell(-1, -2);
+            var cell = new MapCell { Location = new Point(-1, -2) };
 
             Assert.That(() => ThrowD.IfOutsideMap(map, cell, name),
                 Throws.InstanceOf<ArgumentOutOfRangeException>()
@@ -218,8 +218,8 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Utils
         public void IfNotAdjacent_ShouldSucceed_IfAdjacent(
             int x1, int y1, int x2, int y2, Dir dir)
         {
-            var startCell = new MapCell(x1, y1);
-            var endCell = new MapCell(x2, y2);
+            var startCell = new MapCell { Location = new Point(x1, y1) };
+            var endCell = new MapCell { Location = new Point(x2, y2) };
 
             Assert.That(
                 () => ThrowD.IfNotAdjacent(startCell, endCell, dir),
@@ -232,8 +232,8 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Utils
         public void IfNotAdjacent_ShouldThrow_IfNotAdjacent(
             int x1, int y1, int x2, int y2, Dir dir)
         {
-            var startCell = new MapCell(x1, y1);
-            var endCell = new MapCell(x2, y2);
+            var startCell = new MapCell { Location = new Point(x1, y1) };
+            var endCell = new MapCell { Location = new Point(x2, y2) };
 
             Assert.That(
                 () => ThrowD.IfNotAdjacent(startCell, endCell, dir),
@@ -243,8 +243,8 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Utils
         [Test]
         public void IfNotAdjacent_ExceptionShouldContainCellsAndDirection()
         {
-            var startCell = new MapCell(0, 0);
-            var endCell = new MapCell(1, 1);
+            var startCell = new MapCell();
+            var endCell = new MapCell { Location = new Point(1, 1) };
 
             Assert.That(
                 () => ThrowD.IfNotAdjacent(startCell, endCell, Dir.W),
@@ -259,7 +259,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Utils
         public void IfNotAdjacent_ShouldThrow_IfStartCellNull(Dir dir)
         {
             MapCell startCell = null;
-            var endCell = new MapCell(0, 0);
+            var endCell = new MapCell();
 
             Assert.That(
                 () => ThrowD.IfNotAdjacent(startCell, endCell, dir),
@@ -271,7 +271,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Utils
         [TestCase(Dir.S)]
         public void IfNotAdjacent_ShouldThrow_IfEndCellNull(Dir dir)
         {
-            var startCell = new MapCell(0, 0);
+            var startCell = new MapCell();
             MapCell endCell = null;
 
             Assert.That(

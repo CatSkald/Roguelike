@@ -75,7 +75,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         public void AllIndexers_ReturnCorrectCell(int x, int y)
         {
             var point = new Point(x, y);
-            var cell = new MapCell(x, y);
+            var cell = new MapCell { Location = new Point(x, y) };
             var expected = _container.Single(it => it.Location == point);
 
             Assert.That(_container[x, y], Is.SameAs(expected), "XYIndexer not working");
@@ -88,7 +88,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         {
             const int X = 0, Y = 0;
             var point = new Point(X, Y);
-            var cell = new MapCell(X, Y);
+            var cell = new MapCell { Location = new Point(X, Y) };
             var expected = _container.First();
 
             Assert.That(_container[X, Y], Is.SameAs(expected), "XYIndexer not working");
@@ -102,7 +102,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
             var x = _container.Width - 1;
             var y = _container.Height - 1;
             var point = new Point(x, y);
-            var cell = new MapCell(x, y);
+            var cell = new MapCell { Location = new Point(x, y) };
             var expected = _container.Last();
 
             Assert.That(_container[x, y], Is.SameAs(expected), "XYIndexer not working");
