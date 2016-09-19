@@ -37,12 +37,12 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
         }
         
         [Test]
-        public void Constructor_Throws_IfAnyCommand()
+        public void Constructor_Throws_IfCommandsContainNull()
         {
             Assert.That(() => 
                     new MapBuilder(new List<IMapBuilderCommand> { null }, 
                     Substitute.For<IMapConverter>()),
-                Throws.TypeOf<ArgumentNullException>());
+                Throws.TypeOf<ArgumentException>());
         }
         
         [Test]
