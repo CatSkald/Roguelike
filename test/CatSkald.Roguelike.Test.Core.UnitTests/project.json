@@ -11,6 +11,7 @@
   "dependencies": {
     "CatSkald.Roguelike.Core": "*",
     "CatSkald.Tools": "*",
+    "CatSkald.Test.TestHelpers": "*",
     "NUnit": "3.4.1",
     "dotnet-test-nunit": "3.4.0-beta-2",
     "System.Drawing.Primitives": "4.0.0",
