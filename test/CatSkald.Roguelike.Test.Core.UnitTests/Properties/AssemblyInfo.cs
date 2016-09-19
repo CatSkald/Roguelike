@@ -1,3 +1,3 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyTitle("CatSkald.Roguelike.Core.Tests")]
+[assembly: AssemblyTitle("CatSkald.Roguelike.Test.Core.UnitTests")]

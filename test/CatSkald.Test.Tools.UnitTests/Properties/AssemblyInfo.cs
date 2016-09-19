@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CatSkald.Tools.UnitTests")]
+[assembly: AssemblyTitle("CatSkald.Test.Tools.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(nameof(CatSkald))]
