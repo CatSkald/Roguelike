@@ -9,5 +9,3 @@ SET NUGET_PATH=tools\NuGet\NuGet.exe
 "%NUGET_PATH%" Install coveralls.net -Version 0.412.0 -OutputDirectory packages
 
 packages\FAKE\tools\Fake.exe build.fsx
-
-pause
