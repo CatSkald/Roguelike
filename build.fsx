@@ -18,7 +18,7 @@ Target "Clean" (fun _ ->
 
 open Fake.AssemblyInfoFile
 Target "UpdateAssemblyInfo" (fun _ ->
-    CreateCSharpAssemblyInfo "./CommonAssemblyInfo.cs"
+    UpdateAttributes "./CommonAssemblyInfo.cs"
       [ Attribute.Version version
         Attribute.FileVersion version ]
 )
@@ -30,16 +30,26 @@ Target "Build" (fun _ ->
     |> DotNetCli.Build id
 )
 
+open Fake.OpenCoverHelper
 Target "Test" (fun _ ->
     !! "./test/**/*Tests/project.json"
-    |> DotNetCli.Test id
+    |> Seq.iter(fun file -> 
+         let targetArguments = sprintf "test %O" (DirectoryName file)
+         OpenCoverHelper.OpenCover 
+            (fun p -> 
+                { p with 
+                    ExePath = "./packages/OpenCover.4.6.519/tools/opencover.console.exe"
+                    TestRunnerExePath = "C:/Program Files/dotnet/dotnet.exe" 
+                    Filter = "+[*]* -[*.Test.*]*"
+                    Output = "coverage.xml"
+                    Register = RegisterUser
+                    OptionalArguments = "-mergeoutput -oldstyle"})
+            targetArguments)
 )
 
 Target "Package" (fun _ ->
     DotNetCli.Pack 
-        (fun p -> 
-            { p with 
-                OutputPath = outputDir })
+        (fun p -> { p with OutputPath = outputDir })
         [mainProject]
 )
 
