@@ -7,26 +7,8 @@ environment:
     secure: id3AQevkzEdbYj60D7/A9tr1AdNEYU39IuHz5nO7zAEzWgy06bKrOzM5BVwyyEEE
 before_build:
 - cmd: appveyor-retry dotnet restore -v Minimal
-build:
-  project: CatSkald.Roguelike.sln
-  verbosity: minimal
-test_script:
-- cmd: >-
-    nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
-
-    nuget install coveralls.net -Version 0.412.0 -OutputDirectory tools
-
-
-    .\tools\OpenCover.4.6.519\tools\opencover.console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test test\CatSkald.Roguelike.Test.Core.UnitTests" -filter:"+[*]* -[*.Test.*]*" -output:coverage.xml -register:user -mergeoutput -oldstyle
-
-
-    .\tools\OpenCover.4.6.519\tools\opencover.console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test test\CatSkald.Roguelike.Test.DungeonGenerator.UnitTests" -filter:"+[*]* -[*.Test.*]**" -output:coverage.xml -register:user -mergeoutput -oldstyle
-
-
-    .\tools\OpenCover.4.6.519\tools\opencover.console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test test\CatSkald.Roguelike.Test.GameProcessor.UnitTests" -filter:"+[*]* -[*.Test.*]*" -output:coverage.xml -register:user -mergeoutput -oldstyle
-
-
-    .\tools\OpenCover.4.6.519\tools\opencover.console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test test\CatSkald.Test.Tools.UnitTests" -filter:"+[*]* -[*.Test.*]*" -output:coverage.xml -register:user -mergeoutput -oldstyle
-
-
-    .\tools\coveralls.net.0.412\tools\csmacnz.Coveralls.exe --opencover -i .\coverage.xml
+build_script:
+  - cmd: build.cmd
+artifacts:
+- path: 'output\*.nupkg'
+  name: NuGetPackages
