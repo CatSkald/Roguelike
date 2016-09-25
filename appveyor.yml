@@ -9,6 +9,7 @@ before_build:
 - cmd: appveyor-retry dotnet restore -v Minimal
 build_script:
   - cmd: build.cmd
+test: off
 artifacts:
 - path: 'output\*.nupkg'
   name: NuGetPackages
