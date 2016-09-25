@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.Core.Terrain

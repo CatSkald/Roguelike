@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using CatSkald.Roguelike.Core.Objects;
 
-namespace CatSkald.Roguelike.Core.Terrain
+namespace CatSkald.Roguelike.Core.Cells
 {
-    public sealed class Cell : ICell, IEquatable<Cell>
+    public class Cell : ICell, IEquatable<Cell>
     {
         public Point Location { get; set; }
         public XType Type { get; set; }

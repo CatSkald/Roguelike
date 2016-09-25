@@ -1,4 +1,5 @@
 ﻿using System;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.Test.Core.UnitTests.TestHelpers

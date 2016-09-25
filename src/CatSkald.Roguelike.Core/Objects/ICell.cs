@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace CatSkald.Roguelike.Core.Terrain
+namespace CatSkald.Roguelike.Core.Cells
 {
     public interface ICell
     {

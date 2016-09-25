@@ -1,4 +1,4 @@
-﻿namespace CatSkald.Roguelike.Core.Objects
+﻿namespace CatSkald.Roguelike.Core.Cells
 {
     public enum XType
     {

@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using CatSkald.Roguelike.Core.Objects;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.Test.TestHelpers;
 using NUnit.Framework;

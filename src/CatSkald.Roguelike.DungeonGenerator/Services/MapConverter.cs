@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
-using CatSkald.Roguelike.Core.Objects;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Terrain;
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CatSkald.Roguelike.Core.Cells;
 
 namespace CatSkald.Roguelike.Core.Terrain
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using CatSkald.Roguelike.Core.Objects;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers

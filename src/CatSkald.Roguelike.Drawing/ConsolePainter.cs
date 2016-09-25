@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CatSkald.Roguelike.Core.Objects;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
 

@@ -1,5 +1,5 @@
 ﻿using CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers;
-using CatSkald.Roguelike.Core.Objects;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.GameProcessor.Initialization;
 using NUnit.Framework;
