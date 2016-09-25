@@ -1,4 +1,5 @@
-﻿using CatSkald.Roguelike.Core.Terrain;
+﻿using System.Drawing;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using NUnit.Framework;
 
@@ -21,6 +22,18 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
                 && (cell.Sides[Dir.N] == Side.Empty || cell.Location.Y == 0)
                 && (cell.Sides[Dir.S] == Side.Empty || cell.Location.Y == room.Height - 1);
             }));
+        }
+
+        [TestCase(1, 2)]
+        [TestCase(4, 4)]
+        [TestCase(100, 25)]
+        public void Offset_SetsCorrectValue(int x, int y)
+        {
+            var room = new Room(15, 10);
+
+            room.Offset(new Point(x, y));
+
+            Assert.That(room.Bounds, Is.EqualTo(new Rectangle(x, y, 15, 10)));
         }
     }
 }

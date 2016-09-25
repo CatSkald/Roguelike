@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Tools;
 
-namespace CatSkald.Roguelike.DungeonGenerator.Terrain
+namespace CatSkald.Roguelike.Core.Terrain
 {
-    public abstract class CellContainer<T> : IEnumerable<T> where T : ICell, new()
+    public abstract class CellContainer<T> : IEnumerable<T> 
+        where T : ICell, new()
     {
         private readonly T[,] cells;
         private Rectangle bounds;
@@ -40,7 +40,11 @@ namespace CatSkald.Roguelike.DungeonGenerator.Terrain
         public int Width { get; }
         public int Height { get; }
         public int Size { get; }
-        public Rectangle Bounds { get { return bounds; } }
+        public Rectangle Bounds
+        {
+            get { return bounds; }
+            protected set { bounds = value; }
+        }
 
         public T this[T cell] => this[cell.Location];
         public T this[Point point] => this[point.X, point.Y];
@@ -54,11 +58,6 @@ namespace CatSkald.Roguelike.DungeonGenerator.Terrain
             {
                 cells[height, width] = value;
             }
-        }
-
-        public void Offset(Point position)
-        {
-            bounds.Offset(position);
         }
 
         #region IEnumerable

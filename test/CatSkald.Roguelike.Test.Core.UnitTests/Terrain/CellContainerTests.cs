@@ -1,34 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using CatSkald.Roguelike.Core.Objects;
 using CatSkald.Roguelike.Core.Terrain;
-using CatSkald.Roguelike.DungeonGenerator.Terrain;
-using CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers;
+using CatSkald.Roguelike.Test.Core.UnitTests.TestHelpers;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
+namespace CatSkald.Roguelike.Test.Core.UnitTests.Terrain
 {
     [TestFixture]
     public class CellContainerTests
     {
-        private CellContainer<MapCell> _container;
+        private CellContainer<Cell> _container;
 
         [SetUp]
         public void SetUp()
         {
             _container = new FakeCellContainer(11, 15);
-        }
-
-        [TestCase(1, 2)]
-        [TestCase(4, 4)]
-        [TestCase(100, 25)]
-        public void Offset_SetsCorrectValue(int x, int y)
-        {
-            _container = new FakeCellContainer(15, 10);
-
-            _container.Offset(new Point(x, y));
-
-            Assert.That(_container.Bounds, Is.EqualTo(new Rectangle(x, y, 15, 10)));
         }
 
         #region Constructor
@@ -41,24 +29,14 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         [Test]
         public void Constructor_InitializeCellsMethodIsCalled_WhenCellContainerCreated()
         {
-            var expectedSides = new Sides();
-            expectedSides[Dir.N] = Side.Empty;
-            expectedSides[Dir.E] = Side.Empty;
-            expectedSides[Dir.W] = Side.Wall;
-            expectedSides[Dir.S] = Side.Wall;
-
             _container = new FakeCellContainer(32, 57,
                 cell => {
-                    cell.Sides[Dir.N] = Side.Empty;
-                    cell.Sides[Dir.E] = Side.Empty;
-                    cell.Sides[Dir.W] = Side.Wall;
-                    cell.Sides[Dir.S] = Side.Wall;
-                    cell.IsVisited = true;
+                    cell.Type = XType.StairsDown;
                 });
 
             Assert.That(_container, Has.All
-                .With.Property(nameof(MapCell.IsVisited)).True
-                .And.Property(nameof(MapCell.Sides)).EqualTo(expectedSides));
+                .With.Property(nameof(Cell.Type))
+                .EqualTo(XType.StairsDown));
         }
 
         [Test]
@@ -75,7 +53,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         public void AllIndexers_ReturnCorrectCell(int x, int y)
         {
             var point = new Point(x, y);
-            var cell = new MapCell { Location = new Point(x, y) };
+            var cell = new Cell { Location = new Point(x, y) };
             var expected = _container.Single(it => it.Location == point);
 
             Assert.That(_container[x, y], Is.SameAs(expected), "XYIndexer not working");
@@ -88,7 +66,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         {
             const int X = 0, Y = 0;
             var point = new Point(X, Y);
-            var cell = new MapCell { Location = new Point(X, Y) };
+            var cell = new Cell { Location = new Point(X, Y) };
             var expected = _container.First();
 
             Assert.That(_container[X, Y], Is.SameAs(expected), "XYIndexer not working");
@@ -102,7 +80,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
             var x = _container.Width - 1;
             var y = _container.Height - 1;
             var point = new Point(x, y);
-            var cell = new MapCell { Location = new Point(x, y) };
+            var cell = new Cell { Location = new Point(x, y) };
             var expected = _container.Last();
 
             Assert.That(_container[x, y], Is.SameAs(expected), "XYIndexer not working");
@@ -169,7 +147,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         {
             _container = new FakeCellContainer(3, 3);
 
-            var queue = new Queue<MapCell>(_container.Size);
+            var queue = new Queue<Cell>(_container.Size);
             queue.Enqueue(_container[0, 0]);
             queue.Enqueue(_container[0, 1]);
             queue.Enqueue(_container[0, 2]);

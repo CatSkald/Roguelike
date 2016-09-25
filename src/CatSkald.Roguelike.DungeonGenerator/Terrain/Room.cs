@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
 using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Terrain
@@ -9,6 +10,13 @@ namespace CatSkald.Roguelike.DungeonGenerator.Terrain
         public Room(int width, int height)
             : base(width, height, cell => CellInitializer(cell, width, height))
         {
+        }
+
+        public void Offset(Point position)
+        {
+            var newBounds = Bounds;
+            newBounds.Offset(position);
+            Bounds = newBounds;
         }
 
         private static void CellInitializer(MapCell cell, int width, int height)
