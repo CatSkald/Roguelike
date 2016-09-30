@@ -1,4 +1,5 @@
 ﻿using CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
@@ -70,11 +71,14 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
             var dungeon = new FakeDungeon();
             var mapBuilder = Substitute.For<IMapBuilder>();
             mapBuilder.Build(parameters).Returns(dungeon);
+            var populator = Substitute.For<IDungeonPopulator>();
+            populator.WhenForAnyArgs(it => it.Fill(Arg.Any<IGameDungeon>()))
+                .Do(d => d.Arg<IGameDungeon>().Character = new Character());
             var painter = Substitute.For<IMapPainter>();
 
             var processor = new Processor(
                 mapBuilder,
-                Substitute.For<IDungeonPopulator>(),
+                populator,
                 painter);
             processor.Initialize(parameters);
             processor.Process();
@@ -90,11 +94,14 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
             var dungeon = new FakeDungeon();
             var mapBuilder = Substitute.For<IMapBuilder>();
             mapBuilder.Build(parameters).Returns(dungeon);
+            var populator = Substitute.For<IDungeonPopulator>();
+            populator.WhenForAnyArgs(it => it.Fill(Arg.Any<IGameDungeon>()))
+                .Do(d => d.Arg<IGameDungeon>().Character = new Character());
             var painter = Substitute.For<IMapPainter>();
 
             var processor = new Processor(
                 mapBuilder,
-                Substitute.For<IDungeonPopulator>(),
+                populator,
                 painter);
             processor.Initialize(parameters);
             processor.Process();

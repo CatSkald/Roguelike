@@ -6,13 +6,14 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers
 {
     public class FakeDungeon : CellContainer<Cell>, IGameDungeon
     {
-        public FakeDungeon() : this(0, 0)
+        public FakeDungeon() : this(1, 1)
         {
         }
 
         public FakeDungeon(int width, int height) 
             : base(width, height, InitializeCell)
         {
+            Character = new Character();
         }
         
         public Character Character { get; set; }
