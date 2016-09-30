@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
-using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.GameProcessor.Initialization
@@ -12,6 +11,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
             ////TODO create all the stuff and place into dungeon
 
             CreateStairs(dungeon);
+            CreateCharacter(dungeon);
         }
 
         private static void CreateStairs(IGameDungeon dungeon)

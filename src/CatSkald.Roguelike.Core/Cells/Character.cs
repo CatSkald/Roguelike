@@ -2,5 +2,9 @@
 {
     public class Character : Cell
     {
+        public Character()
+        {
+            Type = XType.Character;
+        }
     }
 }
