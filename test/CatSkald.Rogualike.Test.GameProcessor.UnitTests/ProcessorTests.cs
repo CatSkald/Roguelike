@@ -1,4 +1,5 @@
-﻿using CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers;
+﻿using System.Drawing;
+using CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
@@ -65,15 +66,22 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
         }
 
         [Test]
-        public void Process_PainterDrawMapIsCalled()
+        public void Process_PainterDrawMapIsCalledWithCorrectMapImage()
         {
             var parameters = new DungeonParameters();
-            var dungeon = new FakeDungeon();
+            var dungeon = new FakeDungeon(5, 4);
             var mapBuilder = Substitute.For<IMapBuilder>();
             mapBuilder.Build(parameters).Returns(dungeon);
             var populator = Substitute.For<IDungeonPopulator>();
+            var character = new Character
+            {
+                Location = new Point(1, 1)
+            };
             populator.WhenForAnyArgs(it => it.Fill(Arg.Any<IGameDungeon>()))
-                .Do(d => d.Arg<IGameDungeon>().Character = new Character());
+                .Do(d =>
+                {
+                    d.Arg<IGameDungeon>().Character = character;
+                });
             var painter = Substitute.For<IMapPainter>();
 
             var processor = new Processor(
@@ -83,20 +91,29 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
             processor.Initialize(parameters);
             processor.Process();
 
-            painter.Received(1).DrawMap(
-                Arg.Is<MapImage>(d => d.Size == dungeon.Size));
+            painter.Received(1).DrawMap(Arg.Is<MapImage>(d => 
+                d.Width == dungeon.Width
+                && d.Height == dungeon.Height
+                && d[1, 1].Type == XType.Character));
         }
 
         [Test]
         public void Process_PainterDrawMessageIsCalled()
         {
             var parameters = new DungeonParameters();
-            var dungeon = new FakeDungeon();
+            var dungeon = new FakeDungeon(5, 4);
             var mapBuilder = Substitute.For<IMapBuilder>();
             mapBuilder.Build(parameters).Returns(dungeon);
             var populator = Substitute.For<IDungeonPopulator>();
+            var character = new Character
+            {
+                Location = new Point(1, 1)
+            };
             populator.WhenForAnyArgs(it => it.Fill(Arg.Any<IGameDungeon>()))
-                .Do(d => d.Arg<IGameDungeon>().Character = new Character());
+                .Do(d => 
+                {
+                    d.Arg<IGameDungeon>().Character = character;
+                });
             var painter = Substitute.For<IMapPainter>();
 
             var processor = new Processor(
