@@ -47,7 +47,9 @@ Target "Test" (fun _ ->
             targetArguments)
 
 
-    let result = Shell.Exec("./packages/coveralls.net.0.412/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml") if result <> 0 then failwithf "%s exited with error %d" "batch.bat" result
+    let result = Shell.Exec("./packages/coveralls.net.0.412/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml") 
+    if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
+    ()
 )
 
 Target "Package" (fun _ ->
