@@ -32,7 +32,6 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
             Assert.That(cell.Type, Is.EqualTo(type));
         }
 
-
         #region IEquatable
         [Test]
         public void IEquatableMembers_WorksCorrect_ForDefaultCells()

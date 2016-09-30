@@ -14,11 +14,11 @@ namespace CatSkald.Roguelike.GameProcessor
         {
         }
 
+        public Character Character { get; set; }
+
         private static void InitializeCell(IDungeon map, Cell cell)
         {
             cell.Type = map[cell.Location.X, cell.Location.Y].Type;
         }
-
-        public Character Character { get; set; }
     }
 }
