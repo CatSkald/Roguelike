@@ -46,7 +46,7 @@ Target "Test" (fun _ ->
                     OptionalArguments = "-mergeoutput -oldstyle"})
             targetArguments)
             
-    Shell.Exec("./tools/coveralls.net.0.412/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml")
+    Shell.Exec("./packages/coveralls.net.0.412/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml")
 )
 
 Target "Package" (fun _ ->
