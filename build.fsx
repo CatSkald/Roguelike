@@ -45,9 +45,9 @@ Target "Test" (fun _ ->
                     Register = RegisterUser
                     OptionalArguments = "-mergeoutput -oldstyle"})
             targetArguments)
-            
 
-    Shell.Exec("./packages/coveralls.net.0.412/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml")
+
+    let result = Shell.Exec("./packages/coveralls.net.0.412/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml") if result <> 0 then failwithf "%s exited with error %d" "batch.bat" result
 )
 
 Target "Package" (fun _ ->
