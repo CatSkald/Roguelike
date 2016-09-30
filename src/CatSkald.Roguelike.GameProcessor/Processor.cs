@@ -1,5 +1,4 @@
-﻿using System;
-using CatSkald.Roguelike.Core.Parameters;
+﻿using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
 using NLog;
@@ -43,9 +42,27 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 
         public bool Process()
         {
-            painter.DrawMap(Dungeon);
+            var mapPicture = GetMapPicture(Dungeon);
+
+            painter.DrawMap(mapPicture);
             painter.DrawMessage("Welcome to our dungeon, brave Hero!");
             return true;
+        }
+
+        private static MapImage GetMapPicture(IGameDungeon dungeon)
+        {
+            var image = new MapImage(dungeon.Width, dungeon.Height);
+
+            for (int x = 0; x < dungeon.Width; x++)
+                for (int y = 0; y < dungeon.Height; y++)
+                {
+                    var cell = dungeon[x, y];
+                    image.SetTile(cell.Location, cell.Type);
+                }
+
+            image.SetTile(dungeon.Character.Location, dungeon.Character.Type);
+
+            return image;
         }
     }
 }

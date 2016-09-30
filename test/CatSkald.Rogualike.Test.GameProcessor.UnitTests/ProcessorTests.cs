@@ -1,6 +1,7 @@
 ﻿using CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
+using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.GameProcessor;
 using CatSkald.Roguelike.GameProcessor.Initialization;
 using NSubstitute;
@@ -79,7 +80,7 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
             processor.Process();
 
             painter.Received(1).DrawMap(
-                Arg.Is<IGameDungeon>(d => d.Size == dungeon.Size));
+                Arg.Is<MapImage>(d => d.Size == dungeon.Size));
         }
 
         [Test]

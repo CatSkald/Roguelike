@@ -4,7 +4,7 @@ namespace CatSkald.Roguelike.Core.Services
 {
     public interface IMapPainter
     {
-        void DrawMap(IDungeon map);
+        void DrawMap(MapImage map);
         void DrawMessage(string message);
     }
 }

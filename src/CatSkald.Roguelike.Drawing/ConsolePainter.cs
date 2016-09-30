@@ -10,7 +10,7 @@ namespace CatSkald.Roguelike.Drawing
     {
         private const string GameInfoSpace = "      ";
 
-        public void DrawMap(IDungeon map)
+        public void DrawMap(MapImage map)
         {
             var gameInfoEnumerator = GetGameInfo().GetEnumerator();
             for (int y = 0; y < map.Height; y++)
@@ -43,7 +43,7 @@ namespace CatSkald.Roguelike.Drawing
             yield return "DEF:         0";
             yield return "";
             yield return "DUNGEON INFO";
-            yield return "Level:       -1";
+            yield return "Level:      -1";
         }
 
         private static char GetImage(XType type)
