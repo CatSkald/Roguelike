@@ -4,6 +4,6 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 {
     public interface IDungeonPopulator
     {
-        void Fill(IDungeon dungeon);
+        void Fill(IGameDungeon dungeon);
     }
 }

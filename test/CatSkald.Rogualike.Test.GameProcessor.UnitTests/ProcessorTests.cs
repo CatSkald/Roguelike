@@ -1,6 +1,7 @@
 ﻿using CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
+using CatSkald.Roguelike.GameProcessor;
 using CatSkald.Roguelike.GameProcessor.Initialization;
 using NSubstitute;
 using NUnit.Framework;
@@ -23,7 +24,8 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
                 Substitute.For<IMapPainter>());
             processor.Initialize(new DungeonParameters());
 
-            Assert.That(processor.Dungeon, Is.SameAs(dungeon));
+            Assert.That(processor.Dungeon,
+                Has.Property(nameof(Dungeon.Size)).EqualTo(dungeon.Size));
         }
         
         [Test]
@@ -56,7 +58,8 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
                 Substitute.For<IMapPainter>());
             processor.Initialize(parameters);
 
-            populator.Received(1).Fill(dungeon);
+            populator.Received(1).Fill(
+                Arg.Is<IGameDungeon>(d => d.Size == dungeon.Size));
         }
 
         [Test]
@@ -75,7 +78,8 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
             processor.Initialize(parameters);
             processor.Process();
 
-            painter.Received(1).DrawMap(dungeon);
+            painter.Received(1).DrawMap(
+                Arg.Is<IGameDungeon>(d => d.Size == dungeon.Size));
         }
 
         [Test]

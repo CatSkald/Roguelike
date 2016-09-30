@@ -7,14 +7,14 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 {
     public class DungeonPopulator : IDungeonPopulator
     {
-        public void Fill(IDungeon dungeon)
+        public void Fill(IGameDungeon dungeon)
         {
             ////TODO create all the stuff and place into dungeon
 
             CreateStairs(dungeon);
         }
 
-        private static void CreateStairs(IDungeon dungeon)
+        private static void CreateStairs(IGameDungeon dungeon)
         {
             var emptyCells = dungeon.Where(cell => cell.Type == XType.Empty).ToList();
             var count = emptyCells.Count;
@@ -25,6 +25,14 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
             var downstairsCell = emptyCells[downstairsPosition];
             dungeon[upstairsCell].Type = XType.StairsUp;
             dungeon[downstairsCell].Type = XType.StairsDown;
+        }
+
+        private static void CreateCharacter(IGameDungeon dungeon)
+        {
+            var character = new Character();
+            var upstairs = dungeon.Single(c => c.Type == XType.StairsUp);
+            character.Location = upstairs.Location;
+            dungeon.Character = character;
         }
     }
 }
