@@ -1,10 +1,9 @@
 ﻿using System.Drawing;
 using CatSkald.Roguelike.Core.Cells;
-using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.Test.TestHelpers;
 using NUnit.Framework;
 
-namespace CatSkald.Roguelike.Test.Core.UnitTests.Terrain
+namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
 {
     public class CellTests
     {

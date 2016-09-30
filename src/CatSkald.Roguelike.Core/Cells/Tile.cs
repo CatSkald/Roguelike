@@ -2,13 +2,11 @@
 {
     public struct Tile
     {
-        private readonly XType type;
-
         public Tile(XType type)
         {
-            this.type = type;
+            Type = type;
         }
 
-        public XType Type => type;
+        public XType Type { get; }
     }
 }
