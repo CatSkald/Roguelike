@@ -30,6 +30,7 @@ namespace CatSkald.Roguelike.Drawing
 
         public void DrawMessage(string message)
         {
+            Console.WriteLine();
             Console.WriteLine(message);
         }
 
