@@ -34,6 +34,21 @@ namespace CatSkald.Roguelike.Drawing
             Console.WriteLine(message);
         }
 
+        public void DrawEndGameScreen()
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Game ended!");
+            Console.WriteLine();
+            foreach (var message in GetGameInfo())
+            {
+                Console.WriteLine(message);
+            }
+            Console.WriteLine();
+            Console.WriteLine("Have a nice day :)");
+        }
+
         private static IEnumerable<string> GetGameInfo()
         {
             yield return "CHARACTER INFO";

@@ -1,6 +1,8 @@
-﻿using CatSkald.Roguelike.Core.Parameters;
+﻿using System;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
+using CatSkald.Roguelike.GameProcessor.Procession;
 using NLog;
 
 namespace CatSkald.Roguelike.GameProcessor.Initialization
@@ -40,13 +42,101 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
             return new Dungeon(dungeonMap);
         }
 
-        public bool Process()
+        public ProcessResult Process(GameAction action)
         {
+            var actionResult = ProcessAction(action);
+
             var mapPicture = GetMapPicture(Dungeon);
 
             painter.DrawMap(mapPicture);
-            painter.DrawMessage("Welcome to our dungeon, brave Hero!");
-            return true;
+            painter.DrawMessage(Message);
+
+            return actionResult;
+        }
+        
+        public ProcessResult ProcessSubAction(GameAction action)
+        {
+            var actionResult = ProcessAction(action);
+
+            painter.DrawMessage(Message);
+
+            return actionResult;
+        }
+
+        private ProcessResult ProcessAction(GameAction action)
+        {
+            var result = ProcessResult.None;
+
+            switch (action)
+            {
+                case GameAction.StartGame:
+                    Message = "Welcome to our dungeon, brave Hero!";
+                    result = ProcessResult.RequestAction;
+                    break;
+                case GameAction.None:
+                    Message = string.Empty;
+                    break;
+                case GameAction.MoveN:
+                case GameAction.MoveNE:
+                case GameAction.MoveNW:
+                case GameAction.MoveE:
+                case GameAction.MoveS:
+                case GameAction.MoveSE:
+                case GameAction.MoveSW:
+                case GameAction.MoveW:
+                    result = MoveCharacter(action);
+                    break;
+                case GameAction.PickUp:
+                    Message = string.Empty;
+                    break;
+                case GameAction.Equip:
+                    Message = string.Empty;
+                    break;
+                case GameAction.ShowHelp:
+                    Message = "Help";
+                    break;
+                case GameAction.ShowMenu:
+                    Message = "Menu";
+                    break;
+                case GameAction.EndGame:
+                    painter.DrawEndGameScreen();
+                    Message = "Game over!";
+                    break;
+                default:
+                    throw new NotSupportedException(
+                        "Action is not supported: " + action);
+            }
+
+            return result;
+        }
+
+        private ProcessResult MoveCharacter(GameAction action)
+        {
+            ///TODO
+            switch (action)
+            {
+                case GameAction.MoveN:
+                    break;
+                case GameAction.MoveNE:
+                    break;
+                case GameAction.MoveNW:
+                    break;
+                case GameAction.MoveE:
+                    break;
+                case GameAction.MoveS:
+                    break;
+                case GameAction.MoveSE:
+                    break;
+                case GameAction.MoveSW:
+                    break;
+                case GameAction.MoveW:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(
+                        "Action is not a move: " + action);
+            }
+            Message = string.Empty;
+            return ProcessResult.None;
         }
 
         private static MapImage GetMapPicture(IGameDungeon dungeon)

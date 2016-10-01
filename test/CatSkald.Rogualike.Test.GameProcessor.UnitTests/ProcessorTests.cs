@@ -6,6 +6,7 @@ using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.GameProcessor;
 using CatSkald.Roguelike.GameProcessor.Initialization;
+using CatSkald.Roguelike.GameProcessor.Procession;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -89,7 +90,7 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
                 populator,
                 painter);
             processor.Initialize(parameters);
-            processor.Process();
+            processor.Process(GameAction.None);
 
             painter.Received(1).DrawMap(Arg.Is<MapImage>(d => 
                 d.Width == dungeon.Width
@@ -121,7 +122,7 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
                 populator,
                 painter);
             processor.Initialize(parameters);
-            processor.Process();
+            processor.Process(GameAction.None);
 
             ////TODO test precise message
             painter.Received(1).DrawMessage(Arg.Any<string>());

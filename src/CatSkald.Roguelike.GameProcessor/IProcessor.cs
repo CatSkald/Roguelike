@@ -1,4 +1,5 @@
 ﻿using CatSkald.Roguelike.Core.Parameters;
+using CatSkald.Roguelike.GameProcessor.Procession;
 
 namespace CatSkald.Roguelike.GameProcessor
 {
@@ -8,6 +9,8 @@ namespace CatSkald.Roguelike.GameProcessor
         string Message { get; }
 
         void Initialize(DungeonParameters parameters);
-        bool Process();
+
+        ProcessResult Process(GameAction action);
+        ProcessResult ProcessSubAction(GameAction action);
     }
 }

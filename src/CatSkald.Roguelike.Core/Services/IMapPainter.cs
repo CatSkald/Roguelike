@@ -6,5 +6,6 @@ namespace CatSkald.Roguelike.Core.Services
     {
         void DrawMap(MapImage map);
         void DrawMessage(string message);
+        void DrawEndGameScreen();
     }
 }
