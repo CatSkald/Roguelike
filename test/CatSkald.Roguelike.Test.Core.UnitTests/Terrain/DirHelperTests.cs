@@ -8,9 +8,9 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests
     public class DirHelperTests
     {
         [Test]
-        public void GetAllNotEmptyDirs_ReturnsCorrectDirs()
+        public void GetMainDirs_ReturnsCorrectDirs()
         {
-            Assert.That(DirHelper.GetNonEmptyDirs(),
+            Assert.That(DirHelper.GetMainDirs(),
                 Is.EquivalentTo(new[] { Dir.N, Dir.E, Dir.S, Dir.W }));
         }
 

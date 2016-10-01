@@ -6,7 +6,7 @@ namespace CatSkald.Roguelike.Core.Terrain
 {
     public static class DirHelper
     {
-        public static IList<Dir> GetNonEmptyDirs()
+        public static IList<Dir> GetMainDirs()
         {
             return new[] { Dir.N, Dir.E, Dir.S, Dir.W };
         }

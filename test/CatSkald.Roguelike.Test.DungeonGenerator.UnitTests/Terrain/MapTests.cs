@@ -198,7 +198,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         {
             var map = new Map(10, 10);
             var cell = map[x, y];
-            var dirs = DirHelper.GetNonEmptyDirs();
+            var dirs = DirHelper.GetMainDirs();
 
             Assert.That(!map.HasAdjacentCell(cell, dir));
             Assert.That(dirs.Where(d => d != dir)
@@ -315,7 +315,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
             var map = new Map(5, 5);
             var startCell = map[x1, y1];
             var endCell = map[x2, y2];
-            foreach (var dir in DirHelper.GetNonEmptyDirs())
+            foreach (var dir in DirHelper.GetMainDirs())
             {
                 startCell.Sides[dir] = Side.Empty;
                 endCell.Sides[dir] = Side.Empty;
@@ -342,7 +342,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
             var map = new Map(5, 5);
             var startCell = map[x1, y1];
             var endCell = map[x2, y2];
-            foreach (var dir in DirHelper.GetNonEmptyDirs())
+            foreach (var dir in DirHelper.GetMainDirs())
             {
                 startCell.Sides[dir] = Side.Empty;
                 endCell.Sides[dir] = Side.Wall;
@@ -362,7 +362,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
             var map = new Map(5, 5);
             var startCell = map[x1, y1];
             var endCell = map[x2, y2];
-            foreach (var dir in DirHelper.GetNonEmptyDirs())
+            foreach (var dir in DirHelper.GetMainDirs())
             {
                 startCell.Sides[dir] = Side.Wall;
                 endCell.Sides[dir] = Side.Empty;

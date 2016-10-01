@@ -9,7 +9,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
     [TestFixture]
     public class DirectionPickerTests
     {
-        private readonly int expectedCount = DirHelper.GetNonEmptyDirs().Count;
+        private readonly int expectedCount = DirHelper.GetMainDirs().Count;
         private DirectionPicker _picker;
 
         [SetUp]
@@ -23,7 +23,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
         [Test]
         public void NextDirection_ThrowsIfNoDirection()
         {
-            var expectedDirs = DirHelper.GetNonEmptyDirs();
+            var expectedDirs = DirHelper.GetMainDirs();
             RetrieveDirections(_picker, expectedDirs.Count);
 
             Assert.That(() => _picker.NextDirection(),
@@ -101,7 +101,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
         [Test]
         public void Constructor_ContainsAllDirections()
         {
-            var expectedDirs = DirHelper.GetNonEmptyDirs();
+            var expectedDirs = DirHelper.GetMainDirs();
             var dirs = new List<Dir>();
             for (int i = 0; i < expectedDirs.Count; i++)
             {
@@ -158,7 +158,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
         [Test]
         public void ResetDirections_RestoresAllDirections()
         {
-            var expectedDirs = DirHelper.GetNonEmptyDirs();
+            var expectedDirs = DirHelper.GetMainDirs();
             RetrieveDirections(_picker, expectedDirs.Count);
 
             _picker.ResetDirections();

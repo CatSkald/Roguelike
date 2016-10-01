@@ -22,13 +22,13 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         [Test]
         public void Constructor_HasCorrectCount()
         {
-            Assert.That(_sides.Count, Is.EqualTo(DirHelper.GetNonEmptyDirs().Count));
+            Assert.That(_sides.Count, Is.EqualTo(DirHelper.GetMainDirs().Count));
         }
 
         [Test]
         public void Keys_ContainsAllDirections()
         {
-            Assert.That(_sides.Keys, Is.EquivalentTo(DirHelper.GetNonEmptyDirs()));
+            Assert.That(_sides.Keys, Is.EquivalentTo(DirHelper.GetMainDirs()));
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Terrain
         public void IEnumerable_SidesHasCorrectItems()
         {
             IEnumerable<KeyValuePair<Dir, Side>> items =
-                DirHelper.GetNonEmptyDirs()
+                DirHelper.GetMainDirs()
                     .ToDictionary(key => key, value => Side.Wall);
 
             Assert.That(_sides, Is.EquivalentTo(items));

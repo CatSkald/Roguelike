@@ -84,7 +84,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Services
 
         public void ResetDirections()
         {
-            _directions = DirHelper.GetNonEmptyDirs().ToList();
+            _directions = DirHelper.GetMainDirs().ToList();
         }
     }
 }

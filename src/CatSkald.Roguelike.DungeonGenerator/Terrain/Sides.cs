@@ -12,7 +12,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 
         public Sides()
         {
-            var knownDirections = DirHelper.GetNonEmptyDirs();
+            var knownDirections = DirHelper.GetMainDirs();
 
             _directions = new Dictionary<Dir, Side>(knownDirections.Count);
             foreach (var dir in knownDirections)
