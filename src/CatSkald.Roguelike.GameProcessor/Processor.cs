@@ -1,4 +1,5 @@
 ﻿using System;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
@@ -112,30 +113,59 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 
         private ProcessResult MoveCharacter(GameAction action)
         {
-            ///TODO
+            var character = Dungeon.Character;
+            var newLocation = character.Location;
+            Message = string.Empty;
+
             switch (action)
             {
                 case GameAction.MoveN:
+                    newLocation = DirHelper.MoveInDir(
+                        character.Location, Dir.N);
                     break;
                 case GameAction.MoveNE:
+                    newLocation = DirHelper.MoveInDir(
+                        character.Location, Dir.NE);
                     break;
                 case GameAction.MoveNW:
+                    newLocation = DirHelper.MoveInDir(
+                        character.Location, Dir.NW);
                     break;
                 case GameAction.MoveE:
+                    newLocation = DirHelper.MoveInDir(
+                        character.Location, Dir.E);
                     break;
                 case GameAction.MoveS:
+                    newLocation = DirHelper.MoveInDir(
+                        character.Location, Dir.S);
                     break;
                 case GameAction.MoveSE:
+                    newLocation = DirHelper.MoveInDir(
+                        character.Location, Dir.SE);
                     break;
                 case GameAction.MoveSW:
+                    newLocation = DirHelper.MoveInDir(
+                        character.Location, Dir.SW);
                     break;
                 case GameAction.MoveW:
+                    newLocation = DirHelper.MoveInDir(
+                        character.Location, Dir.W);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(
                         "Action is not a move: " + action);
             }
-            Message = string.Empty;
+
+            if (Dungeon[newLocation].Type == XType.Empty)
+            {
+                character.Location = newLocation;
+            }
+            else
+            {
+                Message = "Cannot go there. There is: " 
+                    + Dungeon[newLocation].Type;
+            }
+
             return ProcessResult.None;
         }
 
