@@ -21,10 +21,26 @@ namespace CatSkald.Roguelike.Core.Terrain
                 case Dir.S:
                     p.Y += 1;
                     break;
+                case Dir.SE:
+                    p.X += 1;
+                    p.Y += 1;
+                    break;
+                case Dir.SW:
+                    p.X -= 1;
+                    p.Y += 1;
+                    break;
                 case Dir.E:
                     p.X += 1;
                     break;
                 case Dir.N:
+                    p.Y -= 1;
+                    break;
+                case Dir.NE:
+                    p.X += 1;
+                    p.Y -= 1;
+                    break;
+                case Dir.NW:
+                    p.X -= 1;
                     p.Y -= 1;
                     break;
                 default:
@@ -42,11 +58,23 @@ namespace CatSkald.Roguelike.Core.Terrain
                 case Dir.N:
                     result = Dir.S;
                     break;
+                case Dir.NE:
+                    result = Dir.SW;
+                    break;
+                case Dir.NW:
+                    result = Dir.SE;
+                    break;
                 case Dir.E:
                     result = Dir.W;
                     break;
                 case Dir.S:
                     result = Dir.N;
+                    break;
+                case Dir.SE:
+                    result = Dir.NW;
+                    break;
+                case Dir.SW:
+                    result = Dir.NE;
                     break;
                 case Dir.W:
                     result = Dir.E;

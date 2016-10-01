@@ -6,6 +6,10 @@
         N,
         E,
         S,
-        W
+        W,
+        NE,
+        NW,
+        SE,
+        SW
     }
 }
