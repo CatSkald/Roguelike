@@ -1,4 +1,5 @@
 ﻿using System;
+using CatSkald.Roguelike.Core;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
@@ -26,7 +27,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         }
 
         public IGameDungeon Dungeon { get; private set; }
-        public string Message { get; private set; }
+        public GameMessage Message { get; private set; }
 
         public void Initialize(DungeonParameters parameters)
         {
@@ -70,12 +71,11 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 
             switch (action)
             {
-                case GameAction.StartGame:
-                    Message = "Welcome to our dungeon, brave Hero!";
-                    result = ProcessResult.RequestAction;
-                    break;
                 case GameAction.None:
-                    Message = string.Empty;
+                    break;
+                case GameAction.StartGame:
+                    Message = new GameMessage(MessageType.StartGame);
+                    result = ProcessResult.RequestAction;
                     break;
                 case GameAction.MoveN:
                 case GameAction.MoveNE:
@@ -87,21 +87,15 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                 case GameAction.MoveW:
                     result = MoveCharacter(action);
                     break;
-                case GameAction.PickUp:
-                    Message = string.Empty;
-                    break;
-                case GameAction.Equip:
-                    Message = string.Empty;
-                    break;
                 case GameAction.ShowHelp:
-                    Message = "Help";
+                    Message = new GameMessage(MessageType.ShowHelp);
                     break;
                 case GameAction.ShowMenu:
-                    Message = "Menu";
+                    Message = new GameMessage(MessageType.ShowMenu);
                     break;
                 case GameAction.EndGame:
                     painter.DrawEndGameScreen();
-                    Message = "Game over!";
+                    Message = new GameMessage(MessageType.EndGame);
                     break;
                 default:
                     throw new NotSupportedException(
@@ -115,7 +109,6 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         {
             var character = Dungeon.Character;
             var newLocation = character.Location;
-            Message = string.Empty;
 
             switch (action)
             {
@@ -162,8 +155,9 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
             }
             else
             {
-                Message = "Cannot go there. There is: " 
-                    + Dungeon[newLocation].Type;
+                Message = new GameMessage(
+                    MessageType.CannotMoveThere, 
+                    Dungeon[newLocation].Type.ToString());
             }
 
             return ProcessResult.None;

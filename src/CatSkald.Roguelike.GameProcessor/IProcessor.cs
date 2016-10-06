@@ -1,4 +1,5 @@
-﻿using CatSkald.Roguelike.Core.Parameters;
+﻿using CatSkald.Roguelike.Core;
+using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.GameProcessor.Procession;
 
 namespace CatSkald.Roguelike.GameProcessor
@@ -6,7 +7,7 @@ namespace CatSkald.Roguelike.GameProcessor
     public interface IProcessor
     {
         IGameDungeon Dungeon { get; }
-        string Message { get; }
+        GameMessage Message { get; }
 
         void Initialize(DungeonParameters parameters);
 

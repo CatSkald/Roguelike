@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Text;
+using CatSkald.Roguelike.Core;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
@@ -8,11 +9,9 @@ namespace CatSkald.Roguelike.Drawing
 {
     public sealed class ConsolePainter : IMapPainter
     {
-        private const string GameInfoSpace = "      ";
-
         public void DrawMap(MapImage map)
         {
-            var gameInfoEnumerator = GetGameInfo().GetEnumerator();
+            var gameInfoEnumerator = Messages.GetGameInfo().GetEnumerator();
             for (int y = 0; y < map.Height; y++)
             {
                 for (int x = 0; x < map.Width; x++)
@@ -22,44 +21,26 @@ namespace CatSkald.Roguelike.Drawing
                 }
                 if (gameInfoEnumerator.MoveNext())
                 {
-                    Console.Write(GameInfoSpace + gameInfoEnumerator.Current);
+                    Console.Write(Messages.GameStatusSpace + gameInfoEnumerator.Current);
                 }
                 Console.WriteLine();
             }
         }
 
-        public void DrawMessage(string message)
+        public void DrawMessage(GameMessage message, params string[] args)
         {
-            Console.WriteLine();
-            Console.WriteLine(message);
+            var sb = new StringBuilder();
+            sb.AppendLine();
+            sb.AppendMessage(message.Type, message.Args);
+            Console.Write(sb);
         }
 
         public void DrawEndGameScreen()
         {
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("Game ended!");
-            Console.WriteLine();
-            foreach (var message in GetGameInfo())
-            {
-                Console.WriteLine(message);
-            }
-            Console.WriteLine();
-            Console.WriteLine("Have a nice day :)");
-        }
-
-        private static IEnumerable<string> GetGameInfo()
-        {
-            yield return "CHARACTER INFO";
-            yield return "Level:       0";
-            yield return "HP:          0";
-            yield return "MP:          0";
-            yield return "ATT:         0";
-            yield return "DEF:         0";
-            yield return "";
-            yield return "DUNGEON INFO";
-            yield return "Level:      -1";
+            var sb = new StringBuilder();
+            sb.AppendLine();
+            sb.AppendMessage(MessageType.EndGame);
+            Console.Write(sb);
         }
 
         private static char GetImage(XType type)

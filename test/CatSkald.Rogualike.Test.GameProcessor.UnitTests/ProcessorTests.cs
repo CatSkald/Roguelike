@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers;
+using CatSkald.Roguelike.Core;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
@@ -125,7 +126,7 @@ namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
             processor.Process(GameAction.None);
 
             ////TODO test precise message
-            painter.Received(1).DrawMessage(Arg.Any<string>());
+            painter.Received(1).DrawMessage(Arg.Any<GameMessage>());
         }
     }
 }
