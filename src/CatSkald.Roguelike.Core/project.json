@@ -10,16 +10,18 @@
 
   "dependencies": {
     "CatSkald.Tools": "*",
-    "System.Drawing.Primitives": "4.0.0",
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.0.0"
-    }
+    "System.Drawing.Primitives": "4.0.0"
   },
 
   "frameworks": {
     "netcoreapp1.0": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "version": "1.0.1",
+          "type": "platform"
+        }
+      }
     }
   }
 }

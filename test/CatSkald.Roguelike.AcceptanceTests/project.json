@@ -16,8 +16,7 @@
     "TestStack.BDDfy": "4.3.2",
     "dotnet-test-nunit": "3.4.0-beta-2",
     "System.Drawing.Primitives": "4.0.0",
-    "coveralls.io": "1.3.4",
-    "Microsoft.NETCore.App": "1.0.1"
+    "coveralls.io": "1.3.4"
   },
 
   "testRunner": "nunit",
@@ -27,7 +26,7 @@
       "imports": "portable-net45+win8",
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.0-*",
+          "version": "1.0.1",
           "type": "platform"
         }
       }
