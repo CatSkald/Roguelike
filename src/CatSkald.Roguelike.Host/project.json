@@ -16,14 +16,14 @@
     "CatSkald.Roguelike.Drawing": "*",
     "CatSkald.Roguelike.DungeonGenerator": "*",
     "CatSkald.Roguelike.GameProcessor": "*",
-    "Microsoft.Extensions.Configuration": "1.0.0",
-    "Microsoft.Extensions.Configuration.Binder": "1.0.0",
-    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.Logging.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Configuration": "1.0.1",
+    "Microsoft.Extensions.Configuration.Binder": "1.0.1",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.1",
+    "Microsoft.Extensions.Configuration.Json": "1.0.1",
+    "Microsoft.Extensions.DependencyInjection": "1.0.1",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.1",
+    "Microsoft.Extensions.Logging": "1.0.1",
+    "Microsoft.Extensions.Logging.Abstractions": "1.0.1",
     "NLog.Extensions.Logging": "1.0.0-*"
   },
 
@@ -32,7 +32,7 @@
       "imports": "dnxcore50",
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.1",
+          "version": "1.0.3",
           "type": "platform"
         }
       }

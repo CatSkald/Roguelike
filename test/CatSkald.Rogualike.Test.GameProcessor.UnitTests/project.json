@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "0.0.1-*",
   "buildOptions": {
     "compile": {
@@ -13,10 +13,10 @@
     "CatSkald.Roguelike.GameProcessor": "*",
     "CatSkald.Tools": "*",
     "NUnit": "3.5.0",
-    "dotnet-test-nunit": "3.4.0-beta-2",
-    "System.Drawing.Primitives": "4.0.0",
+    "System.Drawing.Primitives": "4.3.0",
     "coveralls.io": "1.3.4",
-    "NSubstitute": "2.0.0-rc"
+    "dotnet-test-nunit": "3.4.0-*",
+    "NSubstitute": "2.0.1-*"
   },
 
   "testRunner": "nunit",
@@ -26,7 +26,7 @@
       "imports": "portable-net45+win8",
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.1",
+          "version": "1.0.3",
           "type": "platform"
         }
       }
