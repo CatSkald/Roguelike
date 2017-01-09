@@ -1,4 +1,4 @@
 language: csharp
 solution: CatSkald.Roguelike.sln
 script:
-  - build.cmd
+  - build.sh
