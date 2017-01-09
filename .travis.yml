@@ -1,13 +1,4 @@
 language: csharp
 solution: CatSkald.Roguelike.sln
-install:
-  - nuget restore
-  - nuget install OpenCover -OutputDirectory tools
-  - nuget install coveralls.net -OutputDirectory tools
-  - nuget install xunit.runners -OutputDirectory tools
 script:
-  - xbuild /p:Configuration=Release CatSkald.Roguelike.sln
-  - mono tools/OpenCover.4.6.519/tools/opencover.console.exe -register:user -target:"tools/xunit.runners.2.0.0/tools/xunit.console.exe" -targetargs:"test/CatSkald.Roguelike.Test.Core.UnitTests" -output:coverage.xml -mergeoutput -oldstyle
-  - mono tools/OpenCover.4.6.519/tools/opencover.console.exe -register:user -target:"tools/xunit.runners.2.0.0/tools/xunit.console.exe" -targetargs:"test/CatSkald.Roguelike.Test.DungeonGenerator.UnitTests" -output:coverage.xml -mergeoutput -oldstyle
-  - mono tools/OpenCover.4.6.519/tools/opencover.console.exe -register:user -target:"tools/xunit.runners.2.0.0/tools/xunit.console.exe" -targetargs:"test/CatSkald.Test.Tools.UnitTests" -output:coverage.xml -mergeoutput -oldstyle
-  - mono tools/coveralls.net.0.412/tools/csmacnz.Coveralls.exe --opencover -i coverage.xml
+  - build.cmd
