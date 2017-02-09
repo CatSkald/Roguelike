@@ -27,7 +27,7 @@ Target "Build" (fun _ ->
     DotNetCli.Restore id
 
     !! "./**/project.json"
-    |> DotNetCli.Build id
+    |> DotNetCli.Build (fun p -> { p with Project = id })
 )
 
 open Fake.OpenCoverHelper
@@ -50,6 +50,10 @@ Target "Test" (fun _ ->
     let result = Shell.Exec("./packages/coveralls.net.0.412/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml") 
     if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
     ()
+    
+    // TODO
+    // ExecuteGetCommand null null "https://codecov.io/bash"
+    // Shell.Exec(".\CodecovUploader.sh", "-f coverage.xml -X gcov")
 )
 
 Target "Package" (fun _ ->
