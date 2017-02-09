@@ -11,5 +11,5 @@ matrix:
       env: DOTNETCORE=1
 
 script:
-  - chmod +x ./build.sh
-  - cd scripts && ./build.sh
+  - chmod +x ./build/build.sh
+  - cd build && ./build.sh
