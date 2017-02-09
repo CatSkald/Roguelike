@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NUGET_PATH=tools/NuGet/NuGet.exe
+NUGET_PATH=tools/NuGet/nuget.exe
 
 if test "$OS" = "Windows_NT"
 then
