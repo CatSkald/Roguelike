@@ -41,14 +41,15 @@ Target "Test" (fun _ ->
     !! "./test/**/*Tests/project.json"
     |> Seq.iter(fun file -> 
          let targetArguments = sprintf "test %O" (DirectoryName file)
-         OpenCoverHelper.OpenCover 
-            (fun p -> { p with 
-                ExePath = "./packages/OpenCover.4.6.519/tools/opencover.console.exe"
+         OpenCoverHelper.OpenCover (fun p -> 
+            { p with 
+                ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe"
                 TestRunnerExePath = "C:/Program Files/dotnet/dotnet.exe" 
                 Filter = "+[*]* -[*.Test.*]*"
                 Output = "coverage.xml"
                 Register = RegisterUser
-                OptionalArguments = "-mergeoutput -oldstyle"})
+                OptionalArguments = "-mergeoutput -oldstyle"
+            })
             targetArguments)
 
 
@@ -57,16 +58,17 @@ Target "Test" (fun _ ->
     ()
     // TODO
     // ExecuteGetCommand null null "https://codecov.io/bash"
-    // Shell.Exec(".\CodecovUploader.sh", "-f coverage.xml -X gcov")
+    // Shell.Exec("./CodecovUploader.sh", "-f coverage.xml -X gcov")
 )
 
 Target "Package" (fun _ ->
-    DotNetCli.Pack 
-        (fun p -> { p with 
+    DotNetCli.Pack (fun p -> 
+        { p with 
             Project = mainProject
             Configuration = "Release"
             OutputPath = outputDir
-            VersionSuffix = version})
+            VersionSuffix = version
+        })
 )
 
 Target "Deploy" DoNothing
