@@ -7,7 +7,7 @@ matrix:
       dist: trusty
       sudo: required
       dotnet: 1.0.0-preview2-003121
-      mono: none
+      mono: latest
       env: DOTNETCORE=1
 
 script:
