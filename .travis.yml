@@ -10,6 +10,9 @@ matrix:
       mono: latest
       env: DOTNETCORE=1
 
-script:
+before_script:
   - chmod +x ./build.sh
+      
+script:
+  - cd "$TRAVIS_BUILD_DIR"
   - ./build.sh
