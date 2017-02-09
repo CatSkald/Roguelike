@@ -3,7 +3,10 @@ solution: CatSkald.Roguelike.sln
 
 matrix:
   include:
-    - dotnet: 1.0.0-preview2-003121
+    - os: linux
+      dist: trusty
+      sudo: required
+      dotnet: 1.0.0-preview2-003121
       mono: none
       env: DOTNETCORE=1
 
