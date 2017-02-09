@@ -33,6 +33,7 @@ Target "Build" (fun _ ->
             Project = file
             Configuration = "Release"
         })
+    )
 )
 
 open Fake.OpenCoverHelper
