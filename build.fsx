@@ -10,7 +10,7 @@ let packageName = "CatSkald.Roguelike"
 let mainProject = "./src/CatSkald.Roguelike.Host/project.json"
 
 let version = EnvironmentHelper.environVarOrDefault "APPVEYOR_BUILD_VERSION" "0.0.1"
-
+let dotnetPath = EnvironmentHelper.environVarOrDefault "DOTNET_PATH" "C:/Program Files/dotnet/dotnet.exe"
 
 Target "Clean" (fun _ ->
     CleanDir outputDir
@@ -44,7 +44,7 @@ Target "Test" (fun _ ->
          OpenCoverHelper.OpenCover (fun p -> 
             { p with 
                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe"
-                TestRunnerExePath = "C:/Program Files/dotnet/dotnet.exe" 
+                TestRunnerExePath = dotnetPath
                 Filter = "+[*]* -[*.Test.*]*"
                 Output = "coverage.xml"
                 Register = RegisterUser
@@ -56,7 +56,7 @@ Target "Test" (fun _ ->
     let result = Shell.Exec("./packages/coveralls.net.0.412/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml") 
     if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
     ()
-    // TODO
+    // TODO add codecov coverage
     // ExecuteGetCommand null null "https://codecov.io/bash"
     // Shell.Exec("./CodecovUploader.sh", "-f coverage.xml -X gcov")
 )
