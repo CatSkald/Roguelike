@@ -10,7 +10,6 @@ let packageName = "CatSkald.Roguelike"
 let mainProject = "./src/CatSkald.Roguelike.Host/project.json"
 
 let version = EnvironmentHelper.environVarOrDefault "APPVEYOR_BUILD_VERSION" "0.0.1"
-let dotnetPath = EnvironmentHelper.environVarOrDefault "DOTNET_PATH" "C:/Program Files/dotnet/dotnet.exe"
 
 Target "Clean" (fun _ ->
     CleanDir outputDir
@@ -44,7 +43,7 @@ Target "Test" (fun _ ->
          OpenCoverHelper.OpenCover (fun p -> 
             { p with 
                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe"
-                TestRunnerExePath = dotnetPath
+                TestRunnerExePath = "dotnet.exe"
                 Filter = "+[*]* -[*.Test.*]*"
                 Output = "coverage.xml"
                 Register = RegisterUser
