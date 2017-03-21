@@ -1,6 +1,9 @@
 language: csharp
 solution: CatSkald.Roguelike.sln
 
+env:
+- DOTNET_INSTALL_DIR="~/dotnet"
+
 matrix:
   include:
     - os: linux
