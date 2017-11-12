@@ -40,13 +40,12 @@ Target "Build" (fun _ ->
     )
 )
 
-open Fake.Testing.NUnit3
 Target "UnitTest" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
-    |> NUnit3 (fun p ->
+    |> DotNetCli.Test (fun p ->
         {p with
-            ShadowCopy = false
-            ToolPath = "./packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe" 
+            Project = file
+            Configuration = "Release"
         })
 )
 
