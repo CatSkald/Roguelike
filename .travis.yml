@@ -9,12 +9,10 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-      dotnet: 1.0.0-preview2-003121
+      dotnet: 2.0.0
       mono: latest
-      env: DOTNETCORE=1
-    - dotnet: 1.0.1
+    - dotnet: 2.0.0
       mono: none
-      env: DOTNETCORE=1
 
 before_script:
   - chmod +x ./build.sh

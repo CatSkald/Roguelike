@@ -6,7 +6,6 @@
     <AssemblyName>CatSkald.Roguelike.Host</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>CatSkald.Roguelike.Host</PackageId>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
