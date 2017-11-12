@@ -92,8 +92,8 @@ Target "Deploy" DoNothing
   ==> "Build"
   //Generate test coverage only on AppVeyor as OpenCover does not work with Mono (used on Travis), 
   //and there is no need to generate multiple coverage reports for same sources
-  =?> ("UnitTest", not BuildServer.AppVeyor)
-  =?> ("UnitTestWithCoverageReport", BuildServer.AppVeyor)
+  =?> ("UnitTest", not (buildServer = BuildServer.AppVeyor))
+  =?> ("UnitTestWithCoverageReport", (buildServer = BuildServer.AppVeyor))
   ==> "Package"
   ==> "Deploy"
   
