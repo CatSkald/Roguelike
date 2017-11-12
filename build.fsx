@@ -42,11 +42,11 @@ Target "Build" (fun _ ->
 
 Target "UnitTest" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
-	|> NUnit (fun p ->
-		{p with
-			DisableShadowCopy = true;
-			ShowLabels = false;
-		})
+    |> NUnit (fun p ->
+        {p with
+            DisableShadowCopy = true;
+            ShowLabels = false;
+        })
 )
 
 open Fake.OpenCoverHelper
