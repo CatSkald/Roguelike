@@ -45,7 +45,8 @@ Target "UnitTest" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
     |> NUnit3 (fun p ->
         {p with
-            ShadowCopy = false;
+            ShadowCopy = false
+            ToolPath = "./packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe" 
         })
 )
 
