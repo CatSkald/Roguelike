@@ -1,6 +1,6 @@
 language: csharp
 solution: CatSkald.Roguelike.sln
-dotnet: 2.0.2
+dotnet: 2.0.0
 mono: none
 dist: trusty
 

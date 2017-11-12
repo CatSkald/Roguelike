@@ -54,7 +54,7 @@ Target "Test" (fun _ ->
             targetArguments)
 
 
-    let result = Shell.Exec("./packages/coveralls.net.0.7.0/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml") 
+    let result = Shell.Exec("./packages/coveralls.net.0.7/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml") 
     if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
     ()
     // TODO add codecov coverage
