@@ -3,6 +3,7 @@ open Fake
 open Fake.DotNetCli
 open Fake.AppVeyor
 open Fake.EnvironmentHelper
+open Fake.BuildServerHelper
 
 let outputDir = "./output"
 let deployDir = outputDir @@ "/deploy/"
@@ -10,6 +11,8 @@ let packageName = "CatSkald.Roguelike"
 let mainProject = "./src/CatSkald.Roguelike.Host/CatSkald.Roguelike.Host.csproj"
 
 let version = EnvironmentHelper.environVarOrDefault "APPVEYOR_BUILD_VERSION" "0.0.1"
+let buildNumber = EnvironmentHelper.environVarOrDefault "BUILD_NUMBER" "0"
+let alphaVersionSuffix = "alpha" + (if (buildNumber <> "0") then (buildNumber) else "")
 let dotnetPath = EnvironmentHelper.environVarOrDefault "DOTNET_INSTALL_DIR" "C:/Program Files/dotnet/dotnet.exe"
 
 Target "Clean" (fun _ ->
@@ -37,8 +40,17 @@ Target "Build" (fun _ ->
     )
 )
 
-open Fake.OpenCoverHelper
 Target "UnitTest" (fun _ ->
+    !! "./test/**/*UnitTests.csproj"
+	|> NUnit (fun p ->
+		{p with
+			DisableShadowCopy = true;
+			ShowLabels = false;
+		})
+)
+
+open Fake.OpenCoverHelper
+Target "UnitTestWithCoverageReport" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
     |> Seq.iter(fun file -> 
          let targetArguments = sprintf "test %O" (DirectoryName file)
@@ -68,7 +80,7 @@ Target "Package" (fun _ ->
             Project = mainProject
             Configuration = "Release"
             OutputPath = outputDir
-            VersionSuffix = version
+            VersionSuffix = alphaVersionSuffix
         })
 )
 
@@ -78,7 +90,10 @@ Target "Deploy" DoNothing
 "Clean"
   ==> "UpdateAssemblyInfo"
   ==> "Build"
-  ==> "UnitTest"
+  //Generate test coverage only on AppVeyor as OpenCover does not work with Mono (used on Travis), 
+  //and there is no need to generate multiple coverage reports for same sources
+  =?> ("UnitTest", not BuildServer.AppVeyor)
+  =?> ("UnitTestWithCoverageReport", BuildServer.AppVeyor)
   ==> "Package"
   ==> "Deploy"
   
