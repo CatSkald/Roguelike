@@ -7,7 +7,7 @@ open Fake.EnvironmentHelper
 let outputDir = "./output"
 let deployDir = outputDir @@ "/deploy/"
 let packageName = "CatSkald.Roguelike"
-let mainProject = "./src/CatSkald.Roguelike.Host/project.json"
+let mainProject = "./src/CatSkald.Roguelike.Host/CatSkald.Roguelike.Host.csproj"
 
 let version = EnvironmentHelper.environVarOrDefault "APPVEYOR_BUILD_VERSION" "0.0.1"
 let dotnetPath = EnvironmentHelper.environVarOrDefault "DOTNET_INSTALL_DIR" "C:/Program Files/dotnet/dotnet.exe"
@@ -26,7 +26,7 @@ Target "UpdateAssemblyInfo" (fun _ ->
 Target "Build" (fun _ ->
     DotNetCli.Restore id
 
-    !! "./**/project.json"
+    !! "./**/*.csproj"
     |> Seq.iter (fun file -> 
         DotNetCli.Build (fun p -> 
         { p with 
@@ -38,14 +38,14 @@ Target "Build" (fun _ ->
 
 open Fake.OpenCoverHelper
 Target "Test" (fun _ ->
-    !! "./test/**/*Tests/project.json"
+    !! "./test/**/*.csproj"
     |> Seq.iter(fun file -> 
          let targetArguments = sprintf "test %O" (DirectoryName file)
          OpenCoverHelper.OpenCover (fun p -> 
             { p with 
                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe"
                 TestRunnerExePath = dotnetPath
-                Filter = "+[*]* -[*.Test.*]*"
+                Filter = "+[*]* -[*.Test.*]* -[*.*Tests]*"
                 Output = "coverage.xml"
                 Register = RegisterUser
                 OptionalArguments = "-mergeoutput -oldstyle"
