@@ -27,7 +27,7 @@ Target "Build" (fun _ ->
     DotNetCli.Restore id
 
     !! "./src/**/*.csproj"
-	++ "./test/**/*.csproj"
+      ++ "./test/**/*.csproj"
     |> Seq.iter (fun file -> 
         DotNetCli.Build (fun p -> 
         { p with 
