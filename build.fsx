@@ -45,8 +45,7 @@ Target "UnitTest" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
     |> NUnit3 (fun p ->
         {p with
-            DisableShadowCopy = true;
-            ShowLabels = false;
+            ShadowCopy = false;
         })
 )
 
