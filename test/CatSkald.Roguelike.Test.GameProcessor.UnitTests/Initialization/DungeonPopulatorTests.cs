@@ -1,11 +1,11 @@
 ﻿using System.Drawing;
 using System.Linq;
-using CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers;
+using CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.GameProcessor.Initialization;
 using NUnit.Framework;
 
-namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests.Initialization
+namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.Initialization
 {
     public class DungeonPopulatorTests
     {

@@ -2,7 +2,7 @@
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.GameProcessor;
 
-namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers
+namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers
 {
     public class FakeDungeon : CellContainer<Cell>, IGameDungeon
     {

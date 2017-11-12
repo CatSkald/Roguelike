@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using CatSkald.Rogualike.Test.GameProcessor.UnitTests.TestHelpers;
+using CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.GameProcessor;
 using NUnit.Framework;
-namespace CatSkald.Rogualike.Test.GameProcessor.UnitTests
+namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
 {
     public class DungeonTests
     {
