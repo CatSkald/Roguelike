@@ -40,9 +40,10 @@ Target "Build" (fun _ ->
     )
 )
 
+open Fake.Testing.NUnit3
 Target "UnitTest" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
-    |> NUnit (fun p ->
+    |> NUnit3 (fun p ->
         {p with
             DisableShadowCopy = true;
             ShowLabels = false;
