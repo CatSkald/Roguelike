@@ -42,8 +42,9 @@ Target "Build" (fun _ ->
 
 Target "UnitTest" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
-    |> DotNetCli.Test (fun p ->
-        {p with
+    |> Seq.iter (fun file -> 
+        DotNetCli.Test (fun p -> 
+        { p with 
             Project = file
             Configuration = "Release"
         })
