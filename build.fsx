@@ -38,8 +38,8 @@ Target "Build" (fun _ ->
 )
 
 open Fake.OpenCoverHelper
-Target "Test" (fun _ ->
-    !! "./test/**/*.csproj"
+Target "UnitTest" (fun _ ->
+    !! "./test/**/*UnitTests.csproj"
     |> Seq.iter(fun file -> 
          let targetArguments = sprintf "test %O" (DirectoryName file)
          OpenCoverHelper.OpenCover (fun p -> 
@@ -78,7 +78,7 @@ Target "Deploy" DoNothing
 "Clean"
   ==> "UpdateAssemblyInfo"
   ==> "Build"
-  ==> "Test"
+  ==> "UnitTest"
   ==> "Package"
   ==> "Deploy"
   
