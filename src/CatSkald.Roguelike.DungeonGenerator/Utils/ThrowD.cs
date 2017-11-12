@@ -9,7 +9,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Utils
     /// <summary>
     /// DungeonGenerator specific validations
     /// </summary>
-    public static class ThrowD
+    internal static class ThrowD
     {
 #pragma warning disable CC0021 // Use nameof
         public static void IfOutsideMap(IMap map, Point point, string name = "point")

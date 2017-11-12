@@ -6,7 +6,7 @@ using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
-    public sealed class Sides : IEnumerable<KeyValuePair<Dir, Side>>, IEquatable<Sides>
+    internal sealed class Sides : IEnumerable<KeyValuePair<Dir, Side>>, IEquatable<Sides>
     {
         private readonly Dictionary<Dir, Side> _directions;
 

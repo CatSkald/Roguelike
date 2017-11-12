@@ -2,7 +2,6 @@
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.GameProcessor;
 using CatSkald.Roguelike.GameProcessor.Procession;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
 
@@ -18,12 +17,15 @@ namespace CatSkald.Roguelike.Host
             {
                 Log.Debug("Roguelike started.");
 
-                var provider = BuildServiceProvider();
+                var provider = new ServiceCollection()
+                    .SetUp()
+                    .BuildServiceProvider();
+
                 StartApplication(provider);
             }
             catch (Exception e)
             {
-                Log.Fatal(e, "Oops, you've just catched a fatal bug.");
+                Log.Fatal(e, "Oops, you've just catched a fatal bug :(");
                 throw;
             }
 
@@ -33,7 +35,7 @@ namespace CatSkald.Roguelike.Host
         private static void StartApplication(IServiceProvider provider)
         {
             var processor = provider.GetService<IProcessor>();
-            processor.Initialize(GatherParameters());
+            processor.Initialize(provider.GetService<DungeonParameters>());
 
             RunGame(processor);
         }
@@ -70,44 +72,6 @@ namespace CatSkald.Roguelike.Host
             var key = Console.ReadKey();
 
             return ConsoleGameActionConverter.Convert(key.Key);
-        }
-
-        private static IServiceProvider BuildServiceProvider()
-        {
-            var services = new ServiceCollection();
-            services.AddTransient(_ => GatherParameters())
-                .AddLogging()
-                .AddMapBuilding()
-                .AddMapProcessing()
-                .AddMapPainting();
-
-            return services.BuildServiceProvider();
-        }
-
-        private static DungeonParameters GatherParameters()
-        {
-            var builder = new ConfigurationBuilder()
-                    .AddJsonFile("AppSettings.json")
-                    .AddEnvironmentVariables();
-
-            var configuration = builder.Build();
-
-            return new DungeonParameters
-            {
-                Width = configuration.GetValue<int>("Map:Width"),
-                Height = configuration.GetValue<int>("Map:Height"),
-                CellSparseFactor = configuration.GetValue<int>("Map:CellSparseFactor"),
-                DeadEndSparseFactor = configuration.GetValue<int>("Map:DeadEndSparseFactor"),
-                TwistFactor = configuration.GetValue<int>("Map:TwistFactor"),
-                RoomParameters = new RoomParameters
-                {
-                    Count = configuration.GetValue<int>("Map:Room:Count"),
-                    MinWidth = configuration.GetValue<int>("Map:Room:MinWidth"),
-                    MaxWidth = configuration.GetValue<int>("Map:Room:MaxWidth"),
-                    MinHeight = configuration.GetValue<int>("Map:Room:MinHeight"),
-                    MaxHeight = configuration.GetValue<int>("Map:Room:MaxHeight")
-                }
-            };
         }
     }
 }

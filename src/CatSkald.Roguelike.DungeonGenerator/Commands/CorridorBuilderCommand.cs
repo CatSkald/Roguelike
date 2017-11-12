@@ -8,7 +8,7 @@ using CatSkald.Roguelike.DungeonGenerator.Services;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public sealed class CorridorBuilderCommand : AbstractMapBuilderCommand
+    internal sealed class CorridorBuilderCommand : AbstractMapBuilderCommand
     {
         private readonly IDirectionPicker _directionPicker;
 

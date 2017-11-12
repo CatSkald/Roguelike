@@ -4,7 +4,7 @@ using CatSkald.Roguelike.Core.Parameters;
 
 namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers
 {
-    public class FakeMapBuilderCommand : AbstractMapBuilderCommand
+    internal class FakeMapBuilderCommand : AbstractMapBuilderCommand
     {
         public int ExecuteCommandCalls { get; set; }
         public int ValidateParametersCalls { get; set; }

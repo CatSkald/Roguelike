@@ -6,7 +6,7 @@ using CatSkald.Roguelike.DungeonGenerator.Terrain;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Services
 {
-    public class MapConverter : IMapConverter
+    internal class MapConverter : IMapConverter
     {
         public IDungeon ConvertToDungeon(IMap map)
         {

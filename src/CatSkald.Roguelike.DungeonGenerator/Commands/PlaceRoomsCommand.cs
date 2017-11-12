@@ -9,7 +9,7 @@ using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public sealed class PlaceRoomsCommand : AbstractMapBuilderCommand
+    internal sealed class PlaceRoomsCommand : AbstractMapBuilderCommand
     {
         private const int AdjacentCorridorBonus = 1;
         private const int OverlappedCorridorBonus = 3;

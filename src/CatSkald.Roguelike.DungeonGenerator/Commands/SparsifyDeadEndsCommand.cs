@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.DungeonGenerator.Terrain;
 using CatSkald.Roguelike.Core.Parameters;
@@ -8,7 +7,7 @@ using CatSkald.Roguelike.DungeonGenerator.Services;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public sealed class SparsifyDeadEndsCommand : AbstractMapBuilderCommand
+    internal sealed class SparsifyDeadEndsCommand : AbstractMapBuilderCommand
     {
         private IDirectionPicker _directionPicker;
 

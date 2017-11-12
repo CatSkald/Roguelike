@@ -7,7 +7,7 @@ using CatSkald.Roguelike.Core.Cells;
 namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
     [DebuggerDisplay("{Location}(IsWall:{IsWall})")]
-    public sealed class MapCell : IEquatable<MapCell>, ICell
+    internal sealed class MapCell : IEquatable<MapCell>, ICell
     {
         public MapCell()
         {

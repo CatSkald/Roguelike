@@ -4,7 +4,7 @@ using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
-    public interface IMap : IEnumerable<MapCell>
+    internal interface IMap : IEnumerable<MapCell>
     {
         int Width { get; }
         int Height { get; }

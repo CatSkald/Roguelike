@@ -2,7 +2,7 @@
 
 namespace CatSkald.Roguelike.DungeonGenerator.Services
 {
-    public interface IDirectionPicker
+    internal interface IDirectionPicker
     {
         int TwistFactor { get; }
         bool HasDirections { get; }

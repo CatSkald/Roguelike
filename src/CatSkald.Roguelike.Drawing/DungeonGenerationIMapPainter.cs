@@ -10,7 +10,7 @@
 
 //namespace CatSkald.Roguelike.Drawing
 //{
-//    public sealed class TemplateMapPainter
+//    internal sealed class TemplateMapPainter
 //    {
 //        public void PaintMap(IMap map)
 //        {

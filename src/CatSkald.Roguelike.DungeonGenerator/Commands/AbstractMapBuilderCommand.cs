@@ -4,7 +4,7 @@ using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public abstract class AbstractMapBuilderCommand : IMapBuilderCommand
+    internal abstract class AbstractMapBuilderCommand : IMapBuilderCommand
     {
         public void Execute(IMap map, DungeonParameters parameters)
         {

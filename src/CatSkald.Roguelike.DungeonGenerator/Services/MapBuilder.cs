@@ -7,7 +7,7 @@ using CatSkald.Roguelike.Core.Services;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Services
 {
-    public sealed class MapBuilder : IMapBuilder
+    internal sealed class MapBuilder : IMapBuilder
     {
         private readonly IMapConverter converter;
         private readonly IList<IMapBuilderCommand> commands;

@@ -8,7 +8,7 @@ using CatSkald.Tools;
 namespace CatSkald.Roguelike.DungeonGenerator.Services
 {
     [DebuggerDisplay("HasDirs:{HasDirections},Last:{LastDirection}")]
-    public sealed class DirectionPicker : IDirectionPicker
+    internal sealed class DirectionPicker : IDirectionPicker
     {
         private const int TwistFactorMin = 0;
         private const int TwistFactorMax = 100;

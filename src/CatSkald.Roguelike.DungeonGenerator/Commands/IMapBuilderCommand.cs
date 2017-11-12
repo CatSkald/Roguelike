@@ -3,7 +3,7 @@ using CatSkald.Roguelike.Core.Parameters;
 
 namespace CatSkald.Roguelike.DungeonGenerator
 {
-    public interface IMapBuilderCommand
+    internal interface IMapBuilderCommand
     {
         void Execute(IMap map, DungeonParameters parameters);
     }

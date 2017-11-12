@@ -1,6 +1,6 @@
 ﻿namespace CatSkald.Roguelike.DungeonGenerator.Terrain
 {
-    public enum Side
+    internal enum Side
     {
         Empty,
         Wall,

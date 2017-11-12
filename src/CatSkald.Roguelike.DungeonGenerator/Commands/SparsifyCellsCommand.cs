@@ -6,7 +6,7 @@ using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
-    public sealed class SparsifyCellsCommand : AbstractMapBuilderCommand
+    internal sealed class SparsifyCellsCommand : AbstractMapBuilderCommand
     {
         protected override void ExecuteCommand(IMap map, DungeonParameters parameters)
         {

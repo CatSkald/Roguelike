@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Linq;
 using CatSkald.Roguelike.Core;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Parameters;
@@ -149,18 +151,42 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                         "Action is not a move: " + action);
             }
 
-            if (Dungeon[newLocation].Type == XType.Empty)
+            Move(character, newLocation);
+
+            return ProcessResult.None;
+        }
+
+        //TODO extract class
+        private void Move(Character character, Point newLocation)
+        {
+            var availableForMove = new[]
+            {
+                XType.Empty,
+                XType.StairsDown,
+                XType.StairsUp,
+                XType.DoorOpened,
+                XType.DoorClosed
+            };
+
+            var destination = Dungeon[newLocation];
+            if (availableForMove.Contains(destination.Type))
             {
                 character.Location = newLocation;
+
+                //TODO extract method
+                if (destination.Type == XType.DoorClosed)
+                {
+                    destination.Type = XType.DoorOpened;
+                }
+
+                //TODO Message `You stand on...`
             }
             else
             {
                 Message = new GameMessage(
-                    MessageType.CannotMoveThere, 
+                    MessageType.CannotMoveThere,
                     Dungeon[newLocation].Type.ToString());
             }
-
-            return ProcessResult.None;
         }
 
         private static MapImage GetMapPicture(IGameDungeon dungeon)

@@ -7,7 +7,7 @@ using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.Drawing
 {
-    public sealed class ConsolePainter : IMapPainter
+    internal sealed class ConsolePainter : IMapPainter
     {
         public void DrawMap(MapImage map)
         {
