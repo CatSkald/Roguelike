@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>CatSkald.Test.TestHelpers</AssemblyName>
+    <PackageId>CatSkald.Test.TestHelpers</PackageId>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.9.0" />
+    <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+    <PackageReference Include="coveralls.io" Version="1.4.2" />
+    <PackageReference Include="NSubstitute" Version="3.1.0" />
+  </ItemGroup>
+
+</Project>

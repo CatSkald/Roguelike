@@ -1,41 +1,40 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{80083AF5-2AF4-49EF-A89F-3DE47A5D5084}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04F26693-3357-4FA7-88DC-D6CE828B0A90}"
 	ProjectSection(SolutionItems) = preProject
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
-		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9BFB618E-B552-499D-BBCF-E3F3C443D15D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.DungeonGenerator", "src\CatSkald.Roguelike.DungeonGenerator\CatSkald.Roguelike.DungeonGenerator.xproj", "{6BB73231-5CF1-4785-B75B-35FB03E85B9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Roguelike.DungeonGenerator", "src\CatSkald.Roguelike.DungeonGenerator\CatSkald.Roguelike.DungeonGenerator.csproj", "{6BB73231-5CF1-4785-B75B-35FB03E85B9F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Tools", "src\CatSkald.Tools\CatSkald.Tools.xproj", "{CF9372C1-7030-4148-9FBF-5FB58C52A58D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Tools", "src\CatSkald.Tools\CatSkald.Tools.csproj", "{CF9372C1-7030-4148-9FBF-5FB58C52A58D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.Host", "src\CatSkald.Roguelike.Host\CatSkald.Roguelike.Host.xproj", "{E4CC2526-B5F8-4694-A787-CFE481B094E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Roguelike.Host", "src\CatSkald.Roguelike.Host\CatSkald.Roguelike.Host.csproj", "{E4CC2526-B5F8-4694-A787-CFE481B094E3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.Drawing", "src\CatSkald.Roguelike.Drawing\CatSkald.Roguelike.Drawing.xproj", "{E42AC08F-0E49-4A9B-9269-7AA6B5FAC16D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Roguelike.Drawing", "src\CatSkald.Roguelike.Drawing\CatSkald.Roguelike.Drawing.csproj", "{E42AC08F-0E49-4A9B-9269-7AA6B5FAC16D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.Core", "src\CatSkald.Roguelike.Core\CatSkald.Roguelike.Core.xproj", "{785DD2DC-FFA5-4BA7-9FAC-61B3153C4D7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Roguelike.Core", "src\CatSkald.Roguelike.Core\CatSkald.Roguelike.Core.csproj", "{785DD2DC-FFA5-4BA7-9FAC-61B3153C4D7B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.Test.DungeonGenerator.UnitTests", "test\CatSkald.Roguelike.Test.DungeonGenerator.UnitTests\CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.xproj", "{04B85EB0-6828-4CEB-AD2F-6FD8A664F96A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Roguelike.Test.DungeonGenerator.UnitTests", "test\CatSkald.Roguelike.Test.DungeonGenerator.UnitTests\CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.csproj", "{04B85EB0-6828-4CEB-AD2F-6FD8A664F96A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.Test.Core.UnitTests", "test\CatSkald.Roguelike.Test.Core.UnitTests\CatSkald.Roguelike.Test.Core.UnitTests.xproj", "{1D3D0310-6DFD-48F4-9D84-E58958E54BBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Roguelike.Test.Core.UnitTests", "test\CatSkald.Roguelike.Test.Core.UnitTests\CatSkald.Roguelike.Test.Core.UnitTests.csproj", "{1D3D0310-6DFD-48F4-9D84-E58958E54BBD}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Test.Tools.UnitTests", "test\CatSkald.Test.Tools.UnitTests\CatSkald.Test.Tools.UnitTests.xproj", "{CCCBC973-4752-45D1-A447-58D0E7CE34B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Test.Tools.UnitTests", "test\CatSkald.Test.Tools.UnitTests\CatSkald.Test.Tools.UnitTests.csproj", "{CCCBC973-4752-45D1-A447-58D0E7CE34B4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.GameProcessor", "src\CatSkald.Roguelike.GameProcessor\CatSkald.Roguelike.GameProcessor.xproj", "{D4890EDF-2AE4-43FD-BFC6-25A601EED5BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Roguelike.GameProcessor", "src\CatSkald.Roguelike.GameProcessor\CatSkald.Roguelike.GameProcessor.csproj", "{D4890EDF-2AE4-43FD-BFC6-25A601EED5BC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Rogualike.Test.GameProcessor.UnitTests", "test\CatSkald.Rogualike.Test.GameProcessor.UnitTests\CatSkald.Rogualike.Test.GameProcessor.UnitTests.xproj", "{CD0B2EEB-F033-461D-ABEB-A01CCEF7B095}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Rogualike.Test.GameProcessor.UnitTests", "test\CatSkald.Rogualike.Test.GameProcessor.UnitTests\CatSkald.Rogualike.Test.GameProcessor.UnitTests.csproj", "{CD0B2EEB-F033-461D-ABEB-A01CCEF7B095}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Test.TestHelpers", "test\CatSkald.Test.TestHelpers\CatSkald.Test.TestHelpers.xproj", "{2A524ADF-3A16-41EB-B1C6-B7DAACDB4A3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Test.TestHelpers", "test\CatSkald.Test.TestHelpers\CatSkald.Test.TestHelpers.csproj", "{2A524ADF-3A16-41EB-B1C6-B7DAACDB4A3B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CatSkald.Roguelike.AcceptanceTests", "test\CatSkald.Roguelike.AcceptanceTests\CatSkald.Roguelike.AcceptanceTests.xproj", "{DFCB5CE1-0212-4621-B0B1-9F11E3B336C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatSkald.Roguelike.AcceptanceTests", "test\CatSkald.Roguelike.AcceptanceTests\CatSkald.Roguelike.AcceptanceTests.csproj", "{DFCB5CE1-0212-4621-B0B1-9F11E3B336C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,5 +107,8 @@ Global
 		{CD0B2EEB-F033-461D-ABEB-A01CCEF7B095} = {80083AF5-2AF4-49EF-A89F-3DE47A5D5084}
 		{2A524ADF-3A16-41EB-B1C6-B7DAACDB4A3B} = {80083AF5-2AF4-49EF-A89F-3DE47A5D5084}
 		{DFCB5CE1-0212-4621-B0B1-9F11E3B336C6} = {80083AF5-2AF4-49EF-A89F-3DE47A5D5084}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1875231C-9E1E-42C1-9D0D-23C159A2F150}
 	EndGlobalSection
 EndGlobal
