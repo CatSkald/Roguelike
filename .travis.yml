@@ -1,18 +1,11 @@
 language: csharp
 solution: CatSkald.Roguelike.sln
+dotnet: 2.0.2
+mono: none
+dist: trusty
 
 env:
 - DOTNET_INSTALL_DIR="dotnet"
-
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      sudo: required
-      dotnet: 2.0.0
-      mono: latest
-    - dotnet: 2.0.0
-      mono: none
 
 before_script:
   - chmod +x ./build.sh
