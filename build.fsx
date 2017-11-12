@@ -48,6 +48,7 @@ Target "UnitTest" (fun _ ->
             Project = file
             Configuration = "Release"
         })
+    )
 )
 
 open Fake.OpenCoverHelper
