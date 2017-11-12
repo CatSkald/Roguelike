@@ -26,7 +26,8 @@ Target "UpdateAssemblyInfo" (fun _ ->
 Target "Build" (fun _ ->
     DotNetCli.Restore id
 
-    !! "./**/*.csproj"
+    !! "./src/**/*.csproj"
+	++ "./test/**/*.csproj"
     |> Seq.iter (fun file -> 
         DotNetCli.Build (fun p -> 
         { p with 
