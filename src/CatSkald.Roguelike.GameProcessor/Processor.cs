@@ -70,6 +70,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         private ProcessResult ProcessAction(GameAction action)
         {
             var result = ProcessResult.None;
+            Message = new GameMessage(MessageType.None);
 
             switch (action)
             {
