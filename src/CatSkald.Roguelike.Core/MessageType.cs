@@ -7,6 +7,8 @@
         EndGame,
         CannotMoveThere,
         ShowHelp,
-        ShowMenu
+        ShowMenu,
+        OpenDoor,
+        StandOn
     }
 }

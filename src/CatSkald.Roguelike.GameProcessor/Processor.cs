@@ -168,19 +168,30 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                 XType.DoorOpened,
                 XType.DoorClosed
             };
+            var availableForStandingOn = new[]
+            {
+                XType.StairsDown,
+                XType.StairsUp,
+                XType.DoorOpened
+            };
 
             var destination = Dungeon[newLocation];
             if (availableForMove.Contains(destination.Type))
             {
                 character.Location = newLocation;
 
-                //TODO extract method
+                //TODO extract methods
                 if (destination.Type == XType.DoorClosed)
                 {
                     destination.Type = XType.DoorOpened;
-                }
 
-                //TODO Message `You stand on...`
+                    Message = new GameMessage(MessageType.OpenDoor);
+                }
+                else if (availableForStandingOn.Contains(destination.Type))
+                {
+                    //TODO extract object descriptor
+                    Message = new GameMessage(MessageType.StandOn, destination.Type.ToString());
+                }
             }
             else
             {

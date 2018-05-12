@@ -12,6 +12,8 @@ namespace CatSkald.Roguelike.Drawing
         public static readonly string EndGame = "Game over!";
         public static readonly string Bye = "Have a nice day :)";
         public static readonly string CannotMove = "Cannot move there.";
+        public static readonly string OpenDoor = "You opened the door.";
+        public static readonly string SeePattern = "You see {0}.";
         public static readonly string ObstacleDescriptionPattern = "You faced the {0}.";
 
         public static void AppendMessage(
@@ -38,6 +40,16 @@ namespace CatSkald.Roguelike.Drawing
                     if (args != null)
                     {
                         sb.AppendFormat(ObstacleDescriptionPattern, args[0]);
+                        sb.AppendLine();
+                    }
+                    break;
+                case MessageType.OpenDoor:
+                    sb.AppendLine(Messages.OpenDoor);
+                    break;
+                case MessageType.StandOn:
+                    if (args != null)
+                    {
+                        sb.AppendFormat(Messages.SeePattern, args[0]);
                         sb.AppendLine();
                     }
                     break;
