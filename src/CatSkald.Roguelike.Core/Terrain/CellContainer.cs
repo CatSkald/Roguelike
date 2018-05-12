@@ -7,8 +7,6 @@ namespace CatSkald.Roguelike.Core.Terrain
     public abstract class CellContainer<T> : BaseContainer<T> 
         where T : ICell, new()
     {
-        private readonly T[,] cells;
-
         protected CellContainer(
             int width, int height, Action<T> cellInitializer = null) 
             : base(width, height)

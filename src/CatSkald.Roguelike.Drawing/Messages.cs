@@ -61,15 +61,31 @@ namespace CatSkald.Roguelike.Drawing
 
         public static IEnumerable<string> GetGameInfo()
         {
-            yield return "CHARACTER INFO";
-            yield return "Level:       0";
-            yield return "HP:          0";
-            yield return "MP:          0";
-            yield return "ATT:         0";
-            yield return "DEF:         0";
-            yield return "";
-            yield return "DUNGEON INFO";
-            yield return "Level:      -1";
+            yield return "CHARACTER";
+            yield return "Name:  John Doe";
+            yield return "Title:     Worm";
+            yield return "Age:         21";
+            yield return "Race:       Elf";
+            yield return "Class:  Warrior";
+            //yield return "Height:        ";
+            //yield return "Weight:        ";
+            yield return "_______________";
+            yield return "Level:        1";
+            yield return "HP:         1/1";
+            yield return "MP:         0/0";
+            yield return "ATT:          0";
+            yield return "DEF:          0";
+            yield return "_______________";
+            yield return "XP:         0/1";
+            yield return "$:            0";
+            yield return "Weight:     0/0";
+            yield return "_______________";
+            yield return "L.Hand:       -";
+            yield return "R.Hand:       -";
+            yield return string.Empty;
+            yield return "_______________";
+            yield return "DUNGEON";
+            yield return "Level:       -1";
         }
     }
 }
