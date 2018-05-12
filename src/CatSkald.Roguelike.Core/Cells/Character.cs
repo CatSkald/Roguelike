@@ -1,6 +1,6 @@
 ﻿namespace CatSkald.Roguelike.Core.Cells
 {
-    public class Character : Cell
+    public sealed class Character : Cell
     {
         public Character()
         {

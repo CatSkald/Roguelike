@@ -82,7 +82,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             populator.WhenForAnyArgs(it => it.Fill(Arg.Any<IGameDungeon>()))
                 .Do(d =>
                 {
-                    d.Arg<IGameDungeon>().Character = character;
+                    d.Arg<IGameDungeon>().PlaceCharacter(character);
                 });
             var painter = Substitute.For<IMapPainter>();
 
@@ -114,7 +114,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             populator.WhenForAnyArgs(it => it.Fill(Arg.Any<IGameDungeon>()))
                 .Do(d => 
                 {
-                    d.Arg<IGameDungeon>().Character = character;
+                    d.Arg<IGameDungeon>().PlaceCharacter(character);
                 });
             var painter = Substitute.For<IMapPainter>();
 

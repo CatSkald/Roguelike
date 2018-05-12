@@ -5,7 +5,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
     public class CharacterTests
     {
         [Test]
-        public void Constructor_SetsCorrectType()
+        public void Ctor_WhenNewCreated_ThenTypeIsCharacter()
         {
             var tile = new Character();
 

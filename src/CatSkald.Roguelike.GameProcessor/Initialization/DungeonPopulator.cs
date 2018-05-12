@@ -8,7 +8,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
     {
         public void Fill(IGameDungeon dungeon)
         {
-            ////TODO create all the stuff and place into dungeon
+            //TODO create all the stuff and place into dungeon
 
             CreateStairs(dungeon);
             CreateCharacter(dungeon);
@@ -29,10 +29,17 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 
         private static void CreateCharacter(IGameDungeon dungeon)
         {
-            var character = new Character();
-            var upstairs = dungeon.Single(c => c.Type == XType.StairsUp);
-            character.Location = upstairs.Location;
-            dungeon.Character = character;
+            var startingCell = GetCharacterStartingCell();
+            var character = new Character
+            {
+                Location = startingCell.Location
+            };
+            dungeon.PlaceCharacter(character);
+
+            Cell GetCharacterStartingCell()
+            {
+                return dungeon.Single(c => c.Type == XType.StairsUp);
+            }
         }
     }
 }

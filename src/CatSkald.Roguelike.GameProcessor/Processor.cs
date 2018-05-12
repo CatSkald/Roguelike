@@ -160,14 +160,6 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         //TODO extract class
         private void Move(Character character, Point newLocation)
         {
-            var availableForMove = new[]
-            {
-                XType.Empty,
-                XType.StairsDown,
-                XType.StairsUp,
-                XType.DoorOpened,
-                XType.DoorClosed
-            };
             var availableForStandingOn = new[]
             {
                 XType.StairsDown,
@@ -175,8 +167,9 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                 XType.DoorOpened
             };
 
+            //TODO move logic to dungeon, do not call 'Dungeon[newLocation]' here
             var destination = Dungeon[newLocation];
-            if (availableForMove.Contains(destination.Type))
+            if (Dungeon.CanMove(newLocation))
             {
                 character.Location = newLocation;
 
