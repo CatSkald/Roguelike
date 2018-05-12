@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.GameProcessor;
 using CatSkald.Roguelike.GameProcessor.Procession;
@@ -17,6 +18,8 @@ namespace CatSkald.Roguelike.Host
             {
                 Log.Debug("Roguelike started.");
 
+                ConfigureConsole();
+
                 var provider = new ServiceCollection()
                     .SetUp()
                     .BuildServiceProvider();
@@ -25,11 +28,27 @@ namespace CatSkald.Roguelike.Host
             }
             catch (Exception e)
             {
-                Log.Fatal(e, "Oops, you've just catched a fatal bug :(");
-                throw;
+                const string error = "Oops, you've just catched a fatal bug :(";
+                Log.Fatal(e, error);
+
+                Console.Clear();
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(error);
+                Console.WriteLine();
+                Console.WriteLine("Please send the below error to our support service.");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(e.ToString());
             }
 
             Console.ReadLine();
+
+            void ConfigureConsole()
+            {
+                Console.CursorVisible = false;
+                Console.Title = "CatSkald Roguelike";
+            }
         }
 
         private static void StartApplication(IServiceProvider provider)
@@ -47,7 +66,38 @@ namespace CatSkald.Roguelike.Host
             while (!finish)
             {
                 var action = GetUserAction();
-                Console.Clear();
+
+                ClearConsole();
+                ProcessUserAction(action);
+
+                FillConsoleWithEmptyLines();
+            }
+
+            GameAction GetUserAction()
+            {
+                var key = Console.ReadKey();
+
+                return ConsoleGameActionConverter.Convert(key.Key);
+            }
+
+            void ClearConsole()
+            {
+                Console.SetCursorPosition(0, 0);
+            }
+
+            void FillConsoleWithEmptyLines()
+            {
+                var emptyLinesTillWindowBottom = Console.WindowHeight - Console.CursorTop - 1;
+                var emptyLineLength = Console.WindowWidth - 1;
+                var emptyLine = new string(' ', emptyLineLength);
+
+                Console.Write(
+                    string.Join(Environment.NewLine,
+                    Enumerable.Repeat(emptyLine, emptyLinesTillWindowBottom)));
+            }
+
+            void ProcessUserAction(GameAction action)
+            {
                 result = processor.Process(action);
                 switch (result)
                 {
@@ -65,13 +115,6 @@ namespace CatSkald.Roguelike.Host
                             "Unknown ProcessResult: " + result);
                 }
             }
-        }
-
-        private static GameAction GetUserAction()
-        {
-            var key = Console.ReadKey();
-
-            return ConsoleGameActionConverter.Convert(key.Key);
         }
     }
 }
