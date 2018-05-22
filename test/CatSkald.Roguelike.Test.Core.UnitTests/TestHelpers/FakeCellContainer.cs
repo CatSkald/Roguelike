@@ -11,7 +11,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.TestHelpers
         {
         }
 
-        public FakeCellContainer(int width, int height, Action<Cell> cellInitializer)
+        public FakeCellContainer(int width, int height, Func<Cell, Cell> cellInitializer)
              : base(width, height, cellInitializer)
         {
         }

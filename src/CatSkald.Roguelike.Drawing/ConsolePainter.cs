@@ -7,6 +7,7 @@ using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.Drawing
 {
+    //TODO fix message overlapping if next shorter than previous
     internal sealed class ConsolePainter : IMapPainter
     {
         public void DrawMap(MapImage map)
@@ -25,12 +26,12 @@ namespace CatSkald.Roguelike.Drawing
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
         }
 
         public void DrawMessage(GameMessage message, params string[] args)
         {
             var sb = new StringBuilder();
-            sb.AppendLine();
             sb.AppendMessage(message.Type, message.Args);
             Console.Write(sb);
         }
@@ -38,7 +39,6 @@ namespace CatSkald.Roguelike.Drawing
         public void DrawEndGameScreen()
         {
             var sb = new StringBuilder();
-            sb.AppendLine();
             sb.AppendMessage(MessageType.EndGame);
             Console.Write(sb);
         }

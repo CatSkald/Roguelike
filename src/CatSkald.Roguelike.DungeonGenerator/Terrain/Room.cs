@@ -19,12 +19,14 @@ namespace CatSkald.Roguelike.DungeonGenerator.Terrain
             Bounds = newBounds;
         }
 
-        private static void CellInitializer(MapCell cell, int width, int height)
+        private static MapCell CellInitializer(MapCell cell, int width, int height)
         {
             cell.Sides[Dir.W] = cell.Location.X == 0 ? Side.Wall : Side.Empty;
             cell.Sides[Dir.E] = cell.Location.X == width - 1 ? Side.Wall : Side.Empty;
             cell.Sides[Dir.N] = cell.Location.Y == 0 ? Side.Wall : Side.Empty;
             cell.Sides[Dir.S] = cell.Location.Y == height - 1 ? Side.Wall : Side.Empty;
+
+            return cell;
         }
     }
 }

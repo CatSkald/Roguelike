@@ -36,12 +36,13 @@ namespace CatSkald.Roguelike.Drawing
                     sb.AppendLine();
                     break;
                 case MessageType.CannotMoveThere:
-                    sb.AppendLine(Messages.CannotMove);
+                    sb.Append(Messages.CannotMove);
                     if (args != null)
                     {
+                        sb.Append(" ");
                         sb.AppendFormat(ObstacleDescriptionPattern, args[0]);
-                        sb.AppendLine();
                     }
+                    sb.AppendLine();
                     break;
                 case MessageType.OpenDoor:
                     sb.AppendLine(Messages.OpenDoor);

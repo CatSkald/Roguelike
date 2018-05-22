@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.GameProcessor;
@@ -24,14 +26,20 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers
             Character = character;
         }
 
-        private static void InitializeCell(Cell cell)
+        private static Cell InitializeCell(Cell cell)
         {
             cell.Type = XType.Wall;
+            return cell;
         }
 
         public bool CanMove(Point newLocation)
         {
             return true;
+        }
+
+        public IEnumerable<XType> GetCellContent(Point location)
+        {
+            return Enumerable.Empty<XType>();
         }
     }
 }

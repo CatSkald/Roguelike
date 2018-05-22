@@ -8,7 +8,7 @@ namespace CatSkald.Roguelike.Core.Terrain
         where T : ICell, new()
     {
         protected CellContainer(
-            int width, int height, Action<T> cellInitializer = null) 
+            int width, int height, Func<T, T> cellInitializer = null) 
             : base(width, height)
         {
             Bounds = new Rectangle(0, 0, width, height);
@@ -20,7 +20,12 @@ namespace CatSkald.Roguelike.Core.Terrain
                     {
                         Location = new Point(x, y)
                     };
-                    cellInitializer?.Invoke(cell);
+
+                    if (cellInitializer != null)
+                    {
+                        cell = cellInitializer(cell);
+                    }
+
                     this[x, y] = cell;
                 }
         }

@@ -30,11 +30,21 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Terrain
             _container = new FakeCellContainer(32, 57,
                 cell => {
                     cell.Type = XType.StairsDown;
+                    return cell;
                 });
 
             Assert.That(_container, Has.All
                 .With.Property(nameof(Cell.Type))
                 .EqualTo(XType.StairsDown));
+        }
+
+        [Test]
+        public void Constructor_InitializeCellsMethodOverridesCell_WhenCellContainerCreated()
+        {
+            var singletonCell = new Cell();
+            _container = new FakeCellContainer(32, 57, cell => singletonCell);
+
+            Assert.That(_container, Has.All.SameAs(singletonCell));
         }
 
         [Test]

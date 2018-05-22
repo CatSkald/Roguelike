@@ -28,6 +28,22 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         }
 
         [Test]
+        public void Ctor_CreatesDoorsAsCorrectType()
+        {
+            var fake = new FakeDungeon(2, 2);
+            fake[0, 1].Type = XType.Character;
+            fake[1, 0].Type = XType.DoorClosed;
+            fake[1, 1].Type = XType.Wall;
+
+            var dungeon = new Dungeon(fake);
+
+            Assert.That(dungeon[0, 0], Is.TypeOf<Cell>(), "Cell 0,0");
+            Assert.That(dungeon[0, 1], Is.TypeOf<Cell>(), "Cell 0,1");
+            Assert.That(dungeon[1, 0], Is.TypeOf<Door>(), "Cell 1,0");
+            Assert.That(dungeon[1, 1], Is.TypeOf<Cell>(), "Cell 1,1");
+        }
+
+        [Test]
         public void PlaceCharacter_GivenCharacter_ThenPutsItOnCorrectCell()
         {
             var dungeon = new Dungeon(1, 1);
@@ -92,6 +108,34 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             var result = dungeon.CanMove(newLocation);
 
             Assert.IsFalse(result);
+        }
+
+        [TestCase(XType.StairsDown)]
+        [TestCase(XType.StairsUp)]
+        public void GetCellContent_GivenCellWithContent_ThenReturnsIt(XType cellType)
+        {
+            var dungeon = new Dungeon(1, 1);
+            var location = new Point(0, 0);
+            dungeon[location].Type = cellType;
+
+            var result = dungeon.GetCellContent(location);
+
+            Assert.That(result, Is.EquivalentTo(new[] { cellType }));
+        }
+
+        [TestCase(XType.Empty)]
+        [TestCase(XType.Wall)]
+        [TestCase(XType.Character)]
+        [TestCase(XType.Unknown)]
+        public void GetCellContent_GivenCellWithoutContent_ThenReturnsNone(XType cellType)
+        {
+            var dungeon = new Dungeon(1, 1);
+            var location = new Point(0, 0);
+            dungeon[location].Type = cellType;
+
+            var result = dungeon.GetCellContent(location);
+
+            Assert.That(result, Is.Empty);
         }
     }
 }

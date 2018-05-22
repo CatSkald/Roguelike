@@ -35,16 +35,16 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         public void Initialize(DungeonParameters parameters)
         {
             var dungeonMap = builder.Build(parameters);
-            var dungeon = Convert(dungeonMap);
+            var dungeon = Convert();
 
             populator.Fill(dungeon);
             Dungeon = dungeon;
             Log.Debug("Dungeon initialized.");
-        }
 
-        private static Dungeon Convert(IDungeon dungeonMap)
-        {
-            return new Dungeon(dungeonMap);
+            Dungeon Convert()
+            {
+                return new Dungeon(dungeonMap);
+            }
         }
 
         public ProcessResult Process(GameAction action)
@@ -114,14 +114,58 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                         "Action is not supported: " + action);
             }
 
+            LookAround();
+
             return result;
+
+            void LookAround()
+            {
+                var cellContent = Dungeon.GetCellContent(Dungeon.Character.Location);
+                if (cellContent.Any())
+                {
+                    foreach (var item in cellContent)
+                    {
+                        //TODO extract object descriptor
+                        Messages.Add(new GameMessage(MessageType.StandOn, item.ToString()));
+                    }
+                }
+            }
         }
 
+        //TODO extract class
         private ProcessResult MoveCharacter(GameAction action)
         {
             var character = Dungeon.Character;
-            var newLocation = character.Location;
+            var newLocation = GetNewLocation(action, character);
+            if (Dungeon.CanMove(newLocation))
+            {
+                //TODO extract methods
+                var destination = Dungeon[newLocation];
+                if (destination is Door door)
+                {
+                    if (!door.IsOpened)
+                    {
+                        door.Open();
+                        Messages.Add(new GameMessage(MessageType.OpenDoor));
+                    }
+                }
 
+                character.Location = newLocation;
+            }
+            else
+            {
+                Messages.Add(new GameMessage(
+                    MessageType.CannotMoveThere,
+                    Dungeon[newLocation].Type.ToString()));
+            }
+
+            return ProcessResult.None;
+        }
+
+        //TODO extract
+        private static Point GetNewLocation(GameAction action, Character character)
+        {
+            Point newLocation;
             switch (action)
             {
                 case GameAction.MoveN:
@@ -161,47 +205,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                         "Action is not a move: " + action);
             }
 
-            Move(character, newLocation);
-
-            return ProcessResult.None;
-        }
-
-        //TODO extract class
-        private void Move(Character character, Point newLocation)
-        {
-            var availableForStandingOn = new[]
-            {
-                XType.StairsDown,
-                XType.StairsUp
-            };
-
-            //TODO move logic to dungeon, do not call 'Dungeon[newLocation]' here
-            var destination = Dungeon[newLocation];
-            if (Dungeon.CanMove(newLocation))
-            {
-                character.Location = newLocation;
-
-                //TODO extract methods
-                if (destination is Door door)
-                {
-                    if (!door.IsOpened)
-                    {
-                        door.Open();
-                        Messages.Add(new GameMessage(MessageType.OpenDoor));
-                    }
-                }
-                if (availableForStandingOn.Contains(destination.Type))
-                {
-                    //TODO extract object descriptor
-                    Messages.Add(new GameMessage(MessageType.StandOn, destination.Type.ToString()));
-                }
-            }
-            else
-            {
-                Messages.Add(new GameMessage(
-                    MessageType.CannotMoveThere,
-                    Dungeon[newLocation].Type.ToString()));
-            }
+            return newLocation;
         }
 
         private static MapImage GetMapPicture(IGameDungeon dungeon)

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Terrain;
 
@@ -11,5 +12,7 @@ namespace CatSkald.Roguelike.GameProcessor
         void PlaceCharacter(Character character);
 
         bool CanMove(Point newLocation);
+
+        IEnumerable<XType> GetCellContent(Point location);
     }
 }

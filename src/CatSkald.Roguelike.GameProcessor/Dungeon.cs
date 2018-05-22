@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Terrain;
@@ -14,6 +15,12 @@ namespace CatSkald.Roguelike.GameProcessor
                 XType.StairsUp,
                 XType.DoorOpened,
                 XType.DoorClosed
+            };
+
+        private readonly XType[] availableForStandingOn = new[]
+            {
+                XType.StairsDown,
+                XType.StairsUp
             };
 
         public Dungeon(int width, int height) : base(width, height, null)
@@ -32,9 +39,21 @@ namespace CatSkald.Roguelike.GameProcessor
             Character = character;
         }
 
-        private static void InitializeCell(IDungeon map, Cell cell)
+        private static Cell InitializeCell(IDungeon map, Cell cell)
         {
-            cell.Type = map[cell.Location.X, cell.Location.Y].Type;
+            var type = map[cell.Location.X, cell.Location.Y].Type;
+            if (type == XType.DoorClosed)
+            {
+                cell = new Door
+                {
+                    Location = cell.Location
+                };
+            }
+            else
+            {
+                cell.Type = type;
+            }
+            return cell;
         }
 
         public bool CanMove(Point newLocation)
@@ -44,6 +63,16 @@ namespace CatSkald.Roguelike.GameProcessor
             bool IsCellAvailableForMove()
             {
                 return availableForMove.Contains(this[newLocation].Type);
+            }
+        }
+
+        public IEnumerable<XType> GetCellContent(Point location)
+        {
+            var cell = this[location];
+
+            if (availableForStandingOn.Contains(cell.Type))
+            {
+                yield return cell.Type;
             }
         }
     }
