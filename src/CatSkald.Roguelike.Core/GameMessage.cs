@@ -5,6 +5,7 @@
         public GameMessage(MessageType type) : this(type, null)
         {
         }
+
         public GameMessage(MessageType type, params string[] args)
         {
             Type = type;

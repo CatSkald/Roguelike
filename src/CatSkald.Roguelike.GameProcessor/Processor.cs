@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core;
@@ -29,7 +30,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         }
 
         public IGameDungeon Dungeon { get; private set; }
-        public GameMessage Message { get; private set; }
+        public IList<GameMessage> Messages { get; } = new List<GameMessage>();
 
         public void Initialize(DungeonParameters parameters)
         {
@@ -53,16 +54,24 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
             var mapPicture = GetMapPicture(Dungeon);
 
             painter.DrawMap(mapPicture);
-            painter.DrawMessage(Message);
+            DrawMessages();
 
             return actionResult;
         }
-        
+
+        private void DrawMessages()
+        {
+            foreach (var message in Messages)
+            {
+                painter.DrawMessage(message);
+            }
+        }
+
         public ProcessResult ProcessSubAction(GameAction action)
         {
             var actionResult = ProcessAction(action);
 
-            painter.DrawMessage(Message);
+            DrawMessages();
 
             return actionResult;
         }
@@ -70,14 +79,14 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         private ProcessResult ProcessAction(GameAction action)
         {
             var result = ProcessResult.None;
-            Message = new GameMessage(MessageType.None);
+            Messages.Clear();
 
             switch (action)
             {
                 case GameAction.None:
                     break;
                 case GameAction.StartGame:
-                    Message = new GameMessage(MessageType.StartGame);
+                    Messages.Add(new GameMessage(MessageType.StartGame));
                     result = ProcessResult.RequestAction;
                     break;
                 case GameAction.MoveN:
@@ -91,14 +100,14 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                     result = MoveCharacter(action);
                     break;
                 case GameAction.ShowHelp:
-                    Message = new GameMessage(MessageType.ShowHelp);
+                    Messages.Add(new GameMessage(MessageType.ShowHelp));
                     break;
                 case GameAction.ShowMenu:
-                    Message = new GameMessage(MessageType.ShowMenu);
+                    Messages.Add(new GameMessage(MessageType.ShowMenu));
                     break;
                 case GameAction.EndGame:
                     painter.DrawEndGameScreen();
-                    Message = new GameMessage(MessageType.EndGame);
+                    Messages.Add(new GameMessage(MessageType.EndGame));
                     break;
                 default:
                     throw new NotSupportedException(
@@ -178,19 +187,19 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                 {
                     destination.Type = XType.DoorOpened;
 
-                    Message = new GameMessage(MessageType.OpenDoor);
+                    Messages.Add(new GameMessage(MessageType.OpenDoor));
                 }
                 else if (availableForStandingOn.Contains(destination.Type))
                 {
                     //TODO extract object descriptor
-                    Message = new GameMessage(MessageType.StandOn, destination.Type.ToString());
+                    Messages.Add(new GameMessage(MessageType.StandOn, destination.Type.ToString()));
                 }
             }
             else
             {
-                Message = new GameMessage(
+                Messages.Add(new GameMessage(
                     MessageType.CannotMoveThere,
-                    Dungeon[newLocation].Type.ToString());
+                    Dungeon[newLocation].Type.ToString()));
             }
         }
 
