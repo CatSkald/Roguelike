@@ -123,7 +123,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
                 populator,
                 painter);
             processor.Initialize(parameters);
-            processor.Process(GameAction.None);
+            processor.Process(GameAction.StartGame);
 
             ////TODO test precise message
             painter.Received(1).DrawMessage(Arg.Any<GameMessage>());

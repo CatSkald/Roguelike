@@ -182,11 +182,13 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                 character.Location = newLocation;
 
                 //TODO extract methods
-                if (destination.Type == XType.DoorClosed)
+                if (destination is Door door)
                 {
-                    destination.Type = XType.DoorOpened;
-
-                    Messages.Add(new GameMessage(MessageType.OpenDoor));
+                    if (!door.IsOpened)
+                    {
+                        door.Open();
+                        Messages.Add(new GameMessage(MessageType.OpenDoor));
+                    }
                 }
                 if (availableForStandingOn.Contains(destination.Type))
                 {
