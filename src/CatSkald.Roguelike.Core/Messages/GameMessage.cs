@@ -1,4 +1,4 @@
-﻿namespace CatSkald.Roguelike.Core
+﻿namespace CatSkald.Roguelike.Core.Messages
 {
     public struct GameMessage
     {

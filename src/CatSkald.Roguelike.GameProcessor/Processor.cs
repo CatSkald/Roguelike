@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using CatSkald.Roguelike.Core;
 using CatSkald.Roguelike.Core.Cells;
+using CatSkald.Roguelike.Core.Messages;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
@@ -172,8 +172,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
             var availableForStandingOn = new[]
             {
                 XType.StairsDown,
-                XType.StairsUp,
-                XType.DoorOpened
+                XType.StairsUp
             };
 
             //TODO move logic to dungeon, do not call 'Dungeon[newLocation]' here
@@ -189,7 +188,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 
                     Messages.Add(new GameMessage(MessageType.OpenDoor));
                 }
-                else if (availableForStandingOn.Contains(destination.Type))
+                if (availableForStandingOn.Contains(destination.Type))
                 {
                     //TODO extract object descriptor
                     Messages.Add(new GameMessage(MessageType.StandOn, destination.Type.ToString()));

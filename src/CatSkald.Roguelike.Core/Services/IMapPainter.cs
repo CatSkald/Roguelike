@@ -1,4 +1,5 @@
-﻿using CatSkald.Roguelike.Core.Terrain;
+﻿using CatSkald.Roguelike.Core.Messages;
+using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.Core.Services
 {

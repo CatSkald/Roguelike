@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers;
-using CatSkald.Roguelike.Core;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
@@ -10,6 +9,7 @@ using CatSkald.Roguelike.GameProcessor.Initialization;
 using CatSkald.Roguelike.GameProcessor.Procession;
 using NSubstitute;
 using NUnit.Framework;
+using CatSkald.Roguelike.Core.Messages;
 
 namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
 {

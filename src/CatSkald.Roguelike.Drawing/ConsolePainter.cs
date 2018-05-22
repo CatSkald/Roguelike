@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-using CatSkald.Roguelike.Core;
 using CatSkald.Roguelike.Core.Cells;
+using CatSkald.Roguelike.Core.Messages;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
 

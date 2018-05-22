@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CatSkald.Roguelike.Core;
+using CatSkald.Roguelike.Core.Messages;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.GameProcessor.Procession;
 

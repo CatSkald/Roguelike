@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CatSkald.Roguelike.Core;
+using CatSkald.Roguelike.Core.Messages;
 
 namespace CatSkald.Roguelike.Drawing
 {
