@@ -59,7 +59,7 @@ Target "UnitTestWithCoverageReport" (fun _ ->
          OpenCoverHelper.OpenCover (fun p -> 
             { p with 
                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe"
-                TestRunnerExePath = dotnetPath
+                TestRunnerExePath = dotnetPath + " /p:CoverletOutputFormat=opencover"
                 Filter = "+[CatSkald.*]* -[*Tests]*"
                 Output = "coverage.xml"
                 Register = RegisterUser
