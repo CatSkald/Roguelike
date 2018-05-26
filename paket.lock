@@ -1,0 +1,6 @@
+NUGET
+  remote: https://www.nuget.org/api/v2
+    coveralls.net (0.7)
+    FAKE (5.0.0-rc016.225)
+    OpenCover (4.6.519)
+    ReportGenerator (3.1.2)

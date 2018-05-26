@@ -1,4 +1,6 @@
-#r "packages/FAKE/tools/FakeLib.dll"
+#r "paket:
+nuget Fake.Targets prerelease"
+
 open Fake
 open Fake.DotNetCli
 open Fake.AppVeyor
@@ -47,6 +49,7 @@ Target "UnitTest" (fun _ ->
         { p with 
             Project = file
             Configuration = "Release"
+            AdditionalArgs = "/p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
         })
     )
 )
@@ -59,11 +62,10 @@ Target "UnitTestWithCoverageReport" (fun _ ->
          OpenCoverHelper.OpenCover (fun p -> 
             { p with 
                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe"
-                TestRunnerExePath = dotnetPath + " /p:CoverletOutputFormat=opencover"
+                TestRunnerExePath = dotnetPath
                 Filter = "+[CatSkald.*]* -[*Tests]*"
                 Output = "coverage.xml"
                 Register = RegisterUser
-                OptionalArguments = "-mergeoutput -oldstyle"
             })
             targetArguments)
 
