@@ -58,7 +58,7 @@ Target "UnitTestWithCoverageReport" (fun _ ->
          let targetArguments = sprintf "test %O /noshadow" (DirectoryName file)
          OpenCoverHelper.OpenCover (fun p -> 
             { p with 
-                ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe"
+                ExePath = "./tools/NuGet/packages/OpenCover.4.6.519/tools/OpenCover.Console.exe"
                 TestRunnerExePath = dotnetPath
                 Filter = "+[CatSkald.*]* -[*Tests]*"
                 Output = "coverage.xml"
@@ -68,7 +68,7 @@ Target "UnitTestWithCoverageReport" (fun _ ->
             targetArguments)
 
 
-    let result = Shell.Exec("./packages/coveralls.io.1.4.2/tools/coveralls.net.exe","--opencover -i coverage.xml") 
+    let result = Shell.Exec("./tools/NuGet/packages/coveralls.io.1.4.2/tools/coveralls.net.exe","--opencover -i coverage.xml") 
     if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
     ()
     // TODO add codecov coverage
