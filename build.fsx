@@ -55,7 +55,7 @@ open Fake.OpenCoverHelper
 Target "UnitTestWithCoverageReport" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
     |> Seq.iter(fun file -> 
-         let targetArguments = sprintf "test %O /noshadow" (DirectoryName file)
+         let targetArguments = sprintf "test %O" (DirectoryName file)
          OpenCoverHelper.OpenCover (fun p -> 
             { p with 
                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe"
