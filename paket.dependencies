@@ -1,7 +1,9 @@
 source https://nuget.org/api/v2
 
 nuget coveralls.net
-#nuget FAKE prerelease
-nuget Fake.Targets prerelease
+nuget FAKE prerelease
+nuget FAKE.Core
+nuget Fake.Testing.ReportGenerator
+nuget FAKE.IO.FileSystem
 nuget OpenCover
 nuget ReportGenerator
