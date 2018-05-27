@@ -82,7 +82,7 @@ Target "UnitTestWithOpenCover" (fun _ ->
                 ExePath = "./packages/OpenCover/tools/OpenCover.Console.exe"
                 TestRunnerExePath = dotnetPath
                 Filter = "+[CatSkald.*]* -[*Tests]*"
-                Output = "coverage.xml"
+                Output = "./coverage/opencover.xml"
                 Register = RegisterUser
                 OptionalArguments = "-mergeoutput -oldstyle"
             })
@@ -91,6 +91,10 @@ Target "UnitTestWithOpenCover" (fun _ ->
 
 Target "PublishTestCoverage" (fun _ ->
     let result = Shell.Exec("./packages/coveralls.net/tools/csmacnz.Coveralls.exe","--opencover -i coverage/Summary.xml") 
+    if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
+    ()
+
+    let result = Shell.Exec("./packages/coveralls.net/tools/csmacnz.Coveralls.exe","--opencover -i coverage/opencover.xml") 
     if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
     ()
 
