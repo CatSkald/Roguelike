@@ -82,7 +82,7 @@ Target "UnitTestWithOpenCover" (fun _ ->
                 ExePath = "./packages/OpenCover/tools/OpenCover.Console.exe"
                 TestRunnerExePath = dotnetPath
                 Filter = "+[CatSkald.*]* -[*Tests]*"
-                Output = "./coverage/opencover.xml"
+                Output = "coverage/opencover.xml"
                 Register = RegisterUser
                 OptionalArguments = "-mergeoutput -oldstyle"
             })
