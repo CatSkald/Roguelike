@@ -48,7 +48,7 @@ Target "Build" (fun _ ->
     )
 )
 
-Target "UnitTest" (fun _ ->
+Target "UnitTestWithCoverlet" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
     |> Seq.iter (fun file -> 
         DotNetCli.Test (fun p -> 
@@ -60,47 +60,46 @@ Target "UnitTest" (fun _ ->
     )
 )
 
-Target "PublishTestCoverage" (fun _ ->
+Target "MergeCoverageReportsIntoSingleFile" (fun _ ->
     let coverageFiles = !! "./test/**/coverage.xml"
                         |> String.concat ";"
     
     ReportGenerator.generateReports(fun p -> 
-                        { p with 
-                            ExePath = "packages/ReportGenerator/tools/ReportGenerator.exe"
-                            ReportTypes = [ReportGenerator.ReportType.Xml]
-                            TargetDir = "./coverage"
-                       })([coverageFiles])
+        { p with 
+            ExePath = "packages/ReportGenerator/tools/ReportGenerator.exe"
+            ReportTypes = [ReportGenerator.ReportType.XmlSummary]
+            TargetDir = "./coverage"
+        })([coverageFiles])
+)
 
+open Fake.OpenCoverHelper
+Target "UnitTestWithOpenCover" (fun _ ->
+    !! "./test/**/*UnitTests.csproj"
+    |> Seq.iter(fun file -> 
+         let targetArguments = sprintf "test %O" (DirectoryName file)
+         OpenCoverHelper.OpenCover (fun p -> 
+            { p with 
+                ExePath = "./packages/OpenCover/tools/OpenCover.Console.exe"
+                TestRunnerExePath = dotnetPath
+                Filter = "+[CatSkald.*]* -[*Tests]*"
+                Output = "coverage.xml"
+                Register = RegisterUser
+                OptionalArguments = "-mergeoutput -oldstyle"
+            })
+            targetArguments)
+)
+
+Target "PublishTestCoverage" (fun _ ->
     let result = Shell.Exec("./packages/coveralls.net/tools/csmacnz.Coveralls.exe","--opencover -i coverage/Summary.xml") 
     if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
     ()
+
+    // TODO add codecov coverage
+    // ExecuteGetCommand null null "https://codecov.io/bash"
+    // Shell.Exec("./CodecovUploader.sh", "-f coverage.xml -X gcov")
 )
 
-//open Fake.OpenCoverHelper
-//Target "UnitTestWithCoverageReport" (fun _ ->
-//    !! "./test/**/*UnitTests.csproj"
-//    |> Seq.iter(fun file -> 
-//         let targetArguments = sprintf "test %O" (DirectoryName file)
-//         OpenCoverHelper.OpenCover (fun p -> 
-//            { p with 
-//                ExePath = "./packages/OpenCover/tools/OpenCover.Console.exe"
-//                TestRunnerExePath = dotnetPath
-//                Filter = "+[CatSkald.*]* -[*Tests]*"
-//                Output = "coverage.xml"
-//                Register = RegisterUser
-//            })
-//            targetArguments)
-
-
-//    let result = Shell.Exec("./packages/coveralls.net/tools/csmacnz.Coveralls.exe","--opencover -i coverage.xml") 
-//    if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
-//    ()
-//    // TODO add codecov coverage
-//    // ExecuteGetCommand null null "https://codecov.io/bash"
-//    // Shell.Exec("./CodecovUploader.sh", "-f coverage.xml -X gcov")
-//)
-
-Target "Package" (fun _ ->
+Target "Pack" (fun _ ->
     DotNetCli.Pack (fun p -> 
         { p with 
             Project = mainProject
@@ -116,9 +115,11 @@ Target "Deploy" DoNothing
 "Clean"
   ==> "UpdateAssemblyInfo"
   ==> "Build"
-  ==> "UnitTest"
+  ==> "UnitTestWithCoverlet"
+  =?> ("MergeCoverageReportsIntoSingleFile", (buildServer = BuildServer.AppVeyor))
+  =?> ("UnitTestWithOpenCover", (buildServer = BuildServer.AppVeyor))
   =?> ("PublishTestCoverage", (buildServer = BuildServer.AppVeyor))
-  ==> "Package"
+  ==> "Pack"
   ==> "Deploy"
   
   
