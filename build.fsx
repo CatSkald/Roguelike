@@ -1,11 +1,11 @@
-#r "packages/FAKE.Core/tools/FakeLib.dll"
-#r "packages/FAKE.Core.Trace/lib/netstandard2.0/Fake.Core.Trace.dll"
-#r "packages/FAKE.Core.Process/lib/netstandard2.0/Fake.Core.Process.dll"
-#r "packages/FAKE.Core.Environment/lib/netstandard2.0/Fake.Core.Environment.dll"
-#r "packages/FAKE.Core.Context/lib/netstandard2.0/Fake.Core.Context.dll"
-#r "packages/FAKE.Testing.ReportGenerator/lib/netstandard2.0/Fake.Testing.ReportGenerator.dll"
-#r "packages/FAKE.IO.FileSystem/lib/netstandard2.0/FAKE.IO.FileSystem.dll"
-#r "packages/NETStandard.Library/build/netstandard2.0/ref/netstandard.dll"
+#r "./packages/FAKE.Core/tools/FakeLib.dll"
+#r "./packages/FAKE.Core.Trace/lib/netstandard2.0/Fake.Core.Trace.dll"
+#r "./packages/FAKE.Core.Process/lib/netstandard2.0/Fake.Core.Process.dll"
+#r "./packages/FAKE.Core.Environment/lib/netstandard2.0/Fake.Core.Environment.dll"
+#r "./packages/FAKE.Core.Context/lib/netstandard2.0/Fake.Core.Context.dll"
+#r "./packages/FAKE.Testing.ReportGenerator/lib/netstandard2.0/Fake.Testing.ReportGenerator.dll"
+#r "./packages/FAKE.IO.FileSystem/lib/netstandard2.0/FAKE.IO.FileSystem.dll"
+#r "./packages/NETStandard.Library/build/netstandard2.0/ref/netstandard.dll"
 
 let execContext = Fake.Core.Context.FakeExecutionContext.Create false "path/to/script.fsx" []
 Fake.Core.Context.setExecutionContext (Fake.Core.Context.RuntimeContext.Fake execContext)
