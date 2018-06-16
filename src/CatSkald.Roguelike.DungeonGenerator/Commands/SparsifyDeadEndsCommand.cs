@@ -18,7 +18,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             _directionPicker.SetTwistFactor(0);
         }
 
-        protected override void ExecuteCommand(IMap map, DungeonParameters parameters)
+        protected override void ExecuteCommand(IMap map, MapParameters parameters)
         {
             var _sparseFactor = parameters.DeadEndSparseFactor;
             foreach (var cell in map)
@@ -30,7 +30,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             }
         }
 
-        protected override void ValidateParameters(DungeonParameters parameters)
+        protected override void ValidateParameters(MapParameters parameters)
         {
             Throw.IfNotInRange(0, 100, parameters.DeadEndSparseFactor,
                 nameof(parameters.DeadEndSparseFactor));

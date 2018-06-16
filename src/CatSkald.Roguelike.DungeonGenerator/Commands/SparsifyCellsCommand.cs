@@ -8,7 +8,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
 {
     internal sealed class SparsifyCellsCommand : AbstractMapBuilderCommand
     {
-        protected override void ExecuteCommand(IMap map, DungeonParameters parameters)
+        protected override void ExecuteCommand(IMap map, MapParameters parameters)
         {
             var sparseFactor = parameters.CellSparseFactor;
             var expectedNumberOfRemovedCells =
@@ -40,7 +40,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             }
         }
 
-        protected override void ValidateParameters(DungeonParameters parameters)
+        protected override void ValidateParameters(MapParameters parameters)
         {
             Throw.IfNotInRange(0, 100, parameters.CellSparseFactor,
                 nameof(parameters.CellSparseFactor));

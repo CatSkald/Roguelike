@@ -14,7 +14,7 @@ namespace CatSkald.Roguelike.DungeonGenerator
         {
             services.AddTransient<IDirectionPicker>(
                 s => new DirectionPicker(
-                    s.GetService<DungeonParameters>().TwistFactor));
+                    s.GetService<MapParameters>().TwistFactor));
 
             services.AddTransient<IList<IMapBuilderCommand>>(s => GenerateCommands(s));
             services.AddScoped<IMapConverter, MapConverter>();

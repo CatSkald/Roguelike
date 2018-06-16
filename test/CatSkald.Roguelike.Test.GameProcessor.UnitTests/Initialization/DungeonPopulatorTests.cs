@@ -44,6 +44,27 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.Initialization
         }
 
         [Test]
+        public void Fill_CreaturesAdded()
+        {
+            var populator = new DungeonPopulator();
+            var dungeon = new FakeDungeon(5, 7);
+            var points = new[] { new Point(2, 2), new Point(3, 3) };
+            foreach (var p in points)
+                dungeon[p].Type = XType.Empty;
+
+            populator.Fill(dungeon);
+
+            var expectedLocation = dungeon
+                .Single(cell => cell.Type == XType.StairsUp)
+                .Location;
+
+            Assert.That(dungeon.Character,
+                Is.Not.Null
+                .And.With.Property(nameof(Character.Location))
+                .EqualTo(expectedLocation));
+        }
+
+        [Test]
         public void Fill_CharacterAdded()
         {
             var populator = new DungeonPopulator();

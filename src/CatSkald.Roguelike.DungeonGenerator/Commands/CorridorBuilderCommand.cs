@@ -17,12 +17,12 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
             _directionPicker = directionPicker;
         }
 
-        protected override void ExecuteCommand(IMap map, DungeonParameters parameters)
+        protected override void ExecuteCommand(IMap map, MapParameters parameters)
         {
             BuildCorridors(map);
         }
 
-        protected override void ValidateParameters(DungeonParameters parameters)
+        protected override void ValidateParameters(MapParameters parameters)
         {
             Throw.IfNotInRange(0, 100, parameters.TwistFactor, nameof(parameters.TwistFactor));
         }

@@ -16,18 +16,18 @@ namespace CatSkald.Roguelike.DungeonGenerator.Commands
         private const int OverlappedRoomBonus = 100;
 
         protected override void ExecuteCommand(
-            IMap map, DungeonParameters parameters)
+            IMap map, MapParameters parameters)
         {
-            var rooms = CreateRooms(parameters.RoomParameters);
+            var rooms = CreateRooms(parameters.Room);
             foreach (var room in rooms)
             {
                 PlaceRoom(map, room);
             }
         }
 
-        protected override void ValidateParameters(DungeonParameters parameters)
+        protected override void ValidateParameters(MapParameters parameters)
         {
-            var roomParameters = parameters.RoomParameters;
+            var roomParameters = parameters.Room;
 
             Throw.IfNull(roomParameters, nameof(roomParameters));
 

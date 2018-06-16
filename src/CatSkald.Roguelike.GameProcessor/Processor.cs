@@ -32,7 +32,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         public IGameDungeon Dungeon { get; private set; }
         public IList<GameMessage> Messages { get; } = new List<GameMessage>();
 
-        public void Initialize(DungeonParameters parameters)
+        public void Initialize(MapParameters parameters)
         {
             var dungeonMap = builder.Build(parameters);
             var dungeon = Convert();

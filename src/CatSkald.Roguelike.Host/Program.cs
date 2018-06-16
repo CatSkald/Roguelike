@@ -54,7 +54,7 @@ namespace CatSkald.Roguelike.Host
         private static void StartApplication(IServiceProvider provider)
         {
             var processor = provider.GetService<IProcessor>();
-            processor.Initialize(provider.GetService<DungeonParameters>());
+            processor.Initialize(provider.GetService<MapParameters>());
 
             RunGame(processor);
         }

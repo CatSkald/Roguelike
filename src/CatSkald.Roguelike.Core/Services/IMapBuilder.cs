@@ -5,6 +5,6 @@ namespace CatSkald.Roguelike.Core.Services
 {
     public interface IMapBuilder
     {
-        IDungeon Build(DungeonParameters parameters);
+        IDungeon Build(MapParameters parameters);
     }
 }

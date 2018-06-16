@@ -14,16 +14,16 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
     public class MapBuilderTests
     {
         private MapBuilder _builder;
-        private DungeonParameters _params;
+        private MapParameters _params;
 
         [SetUp]
         public void SetUp()
         {
-            _params = new DungeonParameters
+            _params = new MapParameters
             {
                 Width = 10,
                 Height = 10,
-                RoomParameters = new RoomParameters()
+                Room = new RoomParameters()
             };
             _builder = new MapBuilder(new List<IMapBuilderCommand>(), 
                 Substitute.For<IMapConverter>());
@@ -90,7 +90,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
         [Test]
         public void Build_Throws_IfParametersNull()
         {
-            DungeonParameters parameters = null;
+            MapParameters parameters = null;
 
             Assert.That(() => _builder.Build(parameters),
                 Throws.TypeOf<ArgumentNullException>());

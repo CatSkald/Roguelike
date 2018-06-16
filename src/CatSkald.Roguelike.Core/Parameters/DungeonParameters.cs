@@ -2,16 +2,8 @@
 {
     public sealed class DungeonParameters
     {
-        public DungeonParameters()
-        {
-            RoomParameters = new RoomParameters();
-        }
-
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int TwistFactor { get; set; }
-        public int CellSparseFactor { get; set; }
-        public int DeadEndSparseFactor { get; set; }
-        public RoomParameters RoomParameters { get; set; }
+        public FillingParameters Population { get; set; } = new FillingParameters();
+        public FillingParameters Objects { get; set; } = new FillingParameters();
+        public FillingParameters Treasures { get; set; } = new FillingParameters();
     }
 }

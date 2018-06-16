@@ -10,12 +10,12 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.TestHelpers
         public int ValidateParametersCalls { get; set; }
 
         protected override void ExecuteCommand(
-            IMap map, DungeonParameters parameters)
+            IMap map, MapParameters parameters)
         {
             ExecuteCommandCalls++;
         }
 
-        protected override void ValidateParameters(DungeonParameters parameters)
+        protected override void ValidateParameters(MapParameters parameters)
         {
             ValidateParametersCalls++;
         }

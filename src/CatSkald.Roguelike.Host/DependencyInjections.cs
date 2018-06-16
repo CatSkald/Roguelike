@@ -41,7 +41,8 @@ namespace CatSkald.Roguelike.Host
 
         private static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
-            services.AddTransient(_ => GatherParameters());
+            services.AddTransient(_ => GetParameters<MapParameters>("Map"));
+            services.AddTransient(_ => GetParameters<DungeonParameters>("Dungeon"));
 
             new DungeonGenerationModule().Register(services);
             new DrawingModule().Register(services);
@@ -50,30 +51,17 @@ namespace CatSkald.Roguelike.Host
             return services;
         }
 
-        private static DungeonParameters GatherParameters()
+        private static T GetParameters<T>(string sectionName) where T : new()
         {
             var builder = new ConfigurationBuilder()
                     .AddJsonFile("AppSettings.json")
                     .AddEnvironmentVariables();
-
             var configuration = builder.Build();
 
-            return new DungeonParameters
-            {
-                Width = configuration.GetValue<int>("Map:Width"),
-                Height = configuration.GetValue<int>("Map:Height"),
-                CellSparseFactor = configuration.GetValue<int>("Map:CellSparseFactor"),
-                DeadEndSparseFactor = configuration.GetValue<int>("Map:DeadEndSparseFactor"),
-                TwistFactor = configuration.GetValue<int>("Map:TwistFactor"),
-                RoomParameters = new RoomParameters
-                {
-                    Count = configuration.GetValue<int>("Map:Room:Count"),
-                    MinWidth = configuration.GetValue<int>("Map:Room:MinWidth"),
-                    MaxWidth = configuration.GetValue<int>("Map:Room:MaxWidth"),
-                    MinHeight = configuration.GetValue<int>("Map:Room:MinHeight"),
-                    MaxHeight = configuration.GetValue<int>("Map:Room:MaxHeight")
-                }
-            };
+            var parameters = new T();
+            configuration.GetSection(sectionName).Bind(parameters);
+
+            return parameters;
         }
     }
 }

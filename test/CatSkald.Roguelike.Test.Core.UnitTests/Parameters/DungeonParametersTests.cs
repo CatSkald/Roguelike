@@ -8,9 +8,9 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Parameters
         [Test]
         public void Constructor_RoomParameters_AreNotNull()
         {
-            var parameters = new DungeonParameters();
+            var parameters = new MapParameters();
 
-            Assert.That(parameters.RoomParameters, Is.Not.Null);
+            Assert.That(parameters.Room, Is.Not.Null);
         }
     }
 }

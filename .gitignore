@@ -31,8 +31,8 @@ bld/
 # NUNIT
 *.VisualState.xml
 TestResult.xml
-
 coverage.xml
+coverage/
 
 # Build Results of an ATL Project
 [Dd]ebugPS/
@@ -156,6 +156,8 @@ publish/
 # NuGet v3's project.json files produces more ignoreable files
 *.nuget.props
 *.nuget.targets
+.paket/
+paket-files/
 
 # Microsoft Azure Build Output
 csx/
@@ -240,6 +242,3 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-
-# coverage
-/coverage

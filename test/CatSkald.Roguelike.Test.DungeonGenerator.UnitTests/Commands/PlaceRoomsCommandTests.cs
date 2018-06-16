@@ -12,7 +12,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
     [TestFixture]
     public class PlaceRoomsCommandTests
     {
-        private DungeonParameters _parameters;
+        private MapParameters _parameters;
         private Map _map;
         private PlaceRoomsCommand _command;
 
@@ -20,14 +20,14 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void SetUp()
         {
             _map = new Map(15, 20);
-            _parameters = new DungeonParameters
+            _parameters = new MapParameters
             {
                 CellSparseFactor = 50,
                 DeadEndSparseFactor = 60,
                 TwistFactor = 45,
                 Height = 20,
                 Width = 15,
-                RoomParameters =
+                Room =
                 {
                     Count = 2,
                     MaxHeight = 5,
@@ -49,7 +49,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         [TestCase(3)]
         public void Execute_ShouldGenerateCorrectNumberOfRooms(int count)
         {
-            _parameters.RoomParameters.Count = count;
+            _parameters.Room.Count = count;
 
             _command.Execute(_map, _parameters);
 
@@ -61,7 +61,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         {
             _map = new Map(75, 80);
 
-            _parameters.RoomParameters.Count = 8;
+            _parameters.Room.Count = 8;
 
             _command.Execute(_map, _parameters);
 
@@ -77,7 +77,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_GeneratedRooms_HasDoors()
         {
             _map = new Map(75, 80);
-            _parameters.RoomParameters.Count = 8;
+            _parameters.Room.Count = 8;
 
             _command.Execute(_map, _parameters);
 
@@ -93,10 +93,10 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_ShouldGenerateRoomsWithCorrectSize(
             int minW, int maxW, int minH, int maxH)
         {
-            _parameters.RoomParameters.MinHeight = minH;
-            _parameters.RoomParameters.MaxHeight = maxH;
-            _parameters.RoomParameters.MinWidth = minW;
-            _parameters.RoomParameters.MaxWidth = maxW;
+            _parameters.Room.MinHeight = minH;
+            _parameters.Room.MaxHeight = maxH;
+            _parameters.Room.MinWidth = minW;
+            _parameters.Room.MaxWidth = maxW;
 
             _command.Execute(_map, _parameters);
 
@@ -114,14 +114,14 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Constructor_ValidateParameters_Succeeds_IfParametersOK()
         {
             var map = new Map(5, 5);
-            var parameters = new DungeonParameters
+            var parameters = new MapParameters
             {
                 CellSparseFactor = 50,
                 DeadEndSparseFactor = 60,
                 TwistFactor = 45,
                 Height = 11,
                 Width = 15,
-                RoomParameters =
+                Room =
                 {
                     Count = 2,
                     MaxHeight = 5,
@@ -139,9 +139,9 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
             int value)
         {
             var map = new Map(5, 5);
-            var parameters = new DungeonParameters
+            var parameters = new MapParameters
             {
-                RoomParameters =
+                Room =
                 {
                     MinWidth = value
                 }
@@ -158,9 +158,9 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Constructor_ValidateParameters_Throws_IfMinHeightNegative(int value)
         {
             var map = new Map(5, 5);
-            var parameters = new DungeonParameters
+            var parameters = new MapParameters
             {
-                RoomParameters =
+                Room =
                 {
                     MinHeight = value
                 }
@@ -178,9 +178,9 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
             int min, int max)
         {
             var map = new Map(5, 5);
-            var parameters = new DungeonParameters
+            var parameters = new MapParameters
             {
-                RoomParameters =
+                Room =
                 {
                     MinHeight = min,
                     MaxHeight = max
@@ -199,9 +199,9 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
             int min, int max)
         {
             var map = new Map(5, 5);
-            var parameters = new DungeonParameters
+            var parameters = new MapParameters
             {
-                RoomParameters =
+                Room =
                 {
                     MinWidth = min,
                     MaxWidth = max
@@ -220,10 +220,10 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
             int maxW, int w)
         {
             var map = new Map(5, 5);
-            var parameters = new DungeonParameters
+            var parameters = new MapParameters
             {
                 Width = w,
-                RoomParameters =
+                Room =
                 {
                     MaxWidth = maxW
                 }
@@ -241,10 +241,10 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
             int maxH, int h)
         {
             var map = new Map(5, 5);
-            var parameters = new DungeonParameters
+            var parameters = new MapParameters
             {
                 Width = h,
-                RoomParameters =
+                Room =
                 {
                     MaxHeight = maxH
                 }
@@ -261,9 +261,9 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Constructor_ValidateParameters_Throws_IfRoomCountNegative(int count)
         {
             var map = new Map(5, 5);
-            var parameters = new DungeonParameters
+            var parameters = new MapParameters
             {
-                RoomParameters =
+                Room =
                 {
                     Count = count
                 }

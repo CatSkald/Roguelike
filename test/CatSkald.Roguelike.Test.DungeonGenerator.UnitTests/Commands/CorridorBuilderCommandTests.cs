@@ -15,7 +15,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_ShouldThrow_IfMapContainsVisitedCell(int x, int y)
         {
             var map = new Map(2, 3);
-            var parameters = new DungeonParameters();
+            var parameters = new MapParameters();
             var command = new CorridorBuilderCommand(new DirectionPicker(50));
 
             map.Visit(map[x, y]);
@@ -29,7 +29,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_ShouldThrow_IfTwistFactorIsInvalid(int factor)
         {
             var map = new Map(2, 3);
-            var parameters = new DungeonParameters
+            var parameters = new MapParameters
             {
                 TwistFactor = factor
             };
@@ -43,7 +43,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_SetsAllCells_ToNonWalls()
         {
             var map = new Map(2, 3);
-            var parameters = new DungeonParameters();
+            var parameters = new MapParameters();
             var command = new CorridorBuilderCommand(new DirectionPicker(50));
 
             command.Execute(map, parameters);
@@ -55,7 +55,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
         public void Execute_SetsAllCells_ToVisited()
         {
             var map = new Map(2, 3);
-            var parameters = new DungeonParameters();
+            var parameters = new MapParameters();
             var command = new CorridorBuilderCommand(new DirectionPicker(50));
 
             command.Execute(map, parameters);

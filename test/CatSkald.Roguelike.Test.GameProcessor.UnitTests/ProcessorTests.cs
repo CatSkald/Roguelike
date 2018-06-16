@@ -20,14 +20,14 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         {
             var dungeon = new FakeDungeon();
             var mapBuilder = Substitute.For<IMapBuilder>();
-            mapBuilder.Build(Arg.Any<DungeonParameters>())
+            mapBuilder.Build(Arg.Any<MapParameters>())
                 .Returns(dungeon);
 
             var processor = new Processor(
                 mapBuilder,
                 Substitute.For<IDungeonPopulator>(),
                 Substitute.For<IMapPainter>());
-            processor.Initialize(new DungeonParameters());
+            processor.Initialize(new MapParameters());
 
             Assert.That(processor.Dungeon,
                 Has.Property(nameof(Dungeon.Size)).EqualTo(dungeon.Size));
@@ -36,7 +36,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         [Test]
         public void Initialize_BuilderIsCalled()
         {
-            var parameters = new DungeonParameters();
+            var parameters = new MapParameters();
             var mapBuilder = Substitute.For<IMapBuilder>();
 
             var processor = new Processor(
@@ -51,7 +51,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         [Test]
         public void Initialize_PopulatorIsCalled()
         {
-            var parameters = new DungeonParameters();
+            var parameters = new MapParameters();
             var dungeon = new FakeDungeon();
             var mapBuilder = Substitute.For<IMapBuilder>();
             mapBuilder.Build(parameters).Returns(dungeon);
@@ -70,7 +70,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         [Test]
         public void Process_PainterDrawMapIsCalledWithCorrectMapImage()
         {
-            var parameters = new DungeonParameters();
+            var parameters = new MapParameters();
             var dungeon = new FakeDungeon(5, 4);
             var mapBuilder = Substitute.For<IMapBuilder>();
             mapBuilder.Build(parameters).Returns(dungeon);
@@ -102,7 +102,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         [Test]
         public void Process_PainterDrawMessageIsCalled()
         {
-            var parameters = new DungeonParameters();
+            var parameters = new MapParameters();
             var dungeon = new FakeDungeon(5, 4);
             var mapBuilder = Substitute.For<IMapBuilder>();
             mapBuilder.Build(parameters).Returns(dungeon);

@@ -5,6 +5,6 @@ namespace CatSkald.Roguelike.DungeonGenerator
 {
     internal interface IMapBuilderCommand
     {
-        void Execute(IMap map, DungeonParameters parameters);
+        void Execute(IMap map, MapParameters parameters);
     }
 }

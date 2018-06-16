@@ -21,7 +21,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Services
             this.converter = converter;
         }
 
-        public IDungeon Build(DungeonParameters parameters)
+        public IDungeon Build(MapParameters parameters)
         {
             Throw.IfNull(parameters, nameof(parameters));
             Throw.IfLess(1, parameters.Width, nameof(parameters.Width));

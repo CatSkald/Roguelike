@@ -12,14 +12,14 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Commands
     public class SparsifyDeadEndsCommandTests
     {
         private Map _map;
-        private DungeonParameters _parameters;
+        private MapParameters _parameters;
         private SparsifyDeadEndsCommand _command;
 
         [SetUp]
         public void SetUp()
         {
             _map = new Map(12, 16);
-            _parameters = new DungeonParameters
+            _parameters = new MapParameters
             {
                 TwistFactor = 50,
                 DeadEndSparseFactor = 50
