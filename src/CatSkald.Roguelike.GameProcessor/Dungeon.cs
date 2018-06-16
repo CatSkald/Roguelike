@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Cells.Creatures;
 using CatSkald.Roguelike.Core.Information;
@@ -20,6 +19,8 @@ namespace CatSkald.Roguelike.GameProcessor
         }
 
         public Character Character { get; private set; }
+
+        public List<Monster> Monsters { get; } = new List<Monster>();
 
         public void PlaceCharacter(Character character)
         {

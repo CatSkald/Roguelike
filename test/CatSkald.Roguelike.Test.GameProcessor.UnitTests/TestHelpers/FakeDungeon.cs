@@ -22,6 +22,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers
         }
         
         public Character Character { get; set; }
+        public List<Monster> Monsters { get; } = new List<Monster>();
 
         public void PlaceCharacter(Character character)
         {

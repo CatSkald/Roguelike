@@ -10,7 +10,7 @@ namespace CatSkald.Roguelike.GameProcessor
         IGameDungeon Dungeon { get; }
         IList<GameMessage> Messages { get; }
 
-        void Initialize(MapParameters parameters);
+        void Initialize(GameParameters parameters);
 
         ProcessResult Process(GameAction action);
         ProcessResult ProcessSubAction(GameAction action);

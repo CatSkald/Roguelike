@@ -6,11 +6,11 @@
         {
         }
 
-        public MainStats(int hp, int maxHP, int mp, int maxMP, int att, int def)
+        public MainStats(int maxHP, int maxMP, int att, int def)
         {
-            HP = hp;
+            HP = maxHP;
             MaxHP = maxHP;
-            MP = mp;
+            MP = maxMP;
             MaxMP = maxMP;
             Att = att;
             Def = def;

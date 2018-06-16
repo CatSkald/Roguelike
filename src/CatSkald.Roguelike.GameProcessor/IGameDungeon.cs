@@ -10,6 +10,7 @@ namespace CatSkald.Roguelike.GameProcessor
     public interface IGameDungeon : IDungeon
     {
         Character Character { get; }
+        List<Monster> Monsters { get; }
 
         void PlaceCharacter(Character character);
 

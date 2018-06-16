@@ -5,6 +5,7 @@ using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Cells.Creatures;
 using CatSkald.Roguelike.GameProcessor.Initialization;
 using NUnit.Framework;
+using CatSkald.Roguelike.Core.Parameters;
 
 namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.Initialization
 {
@@ -19,7 +20,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.Initialization
             foreach (var p in points)
                 dungeon[p].Type = XType.Empty;
 
-            populator.Fill(dungeon);
+            populator.Fill(dungeon, new DungeonParameters());
 
             Assert.That(dungeon,
                 Has.Exactly(1).Matches<Cell>(cell =>
@@ -36,7 +37,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.Initialization
             foreach (var p in points)
                 dungeon[p].Type = XType.Empty;
 
-            populator.Fill(dungeon);
+            populator.Fill(dungeon, new DungeonParameters());
 
             Assert.That(dungeon,
                 Has.Exactly(1).Matches<Cell>(cell => 
@@ -53,7 +54,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.Initialization
             foreach (var p in points)
                 dungeon[p].Type = XType.Empty;
 
-            populator.Fill(dungeon);
+            populator.Fill(dungeon, new DungeonParameters());
 
             var expectedLocation = dungeon
                 .Single(cell => cell.Type == XType.StairsUp)
@@ -74,7 +75,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.Initialization
             foreach (var p in points)
                 dungeon[p].Type = XType.Empty;
 
-            populator.Fill(dungeon);
+            populator.Fill(dungeon, new DungeonParameters());
 
             var expectedLocation = dungeon
                 .Single(cell => cell.Type == XType.StairsUp)

@@ -41,8 +41,7 @@ namespace CatSkald.Roguelike.Host
 
         private static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
-            services.AddTransient(_ => GetParameters<MapParameters>("Map"));
-            services.AddTransient(_ => GetParameters<DungeonParameters>("Dungeon"));
+            services.AddTransient(_ => GetParameters());
 
             new DungeonGenerationModule().Register(services);
             new DrawingModule().Register(services);
@@ -51,15 +50,15 @@ namespace CatSkald.Roguelike.Host
             return services;
         }
 
-        private static T GetParameters<T>(string sectionName) where T : new()
+        private static GameParameters GetParameters()
         {
-            var builder = new ConfigurationBuilder()
-                    .AddJsonFile("AppSettings.json")
-                    .AddEnvironmentVariables();
-            var configuration = builder.Build();
+            var parameters = new GameParameters();
 
-            var parameters = new T();
-            configuration.GetSection(sectionName).Bind(parameters);
+            new ConfigurationBuilder()
+                    .AddJsonFile("AppSettings.json")
+                    .AddEnvironmentVariables()
+                    .Build()
+                    .Bind(parameters);
 
             return parameters;
         }
