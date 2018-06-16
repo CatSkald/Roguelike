@@ -11,6 +11,7 @@ using CatSkald.Roguelike.GameProcessor.Procession;
 using NSubstitute;
 using NUnit.Framework;
 using CatSkald.Roguelike.Core.Messages;
+using CatSkald.Roguelike.Core.Information;
 
 namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
 {
@@ -91,10 +92,12 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             processor.Initialize(parameters);
             processor.Process(GameAction.None);
 
-            painter.Received(1).DrawMap(Arg.Is<MapImage>(d => 
-                d.Width == dungeon.Width
-                && d.Height == dungeon.Height
-                && d[1, 1].Appearance == character.Appearance));
+            painter.Received(1).DrawMap(
+                Arg.Is<MapImage>(d => d.Width == dungeon.Width 
+                                   && d.Height == dungeon.Height
+                                   && d[1, 1].Appearance == character.Appearance),
+                Arg.Any<CharacterInformation>(),
+                Arg.Any<DungeonInformation>());
         }
 
         [Test]

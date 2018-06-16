@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Cells.Creatures;
+using CatSkald.Roguelike.Core.Information;
 using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.GameProcessor
@@ -71,6 +72,11 @@ namespace CatSkald.Roguelike.GameProcessor
             {
                 yield return cell.Type;
             }
+        }
+
+        public DungeonInformation GetInfo()
+        {
+            return new DungeonInformation();
         }
     }
 }

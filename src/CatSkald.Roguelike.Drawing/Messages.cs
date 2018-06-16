@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
+using CatSkald.Roguelike.Core.Information;
 using CatSkald.Roguelike.Core.Messages;
 
 namespace CatSkald.Roguelike.Drawing
 {
     public static class Messages
     {
+        private const int GameInfoTitlesWidth = 10;
+        private const int GameInfoValuesWidth = 10;
+        private static readonly string GameInfoSeparator = 
+            new string('_', GameInfoTitlesWidth + GameInfoValuesWidth);
+
         public static readonly string GameStatusSpace = "      ";
         public static readonly string StartGame = "";
         public static readonly string EndGame = "Game over!";
         public static readonly string Bye = "Have a nice day :)";
         public static readonly string CannotMove = "Cannot move there.";
         public static readonly string OpenDoor = "You opened the door.";
+
         public static readonly string SeePattern = "You see {0}.";
         public static readonly string ObstacleDescriptionPattern = "You faced the {0}.";
 
         public static void AppendMessage(
-            this StringBuilder sb, MessageType type, params string[] args)
+            this StringBuilder sb, MessageType type, params object[] args)
         {
             switch (type)
             {
@@ -29,7 +38,9 @@ namespace CatSkald.Roguelike.Drawing
                 case MessageType.EndGame:
                     sb.AppendLine(Messages.EndGame);
                     sb.AppendLine();
-                    foreach (var message in GetGameInfo())
+                    var characterInfo = args.OfType<CharacterInformation>().Single();
+                    var dungeonInfo = args.OfType<DungeonInformation>().Single();
+                    foreach (var message in GetGameInfo(characterInfo, dungeonInfo))
                     {
                         sb.AppendLine(message);
                     }
@@ -60,33 +71,36 @@ namespace CatSkald.Roguelike.Drawing
             }
         }
 
-        public static IEnumerable<string> GetGameInfo()
+        public static IEnumerable<string> GetGameInfo(
+            CharacterInformation characterInfo, DungeonInformation dungeonInfo)
         {
+            if (characterInfo == null) throw new ArgumentNullException(nameof(characterInfo));
+            if (dungeonInfo == null) throw new ArgumentNullException(nameof(dungeonInfo));
+
             yield return "CHARACTER";
-            yield return "Name:  John Doe";
-            yield return "Title:     Worm";
-            yield return "Age:         21";
-            yield return "Race:       Elf";
-            yield return "Class:  Warrior";
-            //yield return "Height:        ";
-            //yield return "Weight:        ";
-            yield return "_______________";
-            yield return "Level:        1";
-            yield return "HP:         1/1";
-            yield return "MP:         0/0";
-            yield return "ATT:          0";
-            yield return "DEF:          0";
-            yield return "_______________";
-            yield return "XP:         0/1";
-            yield return "$:            0";
-            yield return "Weight:     0/0";
-            yield return "_______________";
-            yield return "L.Hand:       -";
-            yield return "R.Hand:       -";
-            yield return string.Empty;
-            yield return "_______________";
+            yield return "Name:".PadRight(GameInfoValuesWidth) + $"{characterInfo.FullName,GameInfoValuesWidth}";
+            yield return "Title:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Title,GameInfoValuesWidth}";
+            yield return "Age:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Age,GameInfoValuesWidth}";
+            yield return "Race:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Race,GameInfoValuesWidth}";
+            yield return "Class:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Class,GameInfoValuesWidth}";
+            //yield return "Height:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Height,GameInfoWidth}";
+            //yield return "Weight:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Weight,GameInfoWidth}";
+            yield return GameInfoSeparator;
+            yield return "Level:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Level,GameInfoValuesWidth}";
+            yield return "HP:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Stats.HP + "/" + characterInfo.Stats.MaxHP,GameInfoValuesWidth}";
+            yield return "MP:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Stats.MP + "/" + characterInfo.Stats.MaxMP,GameInfoValuesWidth}";
+            yield return "ATT:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Stats.Att,GameInfoValuesWidth}";
+            yield return "DEF:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Stats.Def,GameInfoValuesWidth}";
+            yield return GameInfoSeparator;
+            yield return "XP:".PadRight(GameInfoValuesWidth) + $"{characterInfo.XP + "/" + characterInfo.XPForNextLevel,GameInfoValuesWidth}";
+            yield return "$:".PadRight(GameInfoValuesWidth) + $"{characterInfo.Money,GameInfoValuesWidth}";
+            yield return "Weight:".PadRight(GameInfoValuesWidth) + $"{characterInfo.BagWeight + "/" + characterInfo.MaxBagWeight.ToString(CultureInfo.InvariantCulture),GameInfoValuesWidth}";
+            yield return GameInfoSeparator;
+            yield return "L.Hand:";
+            yield return "R.Hand:";
+            yield return GameInfoSeparator;
             yield return "DUNGEON";
-            yield return "Level:       -1";
+            yield return "Level:".PadRight(GameInfoValuesWidth) + $"{dungeonInfo.Level,GameInfoValuesWidth}";
         }
     }
 }

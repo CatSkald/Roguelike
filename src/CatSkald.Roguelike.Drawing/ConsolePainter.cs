@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using CatSkald.Roguelike.Core.Information;
 using CatSkald.Roguelike.Core.Messages;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
@@ -10,9 +11,11 @@ namespace CatSkald.Roguelike.Drawing
     //TODO fix message overlapping if next shorter than previous
     internal sealed class ConsolePainter : IMapPainter
     {
-        public void DrawMap(MapImage map)
+        public void DrawMap(
+            MapImage map, CharacterInformation character, DungeonInformation dungeon)
         {
-            var gameInfoEnumerator = Messages.GetGameInfo().GetEnumerator();
+            var info = Messages.GetGameInfo(character, dungeon);
+            var gameInfoEnumerator = info.GetEnumerator();
             for (int y = 0; y < map.Height; y++)
             {
                 for (int x = 0; x < map.Width; x++)
@@ -30,17 +33,10 @@ namespace CatSkald.Roguelike.Drawing
             Console.WriteLine();
         }
 
-        public void DrawMessage(GameMessage message, params string[] args)
+        public void DrawMessage(GameMessage message)
         {
             var sb = new StringBuilder();
             sb.AppendMessage(message.Type, message.Args);
-            Console.Write(sb);
-        }
-
-        public void DrawEndGameScreen()
-        {
-            var sb = new StringBuilder();
-            sb.AppendMessage(MessageType.EndGame);
             Console.Write(sb);
         }
     }

@@ -54,7 +54,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 
             var mapPicture = GetMapPicture(Dungeon);
 
-            painter.DrawMap(mapPicture);
+            painter.DrawMap(mapPicture, Dungeon.Character.GetInfo(), Dungeon.GetInfo());
             DrawMessages();
 
             return actionResult;
@@ -107,8 +107,8 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                     Messages.Add(new GameMessage(MessageType.ShowMenu));
                     break;
                 case GameAction.EndGame:
-                    painter.DrawEndGameScreen();
-                    Messages.Add(new GameMessage(MessageType.EndGame));
+                    Messages.Add(new GameMessage(MessageType.EndGame, 
+                        Dungeon.Character.GetInfo(), Dungeon.GetInfo()));
                     break;
                 default:
                     throw new NotSupportedException(

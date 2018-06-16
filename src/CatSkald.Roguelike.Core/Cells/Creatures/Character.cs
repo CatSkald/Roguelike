@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using CatSkald.Roguelike.Core.Information;
 
 namespace CatSkald.Roguelike.Core.Cells.Creatures
 {
@@ -12,5 +14,10 @@ namespace CatSkald.Roguelike.Core.Cells.Creatures
         //TODO tests
         public override Appearance RealAppearance =>
             new Appearance('@', Color.White, isVisible: true, isSolid: true, isObstacle: false);
+
+        public CharacterInformation GetInfo()
+        {
+            return new CharacterInformation(Stats);
+        }
     }
 }

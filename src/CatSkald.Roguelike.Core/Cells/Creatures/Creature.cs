@@ -7,6 +7,7 @@ namespace CatSkald.Roguelike.Core.Cells.Creatures
         public Creature(MainStats stats, Point location, XType type)
             : base(location, type)
         {
+            Stats = stats ?? throw new System.ArgumentNullException(nameof(stats));
         }
 
         public MainStats Stats { get; set; }

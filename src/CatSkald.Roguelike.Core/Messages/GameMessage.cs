@@ -6,13 +6,13 @@
         {
         }
 
-        public GameMessage(MessageType type, params string[] args)
+        public GameMessage(MessageType type, params object[] args)
         {
             Type = type;
             Args = args;
         }
 
         public MessageType Type { get; }
-        public string[] Args { get; }
+        public object[] Args { get; }
     }
 }

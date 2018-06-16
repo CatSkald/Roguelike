@@ -2,6 +2,7 @@
 using System.Drawing;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Cells.Creatures;
+using CatSkald.Roguelike.Core.Information;
 using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.GameProcessor
@@ -15,5 +16,6 @@ namespace CatSkald.Roguelike.GameProcessor
         bool CanMove(Point newLocation);
 
         IEnumerable<XType> GetCellContent(Point location);
+        DungeonInformation GetInfo();
     }
 }

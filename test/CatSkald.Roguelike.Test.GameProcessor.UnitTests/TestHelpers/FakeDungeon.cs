@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Cells.Creatures;
+using CatSkald.Roguelike.Core.Information;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.GameProcessor;
 
@@ -41,6 +42,11 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers
         public IEnumerable<XType> GetCellContent(Point location)
         {
             return Enumerable.Empty<XType>();
+        }
+
+        public DungeonInformation GetInfo()
+        {
+            return new DungeonInformation();
         }
     }
 }
