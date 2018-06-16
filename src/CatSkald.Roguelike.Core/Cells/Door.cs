@@ -10,8 +10,9 @@ namespace CatSkald.Roguelike.Core.Cells
 
         public bool IsOpened { get; private set; }
 
-        public override Appearance Appearance => 
-            new Appearance(IsOpened ? '\'' : '+', Color.Orange, true, true, !IsOpened);
+        public override Appearance GetAppearance() => 
+            new Appearance("Door", IsOpened ? "Opened" : "Closed" + " wooden door",
+                IsOpened ? '\'' : '+', Color.Orange, true, true, !IsOpened);
 
         public void Open()
         {

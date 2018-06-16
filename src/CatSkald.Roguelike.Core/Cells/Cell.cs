@@ -18,85 +18,111 @@ namespace CatSkald.Roguelike.Core.Cells
         public Point Location { get; set; }
         public XType Type { get; set; }
 
-        public virtual Appearance Appearance =>
-            new Appearance(GetImage(), GetColor(), true, GetIsSolid(), GetIsObstacle());
-
-        private bool GetIsObstacle()
+        public virtual Appearance GetAppearance()
         {
-            var isObstacle = false;
-            switch (Type)
+            return new Appearance(Type.ToString(), GetDescription(),
+                GetImage(), GetColor(), isVisible: true, GetIsSolid(), GetIsObstacle());
+
+            string GetDescription()
             {
-                case XType.Wall:
-                    isObstacle = true;
-                    break;
-                case XType.Empty:
-                case XType.StairsUp:
-                case XType.StairsDown:
-                    isObstacle = false;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                string description = string.Empty;
+                switch (Type)
+                {
+                    case XType.Wall:
+                        description = "A wall.";
+                        break;
+                    case XType.StairsUp:
+                        description = "Stairs leading to the upper level.";
+                        break;
+                    case XType.StairsDown:
+                        description = "Stairs leading to the lover level.";
+                        break;
+                    case XType.Empty:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                }
+
+                return description;
             }
 
-            return isObstacle;
-        }
-
-        private bool GetIsSolid()
-        {
-            var isSolid = false;
-            switch (Type)
+            bool GetIsObstacle()
             {
-                case XType.Wall:
-                case XType.StairsUp:
-                case XType.StairsDown:
-                    isSolid = true;
-                    break;
-                case XType.Empty:
-                    isSolid = false;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                var isObstacle = false;
+                switch (Type)
+                {
+                    case XType.Wall:
+                        isObstacle = true;
+                        break;
+                    case XType.Empty:
+                    case XType.StairsUp:
+                    case XType.StairsDown:
+                        isObstacle = false;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                }
+
+                return isObstacle;
             }
 
-            return isSolid;
-        }
-
-        private char GetImage()
-        {
-            var image = ' ';
-            switch (Type)
+            bool GetIsSolid()
             {
-                case XType.Wall:
-                    image = '#';
-                    break;
-                case XType.Empty:
-                    image = '.';
-                    break;
-                case XType.StairsUp:
-                    image = '>';
-                    break;
-                case XType.StairsDown:
-                    image = '<';
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                var isSolid = false;
+                switch (Type)
+                {
+                    case XType.Wall:
+                    case XType.StairsUp:
+                    case XType.StairsDown:
+                        isSolid = true;
+                        break;
+                    case XType.Empty:
+                        isSolid = false;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                }
+
+                return isSolid;
             }
 
-            return image;
-        }
-
-        private Color GetColor()
-        {
-            switch (Type)
+            char GetImage()
             {
-                case XType.StairsUp:
-                case XType.StairsDown:
-                    return Color.Blue;
-                case XType.Wall:
-                case XType.Empty:
-                    return Color.Gray;
-                default:
-                    throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                var image = ' ';
+                switch (Type)
+                {
+                    case XType.Wall:
+                        image = '#';
+                        break;
+                    case XType.Empty:
+                        image = '.';
+                        break;
+                    case XType.StairsUp:
+                        image = '>';
+                        break;
+                    case XType.StairsDown:
+                        image = '<';
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                }
+
+                return image;
+            }
+
+            Color GetColor()
+            {
+                switch (Type)
+                {
+                    case XType.StairsUp:
+                    case XType.StairsDown:
+                        return Color.Blue;
+                    case XType.Wall:
+                    case XType.Empty:
+                        return Color.Gray;
+                    default:
+                        throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                }
             }
         }
 

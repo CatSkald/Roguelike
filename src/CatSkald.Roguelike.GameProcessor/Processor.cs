@@ -217,10 +217,10 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                 for (int y = 0; y < dungeon.Height; y++)
                 {
                     var cell = dungeon[x, y];
-                    image.SetTile(cell.Location, cell.Appearance);
+                    image.SetTile(cell.Location, cell.GetAppearance());
                 }
 
-            image.SetTile(dungeon.Character.Location, dungeon.Character.Appearance);
+            image.SetTile(dungeon.Character.Location, dungeon.Character.GetAppearance());
 
             return image;
         }

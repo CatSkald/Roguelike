@@ -5,9 +5,11 @@ namespace CatSkald.Roguelike.Core.Cells
 {
     public struct Appearance : IEquatable<Appearance>
     {
-        public Appearance(
+        public Appearance(string name, string description,
             char image, Color colour, bool isVisible, bool isSolid, bool isObstacle)
         {
+            Name = name;
+            Description = description;
             Image = image;
             Colour = colour;
             IsVisible = isVisible;
@@ -15,6 +17,13 @@ namespace CatSkald.Roguelike.Core.Cells
             IsObstacle = isObstacle;
         }
 
+        public Appearance(string name, string description, char image, Color colour, bool isVisible) 
+            : this(name, description, image, colour, isVisible: isVisible, isSolid: true, isObstacle: false)
+        {
+        }
+
+        public string Name { get; }
+        public string Description { get; }
         public char Image { get; }
         public Color Colour { get; }
         public bool IsVisible { get; }
@@ -23,7 +32,9 @@ namespace CatSkald.Roguelike.Core.Cells
 
         public bool Equals(Appearance other)
         {
-            return Image == other.Image 
+            return Name == other.Name
+                && Description == other.Description
+                && Image == other.Image 
                 && Colour == other.Colour
                 && IsVisible == other.IsVisible
                 && IsSolid == other.IsSolid
@@ -37,7 +48,9 @@ namespace CatSkald.Roguelike.Core.Cells
 
         public override int GetHashCode()
         {
-            var result = Image.GetHashCode();
+            var result = (Name ?? string.Empty).GetHashCode();
+            result = (result * 397) ^ (Description ?? string.Empty).GetHashCode();
+            result = (result * 397) ^ Image.GetHashCode();
             result = (result * 397) ^ Colour.GetHashCode();
             result = (result * 397) ^ IsVisible.GetHashCode();
             result = (result * 397) ^ IsSolid.GetHashCode();

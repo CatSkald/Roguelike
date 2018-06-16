@@ -24,7 +24,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Terrain
         public void SetTile_CorrectTileIsSet(int x, int y)
         {
             var image = new MapImage(100, 15);
-            var expected = new Appearance('1', Color.AliceBlue, true, true, true);
+            var expected = new Appearance("X", "Y", '1', Color.AliceBlue, true, true, true);
 
             image.SetTile(new Point(x, y), expected);
 

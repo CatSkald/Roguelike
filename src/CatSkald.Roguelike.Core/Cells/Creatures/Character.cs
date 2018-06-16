@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using CatSkald.Roguelike.Core.Information;
 
 namespace CatSkald.Roguelike.Core.Cells.Creatures
@@ -11,13 +10,14 @@ namespace CatSkald.Roguelike.Core.Cells.Creatures
         {
         }
 
-        //TODO tests
+        public CharacterSheet Details { get; set; } = new CharacterSheet();
+
         public override Appearance RealAppearance =>
-            new Appearance('@', Color.White, isVisible: true, isSolid: true, isObstacle: false);
+            new Appearance(Details.FullName, Details.Story, '@', Color.White, isVisible: IsVisible);
 
         public CharacterInformation GetInfo()
         {
-            return new CharacterInformation(Stats);
+            return new CharacterInformation(Details, Stats);
         }
     }
 }
