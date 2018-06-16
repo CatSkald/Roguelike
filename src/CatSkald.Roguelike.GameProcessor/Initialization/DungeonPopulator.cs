@@ -26,8 +26,11 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                 for (int i = count; i > 0; i--)
                 {
                     var den = emptyCells[StaticRandom.Next(emptyCells.Count)];
+                    
+                    //TODO extract method
                     var monster = factory.CreateIn(den.Location);
                     dungeon.Monsters.Add(monster);
+                    den.Content.Add(monster);
                     emptyCells.Remove(den);
                 }
             }

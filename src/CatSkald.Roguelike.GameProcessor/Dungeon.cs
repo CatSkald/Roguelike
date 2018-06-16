@@ -58,10 +58,10 @@ namespace CatSkald.Roguelike.GameProcessor
                 yield return appearance;
             }
 
-            var monsters = Monsters.Where(m => m.Location == location);
-            foreach (var monster in monsters)
+            foreach (var contentAppearance in cell.Content.Select(c => c.GetAppearance())
+                                                  .Where(a => a.IsVisible))
             {
-                yield return monster.GetAppearance();
+                yield return contentAppearance;
             }
         }
 

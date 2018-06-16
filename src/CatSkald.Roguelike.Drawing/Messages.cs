@@ -22,9 +22,11 @@ namespace CatSkald.Roguelike.Drawing
         public static readonly string Bye = "Have a nice day :)";
         public static readonly string CannotMove = "Cannot move there.";
         public static readonly string OpenDoor = "You opened the door.";
+        public static readonly string DoorIsLocked = "The door is locked.";
 
         public static readonly string SeePattern = "You see {0}.";
         public static readonly string ObstacleDescriptionPattern = "You faced the {0}.";
+        public static readonly string HitPattern = "You attacked {0}.";
 
         public static void AppendMessage(
             this StringBuilder sb, MessageType type, params object[] args)
@@ -59,12 +61,24 @@ namespace CatSkald.Roguelike.Drawing
                 case MessageType.OpenDoor:
                     sb.AppendLine(Messages.OpenDoor);
                     break;
+                case MessageType.DoorLocked:
+                    sb.AppendLine(Messages.DoorIsLocked);
+                    break;
                 case MessageType.StandOn:
                     if (args != null && args[0] is Appearance standOn)
                     {
                         sb.AppendFormat(Messages.SeePattern, standOn.Name?.ToLower());
                         sb.AppendLine();
                     }
+                    else throw new ArgumentException("Incorrect arguments.");
+                    break;
+                case MessageType.Hit:
+                    if (args != null && args[0] is Appearance target)
+                    {
+                        sb.AppendFormat(Messages.HitPattern, target.Name);
+                        sb.AppendLine();
+                    }
+                    else throw new ArgumentException("Incorrect arguments.");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(

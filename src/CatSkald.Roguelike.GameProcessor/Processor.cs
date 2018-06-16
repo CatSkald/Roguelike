@@ -138,26 +138,39 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         {
             var character = Dungeon.Character;
             var newLocation = GetNewLocation(action, character);
+            var destination = Dungeon[newLocation];
             if (Dungeon.CanMove(newLocation))
             {
-                //TODO extract methods
-                var destination = Dungeon[newLocation];
                 if (destination is Door door)
                 {
                     if (!door.IsOpened)
                     {
-                        door.Open();
-                        Messages.Add(new GameMessage(MessageType.OpenDoor));
+                        if (!door.Open())
+                        {
+                            Messages.Add(new GameMessage(MessageType.OpenDoor));
+                        }
+                        else
+                        {
+                            Messages.Add(new GameMessage(MessageType.OpenDoor));
+                        }
                     }
                 }
 
-                character.Location = newLocation;
+                var monster = destination.Content.OfType<Monster>().FirstOrDefault();
+                if (monster != null)
+                {
+                    Messages.Add(new GameMessage(
+                        MessageType.Hit,
+                        monster.GetAppearance()));
+                }
+                else
+                {
+                    character.Location = newLocation;
+                }
             }
             else
             {
-                Messages.Add(new GameMessage(
-                    MessageType.CannotMoveThere,
-                    Dungeon[newLocation].Type.ToString()));
+                Messages.Add(new GameMessage(MessageType.CannotMoveThere, destination.Type.ToString()));
             }
 
             return ProcessResult.None;

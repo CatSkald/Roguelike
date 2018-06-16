@@ -9,6 +9,8 @@
         ShowHelp,
         ShowMenu,
         OpenDoor,
-        StandOn
+        DoorLocked,
+        StandOn,
+        Hit
     }
 }

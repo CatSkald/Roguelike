@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace CatSkald.Roguelike.Core.Cells
@@ -17,6 +18,7 @@ namespace CatSkald.Roguelike.Core.Cells
 
         public Point Location { get; set; }
         public XType Type { get; set; }
+        public HashSet<Cell> Content { get; } = new HashSet<Cell>();
 
         public virtual Appearance GetAppearance()
         {
