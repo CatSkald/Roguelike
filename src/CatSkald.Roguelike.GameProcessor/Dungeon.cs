@@ -14,8 +14,7 @@ namespace CatSkald.Roguelike.GameProcessor
                 XType.Empty,
                 XType.StairsDown,
                 XType.StairsUp,
-                XType.DoorOpened,
-                XType.DoorClosed
+                XType.Door
             };
 
         private readonly XType[] availableForStandingOn = new[]
@@ -43,7 +42,7 @@ namespace CatSkald.Roguelike.GameProcessor
         private static Cell InitializeCell(IDungeon map, Cell cell)
         {
             var type = map[cell.Location.X, cell.Location.Y].Type;
-            if (type == XType.DoorClosed)
+            if (type == XType.Door)
             {
                 cell = new Door(cell.Location);
             }

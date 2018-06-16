@@ -16,7 +16,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             var fake = new FakeDungeon(3, 3);
             fake[0, 1].Type = XType.Character;
             fake[0, 2].Type = XType.Empty;
-            fake[1, 1].Type = XType.DoorClosed;
+            fake[1, 1].Type = XType.Door;
             fake[1, 2].Type = XType.Wall;
 
             var dungeon = new Dungeon(fake);
@@ -33,7 +33,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         {
             var fake = new FakeDungeon(2, 2);
             fake[0, 1].Type = XType.Character;
-            fake[1, 0].Type = XType.DoorClosed;
+            fake[1, 0].Type = XType.Door;
             fake[1, 1].Type = XType.Wall;
 
             var dungeon = new Dungeon(fake);
@@ -71,8 +71,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         [TestCase(XType.Empty)]
         [TestCase(XType.StairsDown)]
         [TestCase(XType.StairsUp)]
-        [TestCase(XType.DoorOpened)]
-        [TestCase(XType.DoorClosed)]
+        [TestCase(XType.Door)]
         public void CanMove_GivenCellAvailableForMove_ThenReturnsTrue(XType cellType)
         {
             var dungeon = new Dungeon(1, 1);

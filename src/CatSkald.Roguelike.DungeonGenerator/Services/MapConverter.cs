@@ -50,7 +50,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Services
                         dungeon[location.X, location.Y - 1].Type = XType.Empty;
                         break;
                     case Side.Door:
-                        dungeon[location.X, location.Y - 1].Type = XType.DoorClosed;
+                        dungeon[location.X, location.Y - 1].Type = XType.Door;
                         break;
                 }
 
@@ -60,7 +60,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Services
                         dungeon[location.X, location.Y + 1].Type = XType.Empty;
                         break;
                     case Side.Door:
-                        dungeon[location.X, location.Y + 1].Type = XType.DoorClosed;
+                        dungeon[location.X, location.Y + 1].Type = XType.Door;
                         break;
                 }
 
@@ -70,7 +70,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Services
                         dungeon[location.X - 1, location.Y].Type = XType.Empty;
                         break;
                     case Side.Door:
-                        dungeon[location.X - 1, location.Y].Type = XType.DoorClosed;
+                        dungeon[location.X - 1, location.Y].Type = XType.Door;
                         break;
                 }
 
@@ -80,7 +80,7 @@ namespace CatSkald.Roguelike.DungeonGenerator.Services
                         dungeon[location.X + 1, location.Y].Type = XType.Empty;
                         break;
                     case Side.Door:
-                        dungeon[location.X + 1, location.Y].Type = XType.DoorClosed;
+                        dungeon[location.X + 1, location.Y].Type = XType.Door;
                         break;
                 }
             }

@@ -89,7 +89,7 @@ namespace CatSkald.Roguelike.Test.DungeonGenerator.UnitTests.Services
             var dungeon = converter.ConvertToDungeon(map);
 
             Assert.That(dungeon,
-                Has.Some.With.Property(nameof(Cell.Type)).EqualTo(XType.DoorClosed));
+                Has.Some.With.Property(nameof(Cell.Type)).EqualTo(XType.Door));
         }
     }
 }

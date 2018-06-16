@@ -24,14 +24,14 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Terrain
         public void SetTile_CorrectTileIsSet(int x, int y)
         {
             var image = new MapImage(100, 15);
-            var expected = XType.Wall;
+            var expected = new Appearance('1', Color.AliceBlue, true, true, true);
 
             image.SetTile(new Point(x, y), expected);
 
             Assert.That(image[x, y], 
-                Has.Property(nameof(Tile.Type)).EqualTo(expected));
+                Has.Property(nameof(Tile.Appearance)).EqualTo(expected));
             Assert.That(image, Has.Exactly(1)
-                .With.Property(nameof(Tile.Type)).EqualTo(expected));
+                .With.Property(nameof(Tile.Appearance)).EqualTo(expected));
         }
     }
 }

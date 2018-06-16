@@ -4,15 +4,18 @@ namespace CatSkald.Roguelike.Core.Cells
 {
     public sealed class Door : Cell
     {
-        public Door(Point location) : base(location, XType.DoorClosed)
+        public Door(Point location) : base(location, XType.Door)
         {
         }
 
-        public bool IsOpened => Type == XType.DoorOpened;
+        public bool IsOpened { get; private set; }
+
+        public override Appearance Appearance => 
+            new Appearance(IsOpened ? '\'' : '+', Color.Orange, true, true, !IsOpened);
 
         public void Open()
         {
-            Type = XType.DoorOpened;
+            IsOpened = true;
         }
     }
 }

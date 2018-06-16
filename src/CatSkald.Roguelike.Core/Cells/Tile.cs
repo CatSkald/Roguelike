@@ -2,11 +2,11 @@
 {
     public struct Tile
     {
-        public Tile(XType type)
+        public Tile(Appearance appearance)
         {
-            Type = type;
+            Appearance = appearance;
         }
 
-        public XType Type { get; }
+        public Appearance Appearance { get; }
     }
 }

@@ -9,9 +9,9 @@ namespace CatSkald.Roguelike.Core.Terrain
         {
         }
 
-        public void SetTile(Point location, XType type)
+        public void SetTile(Point location, Appearance appearance)
         {
-            this[location.X, location.Y] = new Tile(type);
+            this[location.X, location.Y] = new Tile(appearance);
         }
     }
 }

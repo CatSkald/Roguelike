@@ -94,7 +94,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             painter.Received(1).DrawMap(Arg.Is<MapImage>(d => 
                 d.Width == dungeon.Width
                 && d.Height == dungeon.Height
-                && d[1, 1].Type == XType.Character));
+                && d[1, 1].Appearance == character.Appearance));
         }
 
         [Test]

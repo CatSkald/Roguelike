@@ -51,7 +51,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
         }
 
         [TestCase(XType.Character, 250, 1000)]
-        [TestCase(XType.DoorClosed, 123, 12)]
+        [TestCase(XType.Door, 123, 12)]
         public void IEquatableMembers_WorksCorrect_IfCellsEqual(
             XType type, int x, int y)
         {

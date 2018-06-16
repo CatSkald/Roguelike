@@ -1,9 +1,9 @@
-﻿using System;
-using System.Text;
-using CatSkald.Roguelike.Core.Cells;
+﻿using System.Text;
 using CatSkald.Roguelike.Core.Messages;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;
+using Colorful;
+using Console = System.Console;
 
 namespace CatSkald.Roguelike.Drawing
 {
@@ -17,8 +17,9 @@ namespace CatSkald.Roguelike.Drawing
             {
                 for (int x = 0; x < map.Width; x++)
                 {
-                    Console.ForegroundColor = SetColor(map[x, y].Type);
-                    Console.Write(GetImage(map[x, y].Type));
+                    var tile = map[x, y];
+                    Console.ForegroundColor = tile.Appearance.Colour.ToNearestConsoleColor();
+                    Console.Write(tile.Appearance.Image);
                 }
                 if (gameInfoEnumerator.MoveNext())
                 {
@@ -41,61 +42,6 @@ namespace CatSkald.Roguelike.Drawing
             var sb = new StringBuilder();
             sb.AppendMessage(MessageType.EndGame);
             Console.Write(sb);
-        }
-
-        private static char GetImage(XType type)
-        {
-            var image = ' ';
-
-            switch (type)
-            {
-                case XType.Wall:
-                    image = '#';
-                    break;
-                case XType.Empty:
-                    image = '.';
-                    break;
-                case XType.DoorClosed:
-                    image = '+';
-                    break;
-                case XType.DoorOpened:
-                    image = '\'';
-                    break;
-                case XType.StairsUp:
-                    image = '>';
-                    break;
-                case XType.StairsDown:
-                    image = '<';
-                    break;
-                case XType.Character:
-                    image = '@';
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(
-                        $"{type} is not mapped.");
-            }
-
-            return image;
-        }
-
-        private static ConsoleColor SetColor(XType type)
-        {
-            switch (type)
-            {
-                case XType.DoorClosed:
-                case XType.DoorOpened:
-                case XType.StairsUp:
-                case XType.StairsDown:
-                    return ConsoleColor.DarkYellow;
-                case XType.Character:
-                    return ConsoleColor.White;
-                case XType.Wall:
-                case XType.Empty:
-                    return ConsoleColor.Gray;
-                default:
-                    throw new ArgumentOutOfRangeException(
-                        $"{type} is not mapped.");
-            }
         }
     }
 }

@@ -7,46 +7,29 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
     internal sealed class DoorTests
     {
         [Test]
-        public void Ctor_SetsTypeToDoorClosed()
+        public void Ctor_SetsTypeToDoor()
         {
             var door = new Door(new Point());
 
-            Assert.That(door.Type, Is.EqualTo(XType.DoorClosed));
+            Assert.That(door.Type, Is.EqualTo(XType.Door));
         }
 
         [Test]
-        public void IsOpened_GivenClosedDoor_ThenReturnsFalse()
+        public void Ctor_SetsIsOpenedToFalse()
         {
-            var door = new Door(new Point())
-            {
-                Type = XType.DoorClosed
-            };
+            var door = new Door(new Point());
 
-            Assert.That(door.IsOpened, Is.False);
-        }
-
-        [Test]
-        public void IsOpened_GivenOpenedDoor_ThenReturnsTrue()
-        {
-            var door = new Door(new Point())
-            {
-                Type = XType.DoorOpened
-            };
-
-            Assert.That(door.IsOpened, Is.True);
+            Assert.False(door.IsOpened);
         }
 
         [Test]
         public void Open_GivenClosedDoor_ThenChangesTypeToOpened()
         {
-            var door = new Door(new Point())
-            {
-                Type = XType.DoorClosed
-            };
+            var door = new Door(new Point());
 
             door.Open();
 
-            Assert.That(door.Type, Is.EqualTo(XType.DoorOpened));
+            Assert.True(door.IsOpened);
         }
     }
 }
