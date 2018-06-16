@@ -34,19 +34,11 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers
             return cell;
         }
 
-        public bool CanMove(Point newLocation)
-        {
-            return true;
-        }
+        public bool CanMove(Point newLocation) => true;
 
-        public IEnumerable<XType> GetCellContent(Point location)
-        {
-            return Enumerable.Empty<XType>();
-        }
+        public IEnumerable<Appearance> GetCellContent(Point location) =>
+            Enumerable.Empty<Appearance>();
 
-        public DungeonInformation GetInfo()
-        {
-            return new DungeonInformation();
-        }
+        public DungeonInformation GetInfo() => new DungeonInformation();
     }
 }

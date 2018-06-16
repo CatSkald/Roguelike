@@ -10,20 +10,6 @@ namespace CatSkald.Roguelike.GameProcessor
 {
     public class Dungeon : CellContainer<Cell>, IGameDungeon
     {
-        private readonly XType[] availableForMove = new[]
-            {
-                XType.Empty,
-                XType.StairsDown,
-                XType.StairsUp,
-                XType.Door
-            };
-
-        private readonly XType[] availableForStandingOn = new[]
-            {
-                XType.StairsDown,
-                XType.StairsUp
-            };
-
         public Dungeon(int width, int height) : base(width, height, null)
         {
         }
@@ -56,21 +42,18 @@ namespace CatSkald.Roguelike.GameProcessor
 
         public bool CanMove(Point newLocation)
         {
-            return Bounds.Contains(newLocation) && IsCellAvailableForMove();
-
-            bool IsCellAvailableForMove()
-            {
-                return availableForMove.Contains(this[newLocation].Type);
-            }
+            return Bounds.Contains(newLocation) 
+                && !this[newLocation].GetAppearance().IsObstacle;
         }
 
-        public IEnumerable<XType> GetCellContent(Point location)
+        public IEnumerable<Appearance> GetCellContent(Point location)
         {
             var cell = this[location];
+            var appearance = cell.GetAppearance();
 
-            if (availableForStandingOn.Contains(cell.Type))
+            if (appearance.IsVisible)
             {
-                yield return cell.Type;
+                yield return appearance;
             }
         }
 

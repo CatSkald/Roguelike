@@ -15,7 +15,7 @@ namespace CatSkald.Roguelike.GameProcessor
 
         bool CanMove(Point newLocation);
 
-        IEnumerable<XType> GetCellContent(Point location);
+        IEnumerable<Appearance> GetCellContent(Point location);
         DungeonInformation GetInfo();
     }
 }

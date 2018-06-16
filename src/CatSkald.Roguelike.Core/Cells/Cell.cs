@@ -20,8 +20,38 @@ namespace CatSkald.Roguelike.Core.Cells
 
         public virtual Appearance GetAppearance()
         {
-            return new Appearance(Type.ToString(), GetDescription(),
-                GetImage(), GetColor(), isVisible: true, GetIsSolid(), GetIsObstacle());
+            return new Appearance(GetName(), GetDescription(), GetImage(), GetColor(), 
+                isVisible: GetIsVisible(), isSolid: GetIsSolid(), isObstacle: GetIsObstacle());
+
+            bool GetIsVisible()
+            {
+                return Type != XType.Empty;
+            }
+
+            string GetName()
+            {
+                string description = string.Empty;
+                switch (Type)
+                {
+                    case XType.Wall:
+                    case XType.Door:
+                        description = Type.ToString();
+                        break;
+                    case XType.StairsUp:
+                        description = "Stairs up";
+                        break;
+                    case XType.StairsDown:
+                        description = "Stairs down";
+                        break;
+                    case XType.Empty:
+                        description = string.Empty;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
+                }
+
+                return description;
+            }
 
             string GetDescription()
             {

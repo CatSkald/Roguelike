@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Information;
 using CatSkald.Roguelike.Core.Messages;
 
@@ -48,10 +49,10 @@ namespace CatSkald.Roguelike.Drawing
                     break;
                 case MessageType.CannotMoveThere:
                     sb.Append(Messages.CannotMove);
-                    if (args != null)
+                    if (args != null && args[0] is Appearance obstacle)
                     {
                         sb.Append(" ");
-                        sb.AppendFormat(ObstacleDescriptionPattern, args[0]);
+                        sb.AppendFormat(ObstacleDescriptionPattern, obstacle.Name?.ToLower());
                     }
                     sb.AppendLine();
                     break;
@@ -59,9 +60,9 @@ namespace CatSkald.Roguelike.Drawing
                     sb.AppendLine(Messages.OpenDoor);
                     break;
                 case MessageType.StandOn:
-                    if (args != null)
+                    if (args != null && args[0] is Appearance standOn)
                     {
-                        sb.AppendFormat(Messages.SeePattern, args[0]);
+                        sb.AppendFormat(Messages.SeePattern, standOn.Name?.ToLower());
                         sb.AppendLine();
                     }
                     break;

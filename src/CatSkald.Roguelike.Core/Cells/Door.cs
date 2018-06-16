@@ -9,14 +9,29 @@ namespace CatSkald.Roguelike.Core.Cells
         }
 
         public bool IsOpened { get; private set; }
+        public bool IsLocked { get; private set; }
 
         public override Appearance GetAppearance() => 
             new Appearance("Door", IsOpened ? "Opened" : "Closed" + " wooden door",
-                IsOpened ? '\'' : '+', Color.Orange, true, true, !IsOpened);
+                IsOpened ? '\'' : '+', Color.Orange, isVisible: true, isSolid: true, isObstacle: IsLocked);
 
-        public void Open()
+
+        public void Unlock()
         {
-            IsOpened = true;
+            IsLocked = false;
+        }
+
+        public bool Open()
+        {
+            if (!IsLocked)
+            {
+                IsOpened = true;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

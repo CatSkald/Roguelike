@@ -124,10 +124,10 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                 var cellContent = Dungeon.GetCellContent(Dungeon.Character.Location);
                 if (cellContent.Any())
                 {
-                    foreach (var item in cellContent)
+                    foreach (var appearance in cellContent)
                     {
                         //TODO extract object descriptor
-                        Messages.Add(new GameMessage(MessageType.StandOn, item.ToString()));
+                        Messages.Add(new GameMessage(MessageType.StandOn, appearance));
                     }
                 }
             }
