@@ -5,8 +5,19 @@ namespace CatSkald.Roguelike.Core.Cells
 {
     public class Cell : ICell, IEquatable<Cell>
     {
+        public Cell()
+        {
+        }
+
+        public Cell(Point location, XType type)
+        {
+            Location = location;
+            Type = type;
+        }
+
         public Point Location { get; set; }
         public XType Type { get; set; }
+        public virtual Appearance Appearance { get; }
 
         #region IEquatable
         public bool Equals(Cell other)

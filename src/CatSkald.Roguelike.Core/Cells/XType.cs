@@ -9,6 +9,8 @@
         DoorOpened,
         StairsUp,
         StairsDown,
-        Character
+        Character,
+        Enemy,
+        Ally
     }
 }

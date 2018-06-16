@@ -1,9 +1,21 @@
-﻿namespace CatSkald.Roguelike.Core.Cells.Creatures
+﻿using System.Drawing;
+
+namespace CatSkald.Roguelike.Core.Cells.Creatures
 {
-    public class Creature : Cell
+    public abstract class Creature : Cell
     {
-        public int HP { get; protected set; }
-        public int Att { get; protected set; }
-        public int Def { get; protected set; }
+        public Creature(MainStats stats, Point location, XType type)
+            : base(location, type)
+        {
+        }
+
+        public MainStats Stats { get; set; }
+
+        public abstract Appearance RealAppearance { get; }
+
+        //TODO tests
+        public override Appearance Appearance => 
+            new Appearance(RealAppearance.Image, RealAppearance.Colour,
+                isVisible: true, isSolid: true, isObstacle: false);
     }
 }

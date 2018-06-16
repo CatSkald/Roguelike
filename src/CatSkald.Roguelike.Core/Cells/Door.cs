@@ -1,10 +1,11 @@
-﻿namespace CatSkald.Roguelike.Core.Cells
+﻿using System.Drawing;
+
+namespace CatSkald.Roguelike.Core.Cells
 {
     public sealed class Door : Cell
     {
-        public Door()
+        public Door(Point location) : base(location, XType.DoorClosed)
         {
-            Type = XType.DoorClosed;
         }
 
         public bool IsOpened => Type == XType.DoorOpened;

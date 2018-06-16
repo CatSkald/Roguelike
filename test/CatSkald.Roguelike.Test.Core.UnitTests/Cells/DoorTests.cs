@@ -1,4 +1,5 @@
-﻿using CatSkald.Roguelike.Core.Cells;
+﻿using System.Drawing;
+using CatSkald.Roguelike.Core.Cells;
 using NUnit.Framework;
 
 namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
@@ -8,7 +9,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
         [Test]
         public void Ctor_SetsTypeToDoorClosed()
         {
-            var door = new Door();
+            var door = new Door(new Point());
 
             Assert.That(door.Type, Is.EqualTo(XType.DoorClosed));
         }
@@ -16,7 +17,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
         [Test]
         public void IsOpened_GivenClosedDoor_ThenReturnsFalse()
         {
-            var door = new Door
+            var door = new Door(new Point())
             {
                 Type = XType.DoorClosed
             };
@@ -27,7 +28,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
         [Test]
         public void IsOpened_GivenOpenedDoor_ThenReturnsTrue()
         {
-            var door = new Door
+            var door = new Door(new Point())
             {
                 Type = XType.DoorOpened
             };
@@ -38,7 +39,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
         [Test]
         public void Open_GivenClosedDoor_ThenChangesTypeToOpened()
         {
-            var door = new Door
+            var door = new Door(new Point())
             {
                 Type = XType.DoorClosed
             };

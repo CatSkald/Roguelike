@@ -76,10 +76,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             var mapBuilder = Substitute.For<IMapBuilder>();
             mapBuilder.Build(parameters).Returns(dungeon);
             var populator = Substitute.For<IDungeonPopulator>();
-            var character = new Character
-            {
-                Location = new Point(1, 1)
-            };
+            var character = new Character(new MainStats(), new Point(1, 1));
             populator.WhenForAnyArgs(it => it.Fill(Arg.Any<IGameDungeon>()))
                 .Do(d =>
                 {
@@ -108,10 +105,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             var mapBuilder = Substitute.For<IMapBuilder>();
             mapBuilder.Build(parameters).Returns(dungeon);
             var populator = Substitute.For<IDungeonPopulator>();
-            var character = new Character
-            {
-                Location = new Point(1, 1)
-            };
+            var character = new Character(new MainStats(), new Point(1, 1));
             populator.WhenForAnyArgs(it => it.Fill(Arg.Any<IGameDungeon>()))
                 .Do(d => 
                 {

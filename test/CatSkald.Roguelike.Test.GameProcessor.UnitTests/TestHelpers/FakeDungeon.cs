@@ -17,7 +17,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers
         public FakeDungeon(int width, int height) 
             : base(width, height, InitializeCell)
         {
-            Character = new Character();
+            Character = new Character(new MainStats(), new Point());
         }
         
         public Character Character { get; set; }

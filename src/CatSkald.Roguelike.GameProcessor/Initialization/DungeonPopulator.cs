@@ -31,10 +31,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
         private static void CreateCharacter(IGameDungeon dungeon)
         {
             var startingCell = GetCharacterStartingCell();
-            var character = new Character
-            {
-                Location = startingCell.Location
-            };
+            var character = new Character(new MainStats(), startingCell.Location);
             dungeon.PlaceCharacter(character);
 
             Cell GetCharacterStartingCell()

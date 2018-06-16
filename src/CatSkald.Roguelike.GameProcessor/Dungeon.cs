@@ -45,10 +45,7 @@ namespace CatSkald.Roguelike.GameProcessor
             var type = map[cell.Location.X, cell.Location.Y].Type;
             if (type == XType.DoorClosed)
             {
-                cell = new Door
-                {
-                    Location = cell.Location
-                };
+                cell = new Door(cell.Location);
             }
             else
             {

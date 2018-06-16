@@ -48,7 +48,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         public void PlaceCharacter_GivenCharacter_ThenPutsItOnCorrectCell()
         {
             var dungeon = new Dungeon(1, 1);
-            var expected = new Character();
+            var expected = new Character(new MainStats(), new Point());
 
             dungeon.PlaceCharacter(expected);
 

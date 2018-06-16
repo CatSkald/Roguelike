@@ -8,7 +8,7 @@ namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
         [Test]
         public void Ctor_WhenNewCreated_ThenTypeIsCharacter()
         {
-            var tile = new Character();
+            var tile = new Character(new MainStats(), new System.Drawing.Point());
 
             Assert.That(tile.Type, Is.EqualTo(XType.Character));
         }
