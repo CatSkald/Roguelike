@@ -15,7 +15,8 @@ namespace CatSkald.Roguelike.Core.Cells.Creatures
         public abstract Appearance RealAppearance { get; }
 
         public Condition Condition { get; set; }
-        public bool IsVisible => true;
+        public bool IsVisible { get; protected set; } = true;
+        public virtual bool IsAlive => Stats.HP > 0;
 
         public override Appearance GetAppearance() => 
             new Appearance(RealAppearance.Name, RealAppearance.Description,

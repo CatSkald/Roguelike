@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
 using CatSkald.Roguelike.Core.Cells.Creatures;
 using CatSkald.Roguelike.Core.Information;
@@ -55,6 +56,12 @@ namespace CatSkald.Roguelike.GameProcessor
             if (appearance.IsVisible)
             {
                 yield return appearance;
+            }
+
+            var monsters = Monsters.Where(m => m.Location == location);
+            foreach (var monster in monsters)
+            {
+                yield return monster.GetAppearance();
             }
         }
 

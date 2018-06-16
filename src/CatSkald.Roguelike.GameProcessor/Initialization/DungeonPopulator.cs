@@ -22,7 +22,7 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
             void CreateMonsters()
             {
                 var factory = new MonsterFactory(parameters.Population);
-                var count = Convert.ToInt32(emptyCells.Count * parameters.Population.Density);
+                var count = Convert.ToInt32(emptyCells.Count * parameters.Population.Density / 100);
                 for (int i = count; i > 0; i--)
                 {
                     var den = emptyCells[StaticRandom.Next(emptyCells.Count)];

@@ -95,5 +95,21 @@ namespace CatSkald.Tools
 
             return result;
         }
+
+
+        /// <summary>
+        /// Returns true or false randomly depending on the success chance.
+        /// </summary>
+        /// <param name="successChanceInPercents">The chance of success result: 100 or more means always return true, 0 or less means always return false.</param>
+        /// <returns>Boolean value indicating success.</returns>
+        public static bool RollSuccess(int successChanceInPercents)
+        {
+            if (successChanceInPercents <= 0)
+                return false;
+            if (successChanceInPercents >= 100)
+                return true;
+            lock (Lock)
+                return successChanceInPercents > Random.Next(100);
+        }
     }
 }

@@ -220,6 +220,11 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
                     image.SetTile(cell.Location, cell.GetAppearance());
                 }
 
+            foreach (var monster in dungeon.Monsters.Where(m => m.IsAlive))
+            {
+                image.SetTile(monster.Location, monster.GetAppearance());
+            }
+
             image.SetTile(dungeon.Character.Location, dungeon.Character.GetAppearance());
 
             return image;
