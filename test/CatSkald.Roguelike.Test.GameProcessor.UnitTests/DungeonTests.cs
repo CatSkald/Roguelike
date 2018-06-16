@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers;
 using CatSkald.Roguelike.Core.Cells;
+using CatSkald.Roguelike.Core.Cells.Creatures;
 using CatSkald.Roguelike.GameProcessor;
 using NUnit.Framework;
 using System.Drawing;

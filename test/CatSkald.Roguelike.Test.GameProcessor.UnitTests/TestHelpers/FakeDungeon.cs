@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
+using CatSkald.Roguelike.Core.Cells.Creatures;
 using CatSkald.Roguelike.Core.Terrain;
 using CatSkald.Roguelike.GameProcessor;
 

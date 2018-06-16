@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using CatSkald.Roguelike.Test.GameProcessor.UnitTests.TestHelpers;
 using CatSkald.Roguelike.Core.Cells;
+using CatSkald.Roguelike.Core.Cells.Creatures;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;
 using CatSkald.Roguelike.Core.Terrain;

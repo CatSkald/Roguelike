@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
+using CatSkald.Roguelike.Core.Cells.Creatures;
 using CatSkald.Tools;
 
 namespace CatSkald.Roguelike.GameProcessor.Initialization

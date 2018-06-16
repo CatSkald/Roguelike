@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using CatSkald.Roguelike.Core.Cells;
+using CatSkald.Roguelike.Core.Cells.Creatures;
 using CatSkald.Roguelike.Core.Terrain;
 
 namespace CatSkald.Roguelike.GameProcessor

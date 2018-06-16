@@ -1,4 +1,5 @@
 ﻿using CatSkald.Roguelike.Core.Cells;
+using CatSkald.Roguelike.Core.Cells.Creatures;
 using NUnit.Framework;
 namespace CatSkald.Roguelike.Test.Core.UnitTests.Cells
 {

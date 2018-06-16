@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using CatSkald.Roguelike.Core.Cells;
+using CatSkald.Roguelike.Core.Cells.Creatures;
 using CatSkald.Roguelike.Core.Messages;
 using CatSkald.Roguelike.Core.Parameters;
 using CatSkald.Roguelike.Core.Services;

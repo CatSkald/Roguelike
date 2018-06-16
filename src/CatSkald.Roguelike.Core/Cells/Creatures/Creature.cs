@@ -1,4 +1,4 @@
-﻿namespace CatSkald.Roguelike.Core.Cells
+﻿namespace CatSkald.Roguelike.Core.Cells.Creatures
 {
     public class Creature : Cell
     {
