@@ -43,10 +43,11 @@ namespace CatSkald.Roguelike.GameProcessor.Initialization
 
                 var upstairsCell = emptyCells[upstairsPosition];
                 dungeon[upstairsCell].Type = XType.StairsUp;
-                emptyCells.Remove(upstairsCell);
 
                 var downstairsCell = emptyCells[downstairsPosition];
                 dungeon[downstairsCell].Type = XType.StairsDown;
+
+                emptyCells.Remove(upstairsCell);
                 emptyCells.Remove(downstairsCell);
 
                 return (upstairsCell, downstairsCell);

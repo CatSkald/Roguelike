@@ -71,7 +71,6 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
         [TestCase(XType.Empty)]
         [TestCase(XType.StairsDown)]
         [TestCase(XType.StairsUp)]
-        [TestCase(XType.Door)]
         public void CanMove_GivenCellAvailableForMove_ThenReturnsTrue(XType cellType)
         {
             var dungeon = new Dungeon(1, 1);
@@ -83,8 +82,49 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             Assert.IsTrue(result);
         }
 
+        [Test]
+        public void CanMove_GivenUnlockedClosedDoor_ThenReturnsTrue()
+        {
+            var dungeonWithDoor = new Dungeon(1, 1);
+            var newLocation = new Point(0, 0);
+            dungeonWithDoor[newLocation].Type = XType.Door;
+            var dungeon = new Dungeon(dungeonWithDoor);
+
+            var result = dungeon.CanMove(newLocation);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void CanMove_GivenLockedClosedDoor_ThenReturnsFalse()
+        {
+            var dungeonWithDoor = new Dungeon(1, 1);
+            var newLocation = new Point(0, 0);
+            dungeonWithDoor[newLocation].Type = XType.Door;
+            var dungeon = new Dungeon(dungeonWithDoor);
+            ((Door)dungeon[newLocation]).Lock();
+
+            var result = dungeon.CanMove(newLocation);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void CanMove_GivenOpenedDoor_ThenReturnsTrue()
+        {
+            var dungeonWithDoor = new Dungeon(1, 1);
+            var newLocation = new Point(0, 0);
+            dungeonWithDoor[newLocation].Type = XType.Door;
+            var dungeon = new Dungeon(dungeonWithDoor);
+            ((Door)dungeon[newLocation]).Open();
+
+            var result = dungeon.CanMove(newLocation);
+
+            Assert.IsTrue(result);
+        }
+
         [TestCase(XType.Wall)]
-        public void CanMove_GivenNonEmptyCell_ThenReturnsFalse(XType cellType)
+        public void CanMove_GivenObstacleCell_ThenReturnsFalse(XType cellType)
         {
             var dungeon = new Dungeon(1, 1);
             var newLocation = new Point(0, 0);
@@ -93,6 +133,40 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             var result = dungeon.CanMove(newLocation);
 
             Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void CanMove_GivenObstacleMonsterOnCell_ThenReturnsFalse()
+        {
+            var dungeon = new Dungeon(1, 1);
+            var newLocation = new Point(0, 0);
+            var cell = dungeon[newLocation];
+            cell.Type = XType.Empty;
+            cell.Content.Add(new Monster(newLocation, new MainStats(), GetAppearance(true)));
+
+            var result = dungeon.CanMove(newLocation);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void CanMove_GivenNonObstacleMonsterOnCell_ThenReturnsFalse()
+        {
+            var dungeon = new Dungeon(1, 1);
+            var newLocation = new Point(0, 0);
+            var cell = dungeon[newLocation];
+            cell.Type = XType.Empty;
+            cell.Content.Add(new Monster(newLocation, new MainStats(), GetAppearance(false)));
+
+            var result = dungeon.CanMove(newLocation);
+
+            Assert.IsTrue(result);
+        }
+
+        private Appearance GetAppearance(bool isObstacle)
+        {
+            return new Appearance("1", "2", '3', Color.AliceBlue, 
+                isVisible: true, isSolid: true, isObstacle: isObstacle);
         }
 
         [TestCase(-1, 0)]
@@ -110,32 +184,82 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             Assert.IsFalse(result);
         }
 
-        [TestCase(XType.StairsDown)]
-        [TestCase(XType.StairsUp)]
-        public void GetCellContent_GivenCellWithContent_ThenReturnsIt(XType cellType)
+        [Test]
+        public void GetCellContent_GivenCellWithContent_ThenReturnsAppearanceOfCellAndOfEachOfItsContent()
         {
             var dungeon = new Dungeon(1, 1);
             var location = new Point(0, 0);
-            dungeon[location].Type = cellType;
+            var content1 = new Door(location);
+            var content2 = new Monster(location, new MainStats(), new Appearance());
+            var cellWithContent = dungeon[location];
+            cellWithContent.Type = XType.StairsDown;
+            cellWithContent.Content.Add(content1);
+            cellWithContent.Content.Add(content2);
 
             var result = dungeon.GetCellContent(location);
 
-            Assert.That(result, Is.EquivalentTo(new[] { cellType }));
+            Assert.That(result, Is.EquivalentTo(
+                new[]
+                {
+                    dungeon[location].GetAppearance(),
+                    content1.GetAppearance(),
+                    content2.GetAppearance()
+                }));
         }
 
-        [TestCase(XType.Empty)]
         [TestCase(XType.Wall)]
-        [TestCase(XType.Character)]
-        [TestCase(XType.Unknown)]
-        public void GetCellContent_GivenCellWithoutContent_ThenReturnsNone(XType cellType)
+        [TestCase(XType.StairsDown)]
+        [TestCase(XType.StairsUp)]
+        public void GetCellContent_GivenCell_ThenReturnsCorrectAppearance(XType type)
         {
             var dungeon = new Dungeon(1, 1);
             var location = new Point(0, 0);
-            dungeon[location].Type = cellType;
+            dungeon[location].Type = type;
+
+            var result = dungeon.GetCellContent(location);
+            var expectedAppearance = new Cell(new Point(), type).GetAppearance();
+
+            Assert.That(result, Is.EquivalentTo(new[] { expectedAppearance }));
+        }
+
+        [Test]
+        public void GetCellContent_GivenEmptyCell_ThenReturnsNoAppearance()
+        {
+            var dungeon = new Dungeon(1, 1);
+            var location = new Point(0, 0);
+            dungeon[location].Type = XType.Empty;
 
             var result = dungeon.GetCellContent(location);
 
             Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void GetCellContent_GivenCharacterInEmptyCell_ThenReturnsEmpty()
+        {
+            var dungeon = new Dungeon(1, 1);
+            var location = new Point(0, 0);
+            dungeon[location].Type = XType.Empty;
+            dungeon.PlaceCharacter(new Character(new MainStats(), location));
+
+            var result = dungeon.GetCellContent(location);
+            var expectedAppearance = new Character(new MainStats(), location).GetAppearance();
+
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void GetCellContent_GivenDoor_ThenReturnsCorrectAppearance()
+        {
+            var dungeonWithDoor = new Dungeon(1, 1);
+            var location = new Point(0, 0);
+            dungeonWithDoor[location].Type = XType.Door;
+            var dungeon = new Dungeon(dungeonWithDoor);
+
+            var result = dungeon.GetCellContent(location);
+            var expectedAppearance = new Door(location).GetAppearance();
+
+            Assert.That(result, Is.EquivalentTo(new[] { expectedAppearance }));
         }
     }
 }

@@ -44,8 +44,12 @@ namespace CatSkald.Roguelike.GameProcessor
 
         public bool CanMove(Point newLocation)
         {
-            return Bounds.Contains(newLocation) 
-                && !this[newLocation].GetAppearance().IsObstacle;
+            if (!Bounds.Contains(newLocation))
+                return false;
+
+            var targetCell = this[newLocation];
+            return !targetCell.GetAppearance().IsObstacle
+                && targetCell.Content.All(c => !c.GetAppearance().IsObstacle);
         }
 
         public IEnumerable<Appearance> GetCellContent(Point location)

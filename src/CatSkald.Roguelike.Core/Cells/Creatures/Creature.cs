@@ -20,6 +20,6 @@ namespace CatSkald.Roguelike.Core.Cells.Creatures
 
         public override Appearance GetAppearance() => 
             new Appearance(RealAppearance.Name, RealAppearance.Description,
-                RealAppearance.Image, RealAppearance.Colour, isVisible: IsVisible);
+                RealAppearance.Image, RealAppearance.Colour, isVisible: IsVisible, RealAppearance.IsSolid, RealAppearance.IsObstacle);
     }
 }

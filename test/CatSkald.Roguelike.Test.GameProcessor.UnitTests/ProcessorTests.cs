@@ -126,7 +126,7 @@ namespace CatSkald.Roguelike.Test.GameProcessor.UnitTests
             processor.Process(GameAction.StartGame);
 
             ////TODO test precise message
-            painter.Received(1).DrawMessage(Arg.Any<GameMessage>());
+            painter.Received().DrawMessage(Arg.Any<GameMessage>());
         }
     }
 }

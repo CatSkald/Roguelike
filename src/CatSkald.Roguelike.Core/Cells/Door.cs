@@ -12,7 +12,7 @@ namespace CatSkald.Roguelike.Core.Cells
         public bool IsLocked { get; private set; }
 
         public override Appearance GetAppearance() => 
-            new Appearance("Door", IsOpened ? "Opened" : "Closed" + " wooden door",
+            new Appearance("Door", (IsOpened ? "Opened" : "Closed") + " wooden door.",
                 IsOpened ? '\'' : '+', Color.Orange, isVisible: true, isSolid: true, isObstacle: IsLocked);
 
 
@@ -32,6 +32,17 @@ namespace CatSkald.Roguelike.Core.Cells
             {
                 return false;
             }
+        }
+
+        public void OpenWithLock()
+        {
+            IsLocked = false;
+            IsOpened = true;
+        }
+
+        public void Lock()
+        {
+            IsLocked = true;
         }
     }
 }

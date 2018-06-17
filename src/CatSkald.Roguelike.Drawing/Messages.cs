@@ -24,7 +24,7 @@ namespace CatSkald.Roguelike.Drawing
         public static readonly string OpenDoor = "You opened the door.";
         public static readonly string DoorIsLocked = "The door is locked.";
 
-        public static readonly string SeePattern = "You see {0}.";
+        public static readonly string SeePattern = "You see {0}. {1}";
         public static readonly string ObstacleDescriptionPattern = "You faced the {0}.";
         public static readonly string HitPattern = "You attacked {0}.";
 
@@ -67,7 +67,7 @@ namespace CatSkald.Roguelike.Drawing
                 case MessageType.StandOn:
                     if (args != null && args[0] is Appearance standOn)
                     {
-                        sb.AppendFormat(Messages.SeePattern, standOn.Name?.ToLower());
+                        sb.AppendFormat(Messages.SeePattern, standOn.Name?.ToLower(), standOn.Description);
                         sb.AppendLine();
                     }
                     else throw new ArgumentException("Incorrect arguments.");

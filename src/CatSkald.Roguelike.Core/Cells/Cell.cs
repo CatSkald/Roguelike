@@ -32,27 +32,27 @@ namespace CatSkald.Roguelike.Core.Cells
 
             string GetName()
             {
-                string description = string.Empty;
+                string name = string.Empty;
                 switch (Type)
                 {
                     case XType.Wall:
                     case XType.Door:
-                        description = Type.ToString();
+                        name = Type.ToString();
                         break;
                     case XType.StairsUp:
-                        description = "Stairs up";
+                        name = "Stairs up";
                         break;
                     case XType.StairsDown:
-                        description = "Stairs down";
+                        name = "Stairs down";
                         break;
                     case XType.Empty:
-                        description = string.Empty;
+                        name = string.Empty;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException($"{Type} is not mapped.");
                 }
 
-                return description;
+                return name;
             }
 
             string GetDescription()
