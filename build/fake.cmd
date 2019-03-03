@@ -3,4 +3,4 @@ REM Install .NET Core (https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet
 
 SET PATH=%LOCALAPPDATA%\Microsoft\dotnet;%PATH%
 dotnet restore dotnet-fake.csproj
-dotnet fake %*
+dotnet fake run build.fsx %*

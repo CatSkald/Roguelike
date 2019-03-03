@@ -7,4 +7,4 @@ curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel Curre
 
 PATH="~/.dotnet:$PATH"
 dotnet restore dotnet-fake.csproj
-dotnet fake $@
+dotnet fake run build.fsx $@
