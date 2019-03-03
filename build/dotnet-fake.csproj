@@ -5,5 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="dotnet-fake" Version="5.*" />
+    <DotNetCliToolReference Include="dotnet-reportgenerator-cli" Version="4.0.14" />
   </ItemGroup>
 </Project>

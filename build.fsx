@@ -16,6 +16,7 @@ open Fake.DotNet
 open Fake.DotNet.Testing
 open Fake.IO
 open Fake.IO.FileSystemOperators
+open Fake.IO.Globbing
 open Fake.IO.Globbing.Operators
 open Fake.Testing
 
@@ -29,6 +30,11 @@ let version = Environment.environVarOrDefault "APPVEYOR_BUILD_VERSION" "0.0.1"
 let buildNumber = Environment.environVarOrDefault "BUILD_NUMBER" "0"
 let alphaVersionSuffix = if (buildNumber <> "0") then Some("alpha" + buildNumber) else None
 let dotnetPath = Environment.environVarOrDefault "DOTNET_INSTALL_DIR" "C:/Program Files/dotnet/dotnet.exe"
+
+let failOnBadExitAndPrint (p : ProcessResult) =
+    if p.ExitCode <> 0 then
+        p.Errors |> Seq.iter Trace.traceError
+        failwithf "failed with exitcode %d" p.ExitCode
 
 Target.create "Clean" (fun _ ->
     !! "src/**/bin"
@@ -70,17 +76,33 @@ Target.create "UnitTestWithCoverlet" (fun _ ->
         }) file
     )
 )
-
-Target.create "MergeCoverageReportsIntoSingleFile" (fun _ ->
-    let coverageFiles = !! "./test/**/coverage.xml"
-                        |> String.concat ";"
     
-    ReportGenerator.generateReports(fun p -> 
-        { p with 
-            ExePath = "packages/ReportGenerator/tools/ReportGenerator.exe"
-            ReportTypes = [ReportGenerator.ReportType.XmlSummary]
-            TargetDir = "./coverage"
-        })([coverageFiles])
+Target.create "GenerateCoverageReport" (fun _ ->
+
+    let tool optionConfig command args =
+        DotNet.exec (fun p -> { p with WorkingDirectory = "."} |> optionConfig ) (sprintf "%s" command) args
+        |> failOnBadExitAndPrint
+    let reportgenerator optionConfig args =
+        tool optionConfig "reportgenerator" args
+
+    let coverageReports =
+        !!"./tests/**/coverage.*.xml"
+        |> String.concat ";"
+    let sourceDirs =
+        !! "./src/**/*.??proj"
+        |> Seq.map Path.getDirectory
+        |> String.concat ";"
+    let independentArgs =
+            [
+                sprintf "-reports:%s" coverageReports
+                sprintf "-targetdir:%s" "coverage"
+                sprintf "-sourcedirs:%s" sourceDirs
+                sprintf "-Reporttypes:%s" "XMLSummary"
+            ]
+    let args = independentArgs
+               |> String.concat " "
+
+    reportgenerator id args
 )
 
 Target.create "UnitTestWithOpenCover" (fun _ ->
@@ -130,9 +152,9 @@ Target.create "Deploy" (fun _ ->
   ==> "UpdateAssemblyInfo"
   ==> "Build"
   ==> "UnitTestWithCoverlet"
-  =?> ("MergeCoverageReportsIntoSingleFile", (BuildServer.buildServer = BuildServer.AppVeyor))
-  =?> ("UnitTestWithOpenCover", (BuildServer.buildServer = BuildServer.AppVeyor))
-  =?> ("PublishTestCoverage", (BuildServer.buildServer = BuildServer.AppVeyor))
+//   =?> ("GenerateCoverageReport", (BuildServer.buildServer = BuildServer.AppVeyor))
+//   =?> ("UnitTestWithOpenCover", (BuildServer.buildServer = BuildServer.AppVeyor))
+//   =?> ("PublishTestCoverage", (BuildServer.buildServer = BuildServer.AppVeyor))
   ==> "Pack"
   ==> "Deploy"
 
