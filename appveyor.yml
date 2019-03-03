@@ -8,7 +8,7 @@ before_build:
   - cmd: appveyor-retry dotnet restore -v Minimal
   - cmd: move .\build\* .\
 build_script:
-  - cmd: .\build\fake.cmd
+  - cmd: .\fake.cmd
 test: off
 artifacts:
   - path: 'output\*.nupkg'

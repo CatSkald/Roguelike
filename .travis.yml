@@ -14,4 +14,4 @@ before_script:
       
 script:
   - cd "$TRAVIS_BUILD_DIR"
-  - ./build/fake.sh
+  - ./fake.sh
