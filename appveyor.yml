@@ -5,9 +5,9 @@ environment:
   SONARQUBE_TOKEN:
     secure: id3AQevkzEdbYj60D7/A9tr1AdNEYU39IuHz5nO7zAEzWgy06bKrOzM5BVwyyEEE
 before_build:
-  - cmd: appveyor-retry dotnet restore -v Minimal
+  - cmd: move .\build\* .\
 build_script:
-  - cmd: build.cmd
+  - cmd: .\fake.cmd
 test: off
 artifacts:
   - path: 'output\*.nupkg'

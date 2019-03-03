@@ -1,95 +1,127 @@
-#r "./packages/FAKE.Core/tools/FakeLib.dll"
-#r "./packages/FAKE.Core.Trace/lib/netstandard2.0/Fake.Core.Trace.dll"
-#r "./packages/FAKE.Core.Process/lib/netstandard2.0/Fake.Core.Process.dll"
-#r "./packages/FAKE.Core.Environment/lib/netstandard2.0/Fake.Core.Environment.dll"
-#r "./packages/FAKE.Core.Context/lib/netstandard2.0/Fake.Core.Context.dll"
-#r "./packages/FAKE.Testing.ReportGenerator/lib/netstandard2.0/Fake.Testing.ReportGenerator.dll"
-#r "./packages/FAKE.IO.FileSystem/lib/netstandard2.0/FAKE.IO.FileSystem.dll"
-#r "./packages/NETStandard.Library/build/netstandard2.0/ref/netstandard.dll"
+#r "paket:
+nuget Fake.IO.FileSystem
+nuget Fake.DotNet.AssemblyInfoFile
+nuget Fake.DotNet.Cli
+nuget Fake.DotNet.MSBuild
+nuget Fake.DotNet.Testing.OpenCover
+nuget Fake.Core.Target 
+nuget Fake.Testing.ReportGenerator
+//"
 
-let execContext = Fake.Core.Context.FakeExecutionContext.Create false "path/to/script.fsx" []
-Fake.Core.Context.setExecutionContext (Fake.Core.Context.RuntimeContext.Fake execContext)
+#load ".fake/build.fsx/intellisense.fsx"
 
-open Fake
+open Fake.Core
+open Fake.Core.TargetOperators
+open Fake.DotNet
+open Fake.DotNet.Testing
+open Fake.IO
+open Fake.IO.FileSystemOperators
+open Fake.IO.Globbing
+open Fake.IO.Globbing.Operators
 open Fake.Testing
 
 let outputDir = "./output"
 let deployDir = outputDir @@ "/deploy/"
 let packageName = "CatSkald.Roguelike"
 let mainProject = "./src/CatSkald.Roguelike.Host/CatSkald.Roguelike.Host.csproj"
+let solution = "CatSkald.Roguelike.sln"
 
-let version = EnvironmentHelper.environVarOrDefault "APPVEYOR_BUILD_VERSION" "0.0.1"
-let buildNumber = EnvironmentHelper.environVarOrDefault "BUILD_NUMBER" "0"
-let alphaVersionSuffix = "alpha" + (if (buildNumber <> "0") then (buildNumber) else "")
-let dotnetPath = EnvironmentHelper.environVarOrDefault "DOTNET_INSTALL_DIR" "C:/Program Files/dotnet/dotnet.exe"
+let version = Environment.environVarOrDefault "APPVEYOR_BUILD_VERSION" "0.0.1"
+let buildNumber = Environment.environVarOrDefault "BUILD_NUMBER" "0"
+let alphaVersionSuffix = if (buildNumber <> "0") then Some("alpha" + buildNumber) else None
+let dotnetPath = Environment.environVarOrDefault "DOTNET_INSTALL_DIR" "C:/Program Files/dotnet/dotnet.exe"
 
-Target "Clean" (fun _ ->
-    CleanDir outputDir
+let failOnBadExitAndPrint (p : ProcessResult) =
+    if p.ExitCode <> 0 then
+        p.Errors |> Seq.iter Trace.traceError
+        failwithf "failed with exitcode %d" p.ExitCode
+
+Target.create "Clean" (fun _ ->
+    !! "src/**/bin"
+    ++ "src/**/obj"
+    ++ outputDir
+    |> Shell.cleanDirs 
 )
 
-open Fake.AssemblyInfoFile
-Target "UpdateAssemblyInfo" (fun _ ->
-    UpdateAttributes "./CommonAssemblyInfo.cs"
-      [ Attribute.Version version
-        Attribute.FileVersion version ]
+Target.create "UpdateAssemblyInfo" (fun _ ->
+    AssemblyInfoFile.createCSharp "./CommonAssemblyInfo.cs"
+      [ AssemblyInfo.Copyright "Copyright © CatSkald 2016 - 2019"
+        AssemblyInfo.Version version
+        AssemblyInfo.FileVersion version ]
 )
 
-Target "Build" (fun _ ->
-    DotNetCli.Restore id
+Target.create "Build" (fun _ ->
+    DotNet.restore (fun p ->
+    { p with
+        NoCache = true 
+    }) solution
 
     !! "./src/**/*.csproj"
-      ++ "./test/**/*.csproj"
+    ++ "./test/**/*.csproj"
     |> Seq.iter (fun file -> 
-        DotNetCli.Build (fun p -> 
+        DotNet.build (fun p -> 
         { p with 
-            Project = file
-            Configuration = "Release"
-        })
+            Configuration = DotNet.BuildConfiguration.Release
+        }) file
     )
 )
 
-Target "UnitTestWithCoverlet" (fun _ ->
+Target.create "UnitTestWithCoverlet" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
     |> Seq.iter (fun file -> 
-        DotNetCli.Test (fun p -> 
+        DotNet.test (fun p -> 
         { p with 
-            Project = file
-            Configuration = "Release"
-            AdditionalArgs = ["/p:CollectCoverage=true"; "/p:CoverletOutputFormat=opencover"]
-        })
+            Configuration = DotNet.BuildConfiguration.Release
+            RunSettingsArguments = Some("/p:CollectCoverage=true /p:CoverletOutputFormat=opencover")
+        }) file
     )
 )
-
-Target "MergeCoverageReportsIntoSingleFile" (fun _ ->
-    let coverageFiles = !! "./test/**/coverage.xml"
-                        |> String.concat ";"
     
-    ReportGenerator.generateReports(fun p -> 
-        { p with 
-            ExePath = "packages/ReportGenerator/tools/ReportGenerator.exe"
-            ReportTypes = [ReportGenerator.ReportType.XmlSummary]
-            TargetDir = "./coverage"
-        })([coverageFiles])
+Target.create "GenerateCoverageReport" (fun _ ->
+
+    let tool optionConfig command args =
+        DotNet.exec (fun p -> { p with WorkingDirectory = "."} |> optionConfig ) (sprintf "%s" command) args
+        |> failOnBadExitAndPrint
+    let reportgenerator optionConfig args =
+        tool optionConfig "reportgenerator" args
+
+    let coverageReports =
+        !!"./tests/**/coverage.*.xml"
+        |> String.concat ";"
+    let sourceDirs =
+        !! "./src/**/*.??proj"
+        |> Seq.map Path.getDirectory
+        |> String.concat ";"
+    let independentArgs =
+            [
+                sprintf "-reports:%s" coverageReports
+                sprintf "-targetdir:%s" "coverage"
+                sprintf "-sourcedirs:%s" sourceDirs
+                sprintf "-Reporttypes:%s" "XMLSummary"
+            ]
+    let args = independentArgs
+               |> String.concat " "
+
+    reportgenerator id args
 )
 
-open Fake.OpenCoverHelper
-Target "UnitTestWithOpenCover" (fun _ ->
+Target.create "UnitTestWithOpenCover" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
     |> Seq.iter(fun file -> 
-         let targetArguments = sprintf "test %O" (DirectoryName file)
-         OpenCoverHelper.OpenCover (fun p -> 
+         let targetArguments = sprintf "test %O" file
+         OpenCover.run (fun p -> 
             { p with 
                 ExePath = "./packages/OpenCover/tools/OpenCover.Console.exe"
                 TestRunnerExePath = dotnetPath
                 Filter = "+[CatSkald.*]* -[*Tests]*"
                 Output = "coverage/opencover.xml"
-                Register = RegisterUser
+                //Register = RegisterUser
                 OptionalArguments = "-mergeoutput -oldstyle"
             })
             targetArguments)
 )
 
-Target "PublishTestCoverage" (fun _ ->
+Target.create "PublishTestCoverage" (fun _ ->
     let result = Shell.Exec("./packages/coveralls.net/tools/csmacnz.Coveralls.exe","--opencover -i coverage/Summary.xml") 
     if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
     ()
@@ -103,28 +135,27 @@ Target "PublishTestCoverage" (fun _ ->
     // Shell.Exec("./CodecovUploader.sh", "-f coverage.xml -X gcov")
 )
 
-Target "Pack" (fun _ ->
-    DotNetCli.Pack (fun p -> 
+Target.create "Pack" (fun _ ->
+    DotNet.pack (fun p -> 
         { p with 
-            Project = mainProject
-            Configuration = "Release"
-            OutputPath = outputDir
+            Configuration = DotNet.BuildConfiguration.Release
+            OutputPath = Some(outputDir)
             VersionSuffix = alphaVersionSuffix
-        })
+        }) mainProject
 )
 
-Target "Deploy" DoNothing
-
+Target.create "Deploy" (fun _ ->
+    Trace.trace "Skipping deployment."
+)
 
 "Clean"
   ==> "UpdateAssemblyInfo"
   ==> "Build"
   ==> "UnitTestWithCoverlet"
-  =?> ("MergeCoverageReportsIntoSingleFile", (buildServer = BuildServer.AppVeyor))
-  =?> ("UnitTestWithOpenCover", (buildServer = BuildServer.AppVeyor))
-  =?> ("PublishTestCoverage", (buildServer = BuildServer.AppVeyor))
+//   =?> ("GenerateCoverageReport", (BuildServer.buildServer = BuildServer.AppVeyor))
+//   =?> ("UnitTestWithOpenCover", (BuildServer.buildServer = BuildServer.AppVeyor))
+//   =?> ("PublishTestCoverage", (BuildServer.buildServer = BuildServer.AppVeyor))
   ==> "Pack"
   ==> "Deploy"
-  
-  
-RunTargetOrDefault "Deploy"
+
+Target.runOrDefault "Deploy"
