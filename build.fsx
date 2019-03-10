@@ -188,8 +188,8 @@ Target.create "Deploy" (fun _ ->
   ==> "TestWithCoverlet"
 //  ==> "TestWithAltCover"
 //  =?> ("GenerateTestCoverageReport", (BuildServer.buildServer = BuildServer.AppVeyor))
-//   =?> ("TestWithOpenCover", (BuildServer.buildServer = BuildServer.AppVeyor))
-  =?> ("PublishTestCoverage", (BuildServer.buildServer = BuildServer.AppVeyor))
+//  =?> ("TestWithOpenCover", (BuildServer.buildServer = BuildServer.AppVeyor))
+//  =?> ("PublishTestCoverage", (BuildServer.buildServer = BuildServer.AppVeyor))
   ==> "Pack"
   ==> "Deploy"
 
