@@ -14,6 +14,7 @@ open Fake.Core
 open Fake.Core.TargetOperators
 open Fake.DotNet
 open Fake.DotNet.Testing
+open Fake.DotNet.Testing.OpenCover
 open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing
@@ -35,6 +36,10 @@ let failOnBadExitAndPrint (p : ProcessResult) =
     if p.ExitCode <> 0 then
         p.Errors |> Seq.iter Trace.traceError
         failwithf "failed with exitcode %d" p.ExitCode
+
+let tool optionConfig command args =
+    DotNet.exec (fun p -> { p with WorkingDirectory = "."} |> optionConfig ) (sprintf "%s" command) args
+    |> failOnBadExitAndPrint
 
 Target.create "Clean" (fun _ ->
     !! "src/**/bin"
@@ -66,7 +71,7 @@ Target.create "Build" (fun _ ->
     )
 )
 
-Target.create "UnitTestWithCoverlet" (fun _ ->
+Target.create "TestWithCoverlet" (fun _ ->
     !! "./test/**/*UnitTests.csproj"
     |> Seq.iter (fun file -> 
         DotNet.test (fun p -> 
@@ -76,17 +81,24 @@ Target.create "UnitTestWithCoverlet" (fun _ ->
         }) file
     )
 )
-    
-Target.create "GenerateCoverageReport" (fun _ ->
 
-    let tool optionConfig command args =
-        DotNet.exec (fun p -> { p with WorkingDirectory = "."} |> optionConfig ) (sprintf "%s" command) args
-        |> failOnBadExitAndPrint
-    let reportgenerator optionConfig args =
+Target.create "TestWithAltCover" (fun _ ->
+    !! "./test/**/*UnitTests.csproj"
+    |> Seq.iter (fun file -> 
+        DotNet.test (fun p -> 
+        { p with 
+            Configuration = DotNet.BuildConfiguration.Release
+            RunSettingsArguments = Some("/p:AltCover=true")
+        }) file
+    )
+)
+
+Target.create "GenerateTestCoverageReport" (fun _ ->
+    let reportGenerator optionConfig args =
         tool optionConfig "reportgenerator" args
 
     let coverageReports =
-        !!"./tests/**/coverage.*.xml"
+        !!"./test/**/coverage.xml"
         |> String.concat ";"
     let sourceDirs =
         !! "./src/**/*.??proj"
@@ -102,33 +114,55 @@ Target.create "GenerateCoverageReport" (fun _ ->
     let args = independentArgs
                |> String.concat " "
 
-    reportgenerator id args
+    reportGenerator id args
 )
 
-Target.create "UnitTestWithOpenCover" (fun _ ->
+Target.create "TestWithOpenCover" (fun _ ->
+    let independentArgs =
+            [
+                sprintf "-target:%s" dotnetPath
+                sprintf "-register:%s" "user"
+                sprintf "-filter:%s" "+[CatSkald.*]* -[*Tests]*"
+                sprintf "-output:%s" "coverage/opencover.xml"
+                "-mergeoutput"
+                "-oldstyle"
+            ]
+    let args = independentArgs
+               |> String.concat " "
+
+    let openCover optionConfig args =
+        tool optionConfig "OpenCover.Console" args
+
     !! "./test/**/*UnitTests.csproj"
     |> Seq.iter(fun file -> 
-         let targetArguments = sprintf "test %O" file
-         OpenCover.run (fun p -> 
-            { p with 
-                ExePath = "./packages/OpenCover/tools/OpenCover.Console.exe"
-                TestRunnerExePath = dotnetPath
-                Filter = "+[CatSkald.*]* -[*Tests]*"
-                Output = "coverage/opencover.xml"
-                //Register = RegisterUser
-                OptionalArguments = "-mergeoutput -oldstyle"
-            })
-            targetArguments)
+         openCover id (sprintf "%s test %O" args file)
+        //  let targetArguments = sprintf "test %O" file
+        //  OpenCover.run (fun p -> 
+        //     { p with 
+        //         ExePath = "./packages/OpenCover/tools/OpenCover.Console.exe"
+        //         TestRunnerExePath = dotnetPath
+        //         Filter = "+[CatSkald.*]* -[*Tests]*"
+        //         Output = "coverage/opencover.xml"
+        //         //Register = RegisterUser
+        //         OptionalArguments = "-mergeoutput -oldstyle"
+        //     })
+        //     targetArguments)
+    )
 )
 
 Target.create "PublishTestCoverage" (fun _ ->
-    let result = Shell.Exec("./packages/coveralls.net/tools/csmacnz.Coveralls.exe","--opencover -i coverage/Summary.xml") 
-    if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
-    ()
+    let coveralls optionConfig args =
+        tool optionConfig "coveralls.net" args
 
-    let result = Shell.Exec("./packages/coveralls.net/tools/csmacnz.Coveralls.exe","--opencover -i coverage/opencover.xml") 
-    if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
-    ()
+    coveralls id "--opencover -i coverage/Summary.xml"
+
+    // let result = Shell.Exec("./packages/coveralls.net/tools/csmacnz.Coveralls.exe","--opencover -i coverage/Summary.xml") 
+    // if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
+    // ()
+
+    // let result = Shell.Exec("./packages/coveralls.net/tools/csmacnz.Coveralls.exe","--opencover -i coverage/opencover.xml") 
+    // if result <> 0 then failwithf "Error during sending coverage to coverall: %d" result
+    // ()
 
     // TODO add codecov coverage
     // ExecuteGetCommand null null "https://codecov.io/bash"
@@ -151,10 +185,11 @@ Target.create "Deploy" (fun _ ->
 "Clean"
   ==> "UpdateAssemblyInfo"
   ==> "Build"
-  ==> "UnitTestWithCoverlet"
-//   =?> ("GenerateCoverageReport", (BuildServer.buildServer = BuildServer.AppVeyor))
-//   =?> ("UnitTestWithOpenCover", (BuildServer.buildServer = BuildServer.AppVeyor))
-//   =?> ("PublishTestCoverage", (BuildServer.buildServer = BuildServer.AppVeyor))
+  ==> "TestWithCoverlet"
+//  ==> "TestWithAltCover"
+//  =?> ("GenerateTestCoverageReport", (BuildServer.buildServer = BuildServer.AppVeyor))
+//  =?> ("TestWithOpenCover", (BuildServer.buildServer = BuildServer.AppVeyor))
+//  =?> ("PublishTestCoverage", (BuildServer.buildServer = BuildServer.AppVeyor))
   ==> "Pack"
   ==> "Deploy"
 
